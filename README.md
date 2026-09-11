@@ -1,8 +1,10 @@
 # CART253
 
-Alejandro Bernabe
+#Repo created by me (Alejandro Bernabe)
 
 [Click the link to see the website? :D](https://alejandrobrnab.github.io/cart253/)
+
+[Click the link to go to the other path](https://alejandrobrnab.github.io/cart253/topics/version-control/version-control-workflow/)
 
 ## Description
 
