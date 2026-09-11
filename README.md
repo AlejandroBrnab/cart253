@@ -1,6 +1,6 @@
 # CART253
 
-#Repo created by me (Alejandro Bernabe)
+# Repo created by me (Alejandro Bernabe)
 
 [Click the link to see the website? :D](https://alejandrobrnab.github.io/cart253/)
 
