@@ -1,19 +1,19 @@
-# CART253
+<h1 align="center">CART253 REPO (FALL 2026)</h1>
 
-# Repo created by me (Alejandro Bernabe)
+<div>
+    <!-- "object-fit: cover" crops the image rather than stretching it -->
+    <img src="./public/images/pa.jpg" width="100%" height="250" style="object-fit: cover;">
+</div>
+
+#
+
+# Description 
+This is a coursework repo. Here I will showcase any other projects and eventually and possibly make this website look more attractive to the eyes
+
+#
+
+<h2>Links <img src="./public/images/link.png" width="5%" style="object-fit: cover;"> </h2>
 
 [Click the link to see the website? :D](https://alejandrobrnab.github.io/cart253/)
 
 [Click the link to go to the other path](https://alejandrobrnab.github.io/cart253/topics/version-control/version-control-workflow/)
-
-## Description
-
-This is a coursework repo. It has a template of some JS code and two README files.
-
-> *~~You could take the first read me file as the main one for the repo :)~~*
-
-## An image
-
-Not a lot, but just a duck.
-
-> ![Image of a duck](./public/images/duck.png)
