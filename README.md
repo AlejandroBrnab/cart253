@@ -1,14 +1,28 @@
-# CART253 REPO (FALL 2026)
-
-![bright-eyed](./public/images/pa.jpg)
-
-# Description 
-This is a coursework repo. Here I will showcase any other projects and eventually and possibly make this website look more attractive to the eyes
-
 #
+# **CART253 REPO (FALL 2026)**
+---
+![MyReflectionAlreadyLooking](./public/images/pa.jpg)
+---
+---
 
-# Links
+## **Reflective Journal Link**
+- *[Link to reflective journal](https://github.com/AlejandroBrnab/cart253/blob/main/ReflectiveJournal.md)* *:)*
+---
+---
 
-[Click the link to see the website? :D](https://alejandrobrnab.github.io/cart253/)
+# **Description**
+This is a coursework repo. More projects will be added to this website (as links leading to those projects) and this website may change even more in the future.
 
-[Click the link to go to the other path](https://alejandrobrnab.github.io/cart253/topics/version-control/version-control-workflow/)
+---
+---
+
+## **Additional Links**
+Some other links leading to the website, journal and other projects.
+
+- *[Link to see the website](https://alejandrobrnab.github.io/cart253/)* *:D*
+
+---
+---
+## **Prototypes**
+
+---
