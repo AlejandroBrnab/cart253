@@ -1,4 +1,3 @@
-#
 # **CART253 REPO (FALL 2026)**
 ---
 ![MyReflectionAlreadyLooking](./public/images/pa.jpg)
@@ -7,6 +6,7 @@
 
 ## **Reflective Journal Link**
 - *[Link to reflective journal](https://github.com/AlejandroBrnab/cart253/blob/main/ReflectiveJournal.md)* *:)*
+
 ---
 ---
 
@@ -23,6 +23,7 @@ Some other links leading to the website, journal and other projects.
 
 ---
 ---
+
 ## **Prototypes**
 
 ---
