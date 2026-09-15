@@ -2,8 +2,6 @@
 
 ![banner](./public/images/pa.jpg)
 
-#
-
 ## **Reflective Journal Link**
 - *[Link to reflective journal](https://github.com/AlejandroBrnab/cart253/blob/main/ReflectiveJournal.md)* *:)*
 
