@@ -30,6 +30,7 @@ function draw() {
  */
 function drawPenguin() {
   drawLandscape();
+  drawArms();
   drawBody();
   drawHead();
   drawEyes();
@@ -45,13 +46,39 @@ function drawBody() {
   // Penguin's black body
   push();
   fill("black");
-  ellipse(200, 280, 180, 220);
+  ellipse(200, 275, 180, 220);
   pop();
 
   // Penguin's white belly
   push();
   fill("white");
-  ellipse(200, 290, 120, 170);
+  ellipse(200, 285, 120, 170);
+  pop();
+}
+
+/**
+ * Draws the penguin's arms
+ */
+function drawArms(){
+
+  // left arm
+  push();
+  fill("black");
+  // had to add this so it doesn't weirdly (this makes it rotate around the point in the translate function)
+  translate(110, 260);
+  angleMode(DEGREES);
+  rotate(-60);
+  ellipse(0, 0, 80, 40);
+  pop();
+
+  // right arm
+  push();
+  fill("black");
+  // had to add this so it doesn't weirdly (this makes it rotate around the point in the translate function)
+  translate(290, 260);
+  angleMode(DEGREES);
+  rotate(60);
+  ellipse(0, 0, 80, 40);
   pop();
 }
 
@@ -63,13 +90,13 @@ function drawHead() {
   // Penguin's head
   push();
   fill("black");
-  circle(200, 150, 160);
+  circle(200, 145, 160);
   pop();
 
   // Penguin's face
   push();
   fill("white");
-  ellipse(200, 165, 120, 100);
+  ellipse(200, 150, 120, 100);
   pop();
 }
 
@@ -81,13 +108,13 @@ function drawEyes() {
   // Left eye
   push();
   fill("black");
-  circle(175, 145, 20);
+  circle(175, 140, 20);
   pop();
 
   // Right eye
   push();
   fill("black");
-  circle(225, 145, 20);
+  circle(225, 140, 20);
   pop();
 }
 
@@ -98,7 +125,7 @@ function drawBeak() {
 
   push();
   fill("orange");
-  triangle(185, 165, 215, 165, 200, 190);
+  triangle(185, 160, 210, 160, 200, 190);
   pop();
 }
 
@@ -111,10 +138,10 @@ function drawFeet() {
   fill("orange");
 
   // Left foot
-  ellipse(155, 390, 80, 30);
+  ellipse(155, 385, 80, 30);
 
   // Right foot
-  ellipse(245, 390, 80, 30);
+  ellipse(245, 385, 80, 30);
 
   pop();
 }
@@ -124,7 +151,7 @@ function drawFeet() {
  */
 function drawLandscape() {
 
-  // Ground
+  // Ground (snow)
   push();
   fill("white");
   rect(0, 350, 400, 50);
