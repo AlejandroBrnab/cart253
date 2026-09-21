@@ -1,9 +1,9 @@
 /**
- * Minion
- * Names:
- * Agustin, Chloe, Alejandro
+ * A penguin
+ * Name:
+ * Alejandro
  *
- * It is a minion.
+ * It is a penguin.
  */
 
 /**
@@ -14,127 +14,125 @@ function setup() {
 }
 
 /**
- * Draws the minion
+ * Draws the penguin
  */
 function draw() {
-  // Pink background
   background("lightblue");
-  
+
   // No stroke everywhere!
   noStroke();
-  
-  drawMinion();
+
+  drawPenguin();
 }
 
 /**
- * Draws the minion using functions
+ * Draws the penguin using functions
  */
-function drawMinion() {
-    drawLandscape();
-    drawHair();
-    drawHead();
-    drawEyes();
-    drawMouth();
-    drawClothes();
+function drawPenguin() {
+  drawLandscape();
+  drawBody();
+  drawHead();
+  drawEyes();
+  drawBeak();
+  drawFeet();
 }
 
 /**
- * Draws the minion's head (including its eyes, goggles and hair)
+ * Draws the penguin's body
  */
-function drawHead() {
-  
-  // Minion head
+function drawBody() {
 
-  push();
-  fill("#FCE029");
-  circle(200, 200, 250);
-  
-  // Minion body
-
-  fill("#FCE029");
-  rect(75, 200, 250, 200);
-  pop();
-}
-
-/**
- * Draws the minion's eye
- */
-function drawEyes() {
-     // Goggle's band
+  // Penguin's black body
   push();
   fill("black");
-  rect(70, 170, 260, 40);
-  pop();
-    // Goggles
-  push();
-  fill("#97978f");
-  ellipse(200, 200, 160);
-  pop();
-    // Eye
-  push();
-  fill(255);
-  ellipse(200, 200, 120);
-  fill(0);
-  ellipse(200, 200, 50);
+  ellipse(200, 280, 180, 220);
   pop();
 
-}
-
-/**
- * Draws the Minion's mouth
- */
-function drawMouth() {
-// Draw the mouth
+  // Penguin's white belly
   push();
-  strokeWeight(7);
-  stroke(0, 20, 0);
-  noFill();
-  angleMode(DEGREES);
-  arc(200, 150, 200, 340, 65, 115);
+  fill("white");
+  ellipse(200, 290, 120, 170);
   pop();
 }
 
 /**
- * Draws the Minion's hair
+ * Draws the penguin's head
  */
-function drawHair() {
-    push();
-    stroke('black');
-    strokeWeight(5);
-    line(200, 150, 150, 55);
-    line(200, 150, 200, 40);
-    line(200, 150, 250, 55);
-    pop();
-}
+function drawHead() {
 
-/**
- * Draws the minion's clothes
- */
-function drawClothes() {
-  // Minion's clothes
+  // Penguin's head
   push();
-  fill("#0A75BC");
-  rect(75, 350, 250, 50);
+  fill("black");
+  circle(200, 150, 160);
+  pop();
+
+  // Penguin's face
+  push();
+  fill("white");
+  ellipse(200, 165, 120, 100);
   pop();
 }
 
 /**
- * Draw the mountains and sun
+ * Draws the penguin's eyes
  */
+function drawEyes() {
 
+  // Left eye
+  push();
+  fill("black");
+  circle(175, 145, 20);
+  pop();
+
+  // Right eye
+  push();
+  fill("black");
+  circle(225, 145, 20);
+  pop();
+}
+
+/**
+ * Draws the penguin's beak
+ */
+function drawBeak() {
+
+  push();
+  fill("orange");
+  triangle(185, 165, 215, 165, 200, 190);
+  pop();
+}
+
+/**
+ * Draws the penguin's feet
+ */
+function drawFeet() {
+
+  push();
+  fill("orange");
+
+  // Left foot
+  ellipse(155, 390, 80, 30);
+
+  // Right foot
+  ellipse(245, 390, 80, 30);
+
+  pop();
+}
+
+/**
+ * Draws the landscape
+ */
 function drawLandscape() {
-    //mountains
-    push();
-    fill("brown");
-    rect(55, 300, 50, 100);
-    pop();
-    push();
-    fill("green");
-    triangle(0, 315, 100, 20, 200, 315);
-    pop();
 
-    //sun
-    push();
-    fill("yellow");
-    circle(400, 15, 250);
+  // Ground
+  push();
+  fill("white");
+  rect(0, 350, 400, 50);
+  pop();
+
+  // Sun
+  push();
+  fill("yellow");
+  circle(400, 15, 250);
+  pop();
 }
