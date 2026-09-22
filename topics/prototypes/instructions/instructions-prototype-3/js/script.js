@@ -119,6 +119,6 @@ function drawCylinderFigure(){
   colorMode(HSL);
   noStroke();
   fill(67, 100, 50);
-  cylinder(25, 80, 24, 1, false, false); //different parameters of the object. False removes the top and bottom
+  cylinder(95, 50, 24, 1, false, false); //different parameters of the object. False removes the top and bottom
   pop();
 }
