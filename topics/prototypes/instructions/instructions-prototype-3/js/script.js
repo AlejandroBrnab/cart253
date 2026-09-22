@@ -60,7 +60,7 @@ function drawCubeFigure(){
   pop();
 }
 
-//Draws the sphere figure
+//Draws the sphere figure and it has the logic of the movement
 function drawSphereFigure(){
   // Move sphere
   sphereX += sphereSpeedX;
@@ -82,17 +82,22 @@ function drawSphereFigure(){
   pop();
 }
 
-//Draws the cone figure
+//Draws the cone figure and and it has the logic of the movement + changing its size
 function drawConeFigure(){
   push();
   translate(-100, 100, 40);
   rotateZ(frameCount * 0.01);
   normalMaterial();
-  cone(30, 70); //different parameters of the object
+
+  let coneWidth = 30 + sin(frameCount * 0.03) * 200;
+  let coneHeight = 70 + sin(frameCount * 0.02) * 300;
+  normalMaterial();
+  cone(coneWidth, coneHeight);
+
   pop();
 }
 
-//Draws the cylinder figure
+//Draws the cylinder figure and it has the logic of the movement
 function drawCylinderFigure(){
   // Move cylinder
   cylinderX += cylinderSpeedX;
