@@ -16,11 +16,11 @@ let sphereY = -60;
 let sphereSpeedX = 2;
 let sphereSpeedY = 1.5;
 
-// Cylinder
-let cylinderX = 100;
-let cylinderY = 100;
-let cylinderSpeedX = -2;
-let cylinderSpeedY = 1.5;
+// Cone
+let coneX = -100;
+let coneY = 100;
+let coneSpeedX = 2;
+let coneSpeedY = -1.5;
 
 /**
  * Creates the canvas
@@ -42,8 +42,8 @@ function draw() {
 //Draws the ring figure
 function drawRingFigure(){
   push();
-  rotateX(frameCount * 0.01);
-  rotateY(frameCount * 0.01);
+  rotateX(frameCount * 0.3);
+  rotateY(frameCount * 0.3);
   normalMaterial();
   torus(70, 20); //different parameters of the object
   pop();
@@ -51,6 +51,7 @@ function drawRingFigure(){
 
 //Draws the cube figure
 function drawCubeFigure(){
+
   push();
   translate(-120, -80, 0); //moving the object
   rotateX(frameCount * 0.02);
@@ -84,9 +85,22 @@ function drawSphereFigure(){
 
 //Draws the cone figure and and it has the logic of the movement + changing its size
 function drawConeFigure(){
+   // Move cone
+  coneX += coneSpeedX;
+  coneY += coneSpeedY;
+
+  // Bounce cone
+  if (coneX > 150 || coneX < -150) {
+    coneSpeedX *= -1;
+  }
+
+  if (coneY > 150 || coneY < -150) {
+    coneSpeedY *= -1;
+  }
+
   push();
-  translate(-100, 100, 40);
-  rotateZ(frameCount * 0.01);
+  translate(coneX, coneY, 40);
+  rotateZ(frameCount * 0.09);
   normalMaterial();
 
   let coneWidth = 30 + sin(frameCount * 0.03) * 200;
@@ -97,25 +111,14 @@ function drawConeFigure(){
   pop();
 }
 
-//Draws the cylinder figure and it has the logic of the movement
+//Draws the cylinder figure
 function drawCylinderFigure(){
-  // Move cylinder
-  cylinderX += cylinderSpeedX;
-  cylinderY += cylinderSpeedY;
-
-  // Bounce cylinder
-  if (cylinderX > 155 || cylinderX < -155) {
-    cylinderSpeedX *= -1;
-  }
-
-  if (cylinderY > 155 || cylinderY < -155) {
-    cylinderSpeedY *= -1;
-  }
-
   push();
-  translate(cylinderX, cylinderY, -30);
+  translate(100, 100, -30);
   rotateX(HALF_PI);
-  normalMaterial();
-  cylinder(25, 80); //different parameters of the object
+  colorMode(HSL);
+  noStroke();
+  fill(67, 100, 50);
+  cylinder(25, 80, 24, 1, false, false); //different parameters of the object. False removes the top and bottom
   pop();
 }
