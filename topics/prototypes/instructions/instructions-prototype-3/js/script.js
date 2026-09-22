@@ -7,6 +7,22 @@
  */
 
 /**
+ * Variables that will store position of X and Y for the before static objects
+ */
+
+// Sphere
+let sphereX = 120;
+let sphereY = -60;
+let sphereSpeedX = 2;
+let sphereSpeedY = 1.5;
+
+// Cylinder
+let cylinderX = 100;
+let cylinderY = 100;
+let cylinderSpeedX = -2;
+let cylinderSpeedY = 1.5;
+
+/**
  * Creates the canvas
  */
 function setup() {
@@ -21,7 +37,6 @@ function draw() {
   drawSphereFigure();
   drawConeFigure();
   drawCylinderFigure();
-
 }
 
 //Draws the ring figure
@@ -47,8 +62,21 @@ function drawCubeFigure(){
 
 //Draws the sphere figure
 function drawSphereFigure(){
+  // Move sphere
+  sphereX += sphereSpeedX;
+  sphereY += sphereSpeedY;
+
+  // Bounce sphere
+  if (sphereX > 165 || sphereX < -165) {
+    sphereSpeedX *= -1;
+  }
+
+  if (sphereY > 165 || sphereY < -165) {
+    sphereSpeedY *= -1;
+  }
+
   push();
-  translate(120, -60, 30);
+  translate(sphereX, sphereY, 30);
   normalMaterial();
   sphere(35); //for all parameters
   pop();
@@ -66,8 +94,21 @@ function drawConeFigure(){
 
 //Draws the cylinder figure
 function drawCylinderFigure(){
+  // Move cylinder
+  cylinderX += cylinderSpeedX;
+  cylinderY += cylinderSpeedY;
+
+  // Bounce cylinder
+  if (cylinderX > 155 || cylinderX < -155) {
+    cylinderSpeedX *= -1;
+  }
+
+  if (cylinderY > 155 || cylinderY < -155) {
+    cylinderSpeedY *= -1;
+  }
+
   push();
-  translate(100, 100, -30);
+  translate(cylinderX, cylinderY, -30);
   rotateX(HALF_PI);
   normalMaterial();
   cylinder(25, 80); //different parameters of the object
