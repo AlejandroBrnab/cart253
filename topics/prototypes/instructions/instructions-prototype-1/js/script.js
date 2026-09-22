@@ -1,5 +1,5 @@
 /**
- * A penguin
+ * A penguin prototype
  * Name:
  * Alejandro
  *
@@ -61,20 +61,20 @@ function drawBody() {
  */
 function drawArms(){
 
-  // left arm
+  // Left arm
   push();
   fill("black");
-  // had to add this so it doesn't weirdly (this makes it rotate around the point in the translate function)
+  // Had to add this so it doesn't weirdly (this makes it rotate around the point in the translate function)
   translate(110, 260);
   angleMode(DEGREES);
   rotate(-60);
   ellipse(0, 0, 80, 40);
   pop();
 
-  // right arm
+  // Right arm
   push();
   fill("black");
-  // had to add this so it doesn't weirdly (this makes it rotate around the point in the translate function)
+  // Had to add this so it doesn't weirdly (this makes it rotate around the point in the translate function)
   translate(290, 260);
   angleMode(DEGREES);
   rotate(60);
