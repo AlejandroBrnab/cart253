@@ -15,17 +15,20 @@ Some other links leading to other stuff.
 - *[Link to see the website](https://alejandrobrnab.github.io/cart253/)* *:D*
 
 ## **Prototypes**
-### Prototype 1:
-- *[Penguin prototype](https://alejandrobrnab.github.io/cart253/topics/prototypes/instructions/instructions-prototype-1/index.html)*
+### Penguin Prototype:
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/instructions/instructions-prototype-1/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/instructions/instructions-prototype-1)*
 
 ![screenshot](./public/images/penguin.png)
 
-### Prototype 2:
-- *[Abstract prototype](https://alejandrobrnab.github.io/cart253/topics/prototypes/instructions/instructions-prototype-2/index.html)*
+### Abstract Prototype:
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/instructions/instructions-prototype-2/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/instructions/instructions-prototype-2)*
 
 ![screenshot](./public/images/abstract.png)
 
-### Prototype 3:
-- *[Random prototype](https://alejandrobrnab.github.io/cart253/topics/prototypes/instructions/instructions-prototype-3/index.html)*
+### weIrD Prototype:
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/instructions/instructions-prototype-3/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/instructions/instructions-prototype-3)*
 
 ![screenshot](./public/images/proto3.png)
