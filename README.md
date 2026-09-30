@@ -32,3 +32,9 @@ Some other links leading to other stuff.
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/instructions/instructions-prototype-3)*
 
 ![screenshot](./public/images/proto3.png)
+
+### Placeholder1
+
+### Placeholder2
+
+### Placeholder3
