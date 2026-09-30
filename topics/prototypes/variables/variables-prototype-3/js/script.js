@@ -21,6 +21,7 @@ let circleSize = 40;
 let isRepelling = false;
 let repelSpeed = 10;
 let repelTime = 0;
+let showOuch = false;
 
 function setup() {
   createCanvas(400, 400);
@@ -35,6 +36,7 @@ function draw() {
   makeMagnet();
   makeSecondMagnet();
 
+  makeOuchText();
   makeMouseTarget();
 }
 
@@ -78,6 +80,7 @@ function moveMagnets() {
     if (repelTime > 60) {
       isRepelling = false;
       repelTime = 0;
+      showOuch = false;
     }
   }
 
@@ -103,6 +106,9 @@ function checkCollision() {
   if (distanceBetweenMagnets < circleSize && !isRepelling) {
     isRepelling = true;
     repelTime = 0;
+
+    // Show "OUCH!"
+    showOuch = true;
   }
 }
 
@@ -137,4 +143,20 @@ function makeMouseTarget() {
   noStroke();
 
   ellipse(mouseX, mouseY, 10);
+}
+
+/**
+ * When they collide they say ouch
+ */
+function makeOuchText() {
+
+  if (showOuch) {
+
+    fill(0);
+    noStroke();
+    textSize(24);
+    textAlign(CENTER);
+
+    text("OUCH!", (circleX + circle2X) / 2, (circleY + circle2Y) / 2 - 30);
+  }
 }
