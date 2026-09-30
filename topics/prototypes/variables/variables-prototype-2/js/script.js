@@ -3,12 +3,16 @@
  * Name:
  * Alejandro
  *
- * The eye follows the mouse and blinks when clicked.
+ * The eyes follow the mouse and blink when clicked.
  */
 
 // Pupil variables
-let pupilX = 200;
-let pupilY = 200;
+let leftPupilX = 150;
+let leftPupilY = 200;
+
+let rightPupilX = 350;
+let rightPupilY = 200;
+
 let pupilSize = 30;
 
 // Eye variables
@@ -16,21 +20,26 @@ let eyeClosed = false;
 
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(550, 450);
 }
 
 
 function draw() {
   background(220);
-  makeEye();
-  makePupil();
+
+  makeLeftEye();
+  makeLeftPupil();
+
+  makeRightEye();
+  makeRightPupil();
 
 }
 
+
 /**
- * Creates the eye.
+ * Creates the left eye.
  */
-function makeEye() {
+function makeLeftEye() {
 
   // Draws a line when the eye is closed
   if (eyeClosed) {
@@ -38,7 +47,7 @@ function makeEye() {
     stroke(0);
     strokeWeight(3);
 
-    line(75, 200, 325, 200);
+    line(50, 200, 250, 200);
 
   } else {
 
@@ -47,44 +56,94 @@ function makeEye() {
     stroke(0);
     strokeWeight(3);
 
-    ellipse(200, 200, 250, 150);
+    ellipse(150, 200, 200, 150);
   }
 }
 
 
 /**
- * Makes the pupil follow the mouse.
+ * Makes the left pupil follow the mouse.
  */
-function makePupil() {
+function makeLeftPupil() {
 
   // Pupil won't appear when the eye is closed
   if (!eyeClosed) {
 
     // Pupil follows mouse
-    pupilX = mouseX;
-    pupilY = mouseY;
+    leftPupilX = mouseX;
+    leftPupilY = mouseY;
 
     // Keep pupil inside the eye
-    pupilX = constrain(pupilX, 130, 270);
-    pupilY = constrain(pupilY, 165, 235);
+    leftPupilX = constrain(leftPupilX, 100, 200);
+    leftPupilY = constrain(leftPupilY, 165, 235);
 
     // Pupil
     fill(0);
     noStroke();
 
-    ellipse(pupilX, pupilY, pupilSize);
+    ellipse(leftPupilX, leftPupilY, pupilSize);
   }
 }
 
 
 /**
- * Makes the eye blink when clicked.
+ * Creates the right eye.
+ */
+function makeRightEye() {
+
+  // Draws a line when the eye is closed
+  if (eyeClosed) {
+
+    stroke(0);
+    strokeWeight(3);
+
+    line(300, 200, 500, 200);
+
+  } else {
+
+    // Open eye
+    fill(255);
+    stroke(0);
+    strokeWeight(3);
+
+    ellipse(350, 200, 200, 150);
+  }
+}
+
+
+/**
+ * Makes the right pupil follow the mouse.
+ */
+function makeRightPupil() {
+
+  // Pupil won't appear when the eye is closed
+  if (!eyeClosed) {
+
+    // Pupil follows mouse
+    rightPupilX = mouseX;
+    rightPupilY = mouseY;
+
+    // Keep pupil inside the eye
+    rightPupilX = constrain(rightPupilX, 300, 400);
+    rightPupilY = constrain(rightPupilY, 165, 235);
+
+    // Pupil
+    fill(0);
+    noStroke();
+
+    ellipse(rightPupilX, rightPupilY, pupilSize);
+  }
+}
+
+
+/**
+ * Makes both eyes blink when clicked.
  */
 function mousePressed() {
 
   eyeClosed = true;
 
-  // Open the eye again
+  // Open the eyes again
   setTimeout(function() {
 
     eyeClosed = false;
