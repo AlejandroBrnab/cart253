@@ -3,15 +3,24 @@
  * Name:
  * Alejandro
  *
- * The magnet follows the mouse.
+ * The magnets follow the mouse. When they collide, they repel each other. Follow mouse again after that
  */
 
-// Magnet variables
+// First magnet variables
 let circleX = 100;
 let circleY = 100;
 
-let speed = 0.02;
+// Second magnet variables
+let circle2X = 300;
+let circle2Y = 300;
+
+let speed = 0.01;
 let circleSize = 40;
+
+// Repulsion variables
+let isRepelling = false;
+let repelSpeed = 10;
+let repelTime = 0;
 
 function setup() {
   createCanvas(400, 400);
@@ -20,27 +29,85 @@ function setup() {
 function draw() {
   background(220);
 
-  moveMagnet();
+  moveMagnets();
+  checkCollision();
+
   makeMagnet();
+  makeSecondMagnet();
 
   makeMouseTarget();
 }
 
 /**
- * Makes the magnet move toward the mouse.
+ * Makes the magnets move toward the mouse.
  */
-function moveMagnet() {
+function moveMagnets() {
 
-  circleX += (mouseX - circleX) * speed;
-  circleY += (mouseY - circleY) * speed;
+  if (!isRepelling) {
 
-  // Keep the magnet inside the canvas
+    // First magnet follows mouse
+    circleX += (mouseX - circleX) * speed;
+    circleY += (mouseY - circleY) * speed;
+
+    // Second magnet follows mouse
+    circle2X += (mouseX - circle2X) * speed;
+    circle2Y += (mouseY - circle2Y) * speed;
+
+  } else {
+
+    // Magnets repel each other
+    if (circleX < circle2X) {
+      circleX -= repelSpeed;
+      circle2X += repelSpeed;
+    } else {
+      circleX += repelSpeed;
+      circle2X -= repelSpeed;
+    }
+
+    if (circleY < circle2Y) {
+      circleY -= repelSpeed;
+      circle2Y += repelSpeed;
+    } else {
+      circleY += repelSpeed;
+      circle2Y -= repelSpeed;
+    }
+
+    // Count how long they have been repelling
+    repelTime++;
+
+    if (repelTime > 60) {
+      isRepelling = false;
+      repelTime = 0;
+    }
+  }
+
+  // Keep first magnet inside canvas
   circleX = constrain(circleX, circleSize / 2, width - circleSize / 2);
+
   circleY = constrain(circleY, circleSize / 2, height - circleSize / 2);
+
+  // Keep second magnet inside canvas
+  circle2X = constrain(circle2X, circleSize / 2, width - circleSize / 2);
+
+  circle2Y = constrain(circle2Y, circleSize / 2, height - circleSize / 2);
 }
 
 /**
- * Creates the magnet.
+ * Checks if the two magnets collide.
+ */
+function checkCollision() {
+
+  //dist calculate distance between two points
+  let distanceBetweenMagnets = dist(circleX, circleY, circle2X, circle2Y);
+
+  if (distanceBetweenMagnets < circleSize && !isRepelling) {
+    isRepelling = true;
+    repelTime = 0;
+  }
+}
+
+/**
+ * Creates the first magnet.
  */
 function makeMagnet() {
 
@@ -48,6 +115,17 @@ function makeMagnet() {
   noStroke();
 
   ellipse(circleX, circleY, circleSize);
+}
+
+/**
+ * Creates the second magnet.
+ */
+function makeSecondMagnet() {
+
+  fill(200, 50, 50);
+  noStroke();
+
+  ellipse(circle2X, circle2Y, circleSize);
 }
 
 /**
@@ -59,4 +137,4 @@ function makeMouseTarget() {
   noStroke();
 
   ellipse(mouseX, mouseY, 10);
-} 
+}
