@@ -24,7 +24,6 @@ function draw() {
   makeMagnet();
 
   makeMouseTarget();
-
 }
 
 /**
@@ -35,6 +34,9 @@ function moveMagnet() {
   circleX += (mouseX - circleX) * speed;
   circleY += (mouseY - circleY) * speed;
 
+  // Keep the magnet inside the canvas
+  circleX = constrain(circleX, circleSize / 2, width - circleSize / 2);
+  circleY = constrain(circleY, circleSize / 2, height - circleSize / 2);
 }
 
 /**
@@ -46,7 +48,6 @@ function makeMagnet() {
   noStroke();
 
   ellipse(circleX, circleY, circleSize);
-
 }
 
 /**
@@ -58,5 +59,4 @@ function makeMouseTarget() {
   noStroke();
 
   ellipse(mouseX, mouseY, 10);
-
-}
+} 
