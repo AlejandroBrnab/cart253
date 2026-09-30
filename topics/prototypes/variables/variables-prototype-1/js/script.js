@@ -4,7 +4,6 @@
  * Alejandro
  *
  * Time goes on and the candle dies.
- * At the same time, night turns into day.
  */
 
 // Candle variables
@@ -24,28 +23,23 @@ let moonY = 100;
 let sunX = 320;
 let sunY = 100;
 
-
 function setup() {
   createCanvas(400, 400);
 }
 
-
 function draw() {
-
   changeDayToNight();
   makeMoon();
   makeSun();
   makeCandle();
-
 }
-
 
 /**
  * Changes the background from black to white.
  */
 function changeDayToNight() {
 
-  // Background changes from black to white
+  // Background changes from black to white (white means day in this context)
   background(backgroundBrightness);
 
   // Increase brightness over time
@@ -54,10 +48,8 @@ function changeDayToNight() {
   }
 }
 
-
 /**
- * Creates the moon and makes it move away
- * as the day arrives.
+ * Creates the moon and makes it move away when the sun comes out.
  */
 function makeMoon() {
 
@@ -75,10 +67,8 @@ function makeMoon() {
   ellipse(moonX, moonY, 50, 50);
 }
 
-
 /**
- * Creates the sun and makes it appear
- * as the day arrives.
+ * Creates the sun and makes it appear as the day arrives.
  */
 function makeSun() {
 
@@ -87,7 +77,7 @@ function makeSun() {
     sunX -= 0.3;
   }
 
-  // Sun becomes more visible as the day arrives
+  // Sun becomes more visible as the day  (it ends up being fully yellow)
   let sunBrightness = backgroundBrightness;
 
   fill(255, 200, 0, sunBrightness);
@@ -95,7 +85,6 @@ function makeSun() {
 
   ellipse(sunX, sunY, 60, 60);
 }
-
 
 /**
  * Creates the candle and makes it melt.
@@ -120,12 +109,14 @@ function makeCandle() {
   stroke(0);
   strokeWeight(3);
 
-  line(candleX, candleY - candleHeight, candleX, candleY - candleHeight - 15
-  );
+  line(candleX, candleY - candleHeight, candleX, candleY - candleHeight - 15);
 
-  // Flame
-  noStroke();
-  fill(255, 150, 0);
+  // Flame (durign the day it will dissapear)
+  if (backgroundBrightness < 150) {
 
-  ellipse( candleX, candleY - candleHeight - 30, flameSize, flameSize * 1.5);
+    noStroke();
+    fill(255, 150, 0);
+
+    ellipse(candleX, candleY - candleHeight - 30, flameSize, flameSize * 1.5);
+  }
 }
