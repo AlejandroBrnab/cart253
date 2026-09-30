@@ -95,7 +95,7 @@ function makeCandle() {
   let candleY = 380;
 
   // Candle melts over time
-  if (candleHeight > 30) {
+  if (candleHeight > 10) {
     candleHeight -= meltSpeed;
   }
 
