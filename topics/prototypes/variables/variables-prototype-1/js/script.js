@@ -92,7 +92,7 @@ function makeSun() {
 function makeCandle() {
 
   let candleX = 200;
-  let candleY = 300;
+  let candleY = 380;
 
   // Candle melts over time
   if (candleHeight > 30) {
