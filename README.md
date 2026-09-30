@@ -45,6 +45,8 @@ Some other links leading to other stuff.
 
 ![screenshot](./public/images/eyes.png)
 
-### Placeholder3
+### Magnets Prototype
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/variables/variables-prototype-3/index.html)*
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/variables/variables-prototype-3)*
+
+![screenshot](./public/images/magnets.png)
