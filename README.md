@@ -4,7 +4,7 @@
 
 ## **Reflective Journal Link**
 - *[Link to reflective journal](https://github.com/AlejandroBrnab/cart253/blob/main/ReflectiveJournal.md)* *:)*
-- *[Link to reflective journal for latest assignment](https://github.com/AlejandroBrnab/cart253/blob/main/ReflectiveJournal.md#2026-09-23)*
+- *[Link to reflective journal for latest assignment](https://github.com/AlejandroBrnab/cart253/blob/main/ReflectiveJournal.md#2026-09-30)*
 
 # **Description**
 This is a coursework repo. More projects/prototypes will be added to this website (as links leading to those projects) and this website may change even more in the future.
