@@ -3,7 +3,7 @@
  * Name:
  * Alejandro
  *
- * The eyes follow the mouse and blink when clicked.
+ * The eyes follow the mouse and blink when clicked. It gets mad after 6 clicks
  */
 
 // Pupil variables
@@ -18,11 +18,12 @@ let pupilSize = 30;
 // Eye variables
 let eyeClosed = false;
 
+// variable to make the eyes angry
+let clickCount = 0;
 
 function setup() {
   createCanvas(550, 450);
 }
-
 
 function draw() {
   background(220);
@@ -35,13 +36,11 @@ function draw() {
 
 }
 
-
 /**
  * Creates the left eye.
  */
 function makeLeftEye() {
 
-  // Draws a line when the eye is closed
   if (eyeClosed) {
 
     stroke(0);
@@ -49,17 +48,31 @@ function makeLeftEye() {
 
     line(50, 200, 250, 200);
 
-  } else {
+  } else if (clickCount >= 6) {
 
-    // Open eye
+    // Angry left eye
     fill(255);
     stroke(0);
     strokeWeight(3);
 
     ellipse(150, 200, 200, 150);
+
+    // Angry eyebrow
+    line(70, 110, 220, 125);
+
+  } else {
+
+    // Normal left eye
+    fill(255);
+    stroke(0);
+    strokeWeight(3);
+
+    ellipse(150, 200, 200, 150);
+
+    // Normal eyebrow
+    line(70, 105, 220, 105);
   }
 }
-
 
 /**
  * Makes the left pupil follow the mouse.
@@ -85,13 +98,11 @@ function makeLeftPupil() {
   }
 }
 
-
 /**
  * Creates the right eye.
  */
 function makeRightEye() {
 
-  // Draws a line when the eye is closed
   if (eyeClosed) {
 
     stroke(0);
@@ -99,17 +110,31 @@ function makeRightEye() {
 
     line(300, 200, 500, 200);
 
-  } else {
+  } else if (clickCount >= 6) {
 
-    // Open eye
+    // Angry right eye
     fill(255);
     stroke(0);
     strokeWeight(3);
 
     ellipse(350, 200, 200, 150);
+
+    // Angry eyebrow
+    line(280, 125, 430, 110);
+
+  } else {
+
+    // Normal right eye
+    fill(255);
+    stroke(0);
+    strokeWeight(3);
+
+    ellipse(350, 200, 200, 150);
+
+    // Normal eyebrow
+    line(280, 105, 430, 105);
   }
 }
-
 
 /**
  * Makes the right pupil follow the mouse.
@@ -135,15 +160,15 @@ function makeRightPupil() {
   }
 }
 
-
 /**
  * Makes both eyes blink when clicked.
  */
 function mousePressed() {
 
+  clickCount++;
+
   eyeClosed = true;
 
-  // Open the eyes again
   setTimeout(function() {
 
     eyeClosed = false;

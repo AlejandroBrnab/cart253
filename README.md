@@ -33,8 +33,18 @@ Some other links leading to other stuff.
 
 ![screenshot](./public/images/proto3.png)
 
-### Placeholder1
+### Candle Prototype:
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/variables/variables-prototype-1/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/variables/variables-prototype-1)*
 
-### Placeholder2
+![screenshot](./public/images/candle.png)
+
+### Eyes Prototype:
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/variables/variables-prototype-2/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/variables/variables-prototype-2)*
+
+![screenshot](./public/images/eyes.png)
 
 ### Placeholder3
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/variables/variables-prototype-3/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/variables/variables-prototype-3)*
