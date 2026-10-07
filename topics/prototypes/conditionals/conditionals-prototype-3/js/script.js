@@ -17,7 +17,7 @@ let fish = {
 };
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(500, 500);
 }
 
 function draw() {
@@ -123,8 +123,8 @@ function drawMessage() {
   textSize(18);
 
   if (fish.scared) {
-    text("Go away!", width / 2, 350);
+    text("Go away!", width / 2, 450);
   } else {
-    text("I'm just swimming...", width / 2, 350);
+    text("I'm just swimming...", width / 2, 450);
   }
 }
