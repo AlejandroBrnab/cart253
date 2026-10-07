@@ -52,19 +52,19 @@ Some other links leading to other stuff.
 ![screenshot](./public/images/magnets.png)
 
 ### Mystery Box Prototype
-- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/variables/conditionals-prototype-1/index.html)*
-- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/variables/conditionals-prototype-1)*
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/conditionals/conditionals-prototype-1/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/conditionals/conditionals-prototype-1)*
 
 ![screenshot](./public/images/box.png)
 
 ### Button Prototype
-- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/variables/conditionals-prototype-2/index.html)*
-- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/variables/conditionals-prototype-2)*
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/conditionals/conditionals-prototype-2/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/conditionals/conditionals-prototype-2)*
 
 ![screenshot](./public/images/button.png)
 
 ### Fish Prototype
-- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/variables/conditionals-prototype-3/index.html)*
-- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/variables/conditionals-prototype-3)*
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/conditionals/conditionals-prototype-3/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/conditionals/conditionals-prototype-3)*
 
 ![screenshot](./public/images/fishy.png)
