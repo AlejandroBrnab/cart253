@@ -4,7 +4,7 @@
 
 ## **Reflective Journal Link**
 - *[Link to reflective journal](https://github.com/AlejandroBrnab/cart253/blob/main/ReflectiveJournal.md)* *:)*
-- *[Link to reflective journal for latest assignment](https://github.com/AlejandroBrnab/cart253/blob/main/ReflectiveJournal.md#2026-09-30)*
+- *[Link to reflective journal for latest assignment](https://github.com/AlejandroBrnab/cart253/blob/main/ReflectiveJournal.md#2026-10-07)*
 
 # **Description**
 This is a coursework repo. More projects/prototypes will be added to this website (as links leading to those projects) and this website may change even more in the future.
@@ -50,3 +50,21 @@ Some other links leading to other stuff.
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/variables/variables-prototype-3)*
 
 ![screenshot](./public/images/magnets.png)
+
+### Mystery Box Prototype
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/variables/conditionals-prototype-1/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/variables/conditionals-prototype-1)*
+
+<!-- ![screenshot](./public/images/magnets.png) -->
+
+### Button Prototype
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/variables/conditionals-prototype-2/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/variables/conditionals-prototype-2)*
+
+<!-- ![screenshot](./public/images/magnets.png) -->
+
+### Fish Prototype
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/variables/conditionals-prototype-3/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/variables/conditionals-prototype-3)*
+
+<!-- ![screenshot](./public/images/magnets.png) -->
