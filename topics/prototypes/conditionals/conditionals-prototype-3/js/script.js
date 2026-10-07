@@ -26,8 +26,8 @@ function draw() {
   background(180, 220, 240);
 
   updateFish();
+  drawThoughts();
   drawFish();
-  drawMessage();
 }
 
 /**
@@ -125,16 +125,21 @@ function drawEye() {
 }
 
 /**
- * Displays a message depending on the fish's feelings.
+ * Displays fish's thoughts depending on its feelings.
  */
-function drawMessage() {
-  fill(0);
+function drawThoughts() {
   textAlign(CENTER);
-  textSize(18);
+  textSize(50);
+
+  // Colour for the phrase
+  fill(255, 255, 255, 180);
+
+  // Makes the text gently move like water
+  let wave = sin(frameCount * 0.02) * 10;
 
   if (fish.scared) {
-    text("Go away!", width / 2, 450);
+    text("GO AWAY PLEASE", width / 2, 150 + wave);
   } else {
-    text("I'm just swimming...", width / 2, 450);
+    text("I'm just swimming...", width / 2, 150 + wave);
   }
 }
