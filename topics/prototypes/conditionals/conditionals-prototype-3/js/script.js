@@ -10,9 +10,10 @@
 let fish = {
   x: 200,
   y: 200,
-  size: 80, 
+  size: 80,
   speed: 3,
-  scared: false
+  scared: false,
+  direction: 1
 };
 
 function setup() {
@@ -31,18 +32,22 @@ function draw() {
  * Checks how close the mouse is to the fish.
  */
 function updateFish() {
-
   let distance = dist(mouseX, mouseY, fish.x, fish.y);
 
   if (distance < 100) {
-
     fish.scared = true;
 
     // Moves away from the mouse
     if (mouseX < fish.x) {
       fish.x += fish.speed;
+
+      // Fish faces right
+      fish.direction = 1;
     } else {
       fish.x -= fish.speed;
+
+      // Fish faces left
+      fish.direction = -1;
     }
 
     if (mouseY < fish.y) {
@@ -64,77 +69,62 @@ function updateFish() {
  * Draws the fish.
  */
 function drawFish() {
+  push();
+
+  // Moves the drawing to the fish's position
+  translate(fish.x, fish.y);
+
+  // Flips the fish when facing left
+  scale(fish.direction, 1);
 
   drawBody();
   drawTail();
   drawEye();
+
+  pop();
 }
 
 /**
  * Draws the fish body.
  */
 function drawBody() {
-
   fill(255, 150, 100);
   stroke(0);
   strokeWeight(2);
 
-  ellipse(
-    fish.x,
-    fish.y,
-    fish.size,
-    fish.size / 2
-  );
+  ellipse(0,0,fish.size,fish.size / 2);
 }
 
 /**
  * Draws the fish tail.
  */
 function drawTail() {
-
   fill(255, 150, 100);
 
-  triangle(
-    fish.x - fish.size / 2,
-    fish.y,
-    fish.x - fish.size / 2 - 30,
-    fish.y - 25,
-    fish.x - fish.size / 2 - 30,
-    fish.y + 25
-  );
+  triangle(-fish.size / 2, 0, -fish.size / 2 - 30, -25, -fish.size / 2 - 30, 25);
 }
 
 /**
  * Draws the fish eye.
  */
 function drawEye() {
-
   fill(0);
   noStroke();
 
-  ellipse(
-    fish.x + 25,
-    fish.y - 5,
-    8,
-    8
-  );
+  ellipse(25, -5, 8, 8);
 }
 
 /**
  * Displays a message depending on the fish's feelings.
  */
 function drawMessage() {
-
   fill(0);
   textAlign(CENTER);
   textSize(18);
 
   if (fish.scared) {
-
     text("Go away!", width / 2, 350);
-
   } else {
-
     text("I'm just swimming...", width / 2, 350);
   }
 }
