@@ -12,6 +12,8 @@ let fish = {
   y: 200,
   size: 80,
   speed: 3,
+  swimSpeed: 0.8,
+  swimDirection: 1,
   scared: false,
   direction: 1
 };
@@ -40,13 +42,9 @@ function updateFish() {
     // Moves away from the mouse
     if (mouseX < fish.x) {
       fish.x += fish.speed;
-
-      // Fish faces right
       fish.direction = 1;
     } else {
       fish.x -= fish.speed;
-
-      // Fish faces left
       fish.direction = -1;
     }
 
@@ -58,6 +56,21 @@ function updateFish() {
 
   } else {
     fish.scared = false;
+
+    // Normal swimming
+    fish.x += fish.swimSpeed * fish.swimDirection;
+
+    // Fish faces the direction it is swimming
+    fish.direction = fish.swimDirection;
+
+    // Turn around at the edges
+    if (fish.x > width - 50) {
+      fish.swimDirection = -1;
+    }
+
+    if (fish.x < 50) {
+      fish.swimDirection = 1;
+    }
   }
 
   // Keeps the fish inside the canvas
@@ -71,10 +84,7 @@ function updateFish() {
 function drawFish() {
   push();
 
-  // Moves the drawing to the fish's position
   translate(fish.x, fish.y);
-
-  // Flips the fish when facing left
   scale(fish.direction, 1);
 
   drawBody();
@@ -92,7 +102,7 @@ function drawBody() {
   stroke(0);
   strokeWeight(2);
 
-  ellipse(0,0,fish.size,fish.size / 2);
+  ellipse(0, 0, fish.size, fish.size / 2);
 }
 
 /**
@@ -101,7 +111,7 @@ function drawBody() {
 function drawTail() {
   fill(255, 150, 100);
 
-  triangle(-fish.size / 2, 0, -fish.size / 2 - 30, -25, -fish.size / 2 - 30, 25);
+  triangle(-fish.size / 2, 0, -fish.size / 2 - 30, -25, -fish.size / 2 - 30, 25 );
 }
 
 /**
