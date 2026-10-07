@@ -1,122 +1,84 @@
 /**
- * Candle Prototype
- * Name:
- * Alejandro
+ * Mystery Box Prototype
+ * Name: Alejandro
  *
- * Time goes on and the candle dies.
+ * Click the box to see what you can get from it.
  */
 
-// Candle variables
-let candleHeight = 150;
-let flameSize = 30;
-let meltSpeed = 0.2;
-
-// Time variables
-let backgroundBrightness = 0;
-let daySpeed = 0.2;
-
-// Moon variables
-let moonX = 80;
-let moonY = 100;
-
-// Sun variables
-let sunX = 320;
-let sunY = 100;
+// Box object
+let box = {
+  x: 125,
+  y: 150,
+  width: 150,
+  height: 120,
+  opened: false,
+  result: ""
+};
 
 function setup() {
   createCanvas(400, 400);
 }
 
 function draw() {
-  changeDayToNight();
-  makeMoon();
-  makeSun();
-  makeCandle();
+  background(220);
+
+  drawBox();
+  drawMessage();
 }
 
-/**
- * Changes the background from black to white.
- */
-function changeDayToNight() {
+// Draws the box
+function drawBox() {
+  fill(150, 90, 40);
+  rect(box.x, box.y, box.width, box.height);
 
-  // Background changes from black to white (white means day in this context)
-  background(backgroundBrightness);
+  // Ribbon of the box
+  fill(220, 180, 40);
+  rect(190, 150, 20, 120);
+  rect(125, 195, 150, 20);
+}
 
-  // Increase brightness over time
-  if (backgroundBrightness < 255) {
-    backgroundBrightness += daySpeed;
+// Draws a message below the box
+function drawMessage() {
+  fill(0);
+  textAlign(CENTER);
+  textSize(20);
+
+  if (box.opened) {
+    text(box.result, width / 2, 320);
+  } else {
+    text("Click the box!", width / 2, 320);
   }
 }
 
-/**
- * Creates the moon and makes it move away when the sun comes out.
- */
-function makeMoon() {
-
-  // Moon moves to the left
-  if (moonX > -50) {
-    moonX -= 0.3;
+// Checks if the box was clicked
+function mousePressed() {
+  if (isMouseOverBox()) {
+    openBox();
   }
-
-  // Moon becomes darker as the day arrives
-  let moonBrightness = 255 - backgroundBrightness;
-
-  fill(moonBrightness);
-  noStroke();
-
-  ellipse(moonX, moonY, 50, 50);
 }
 
-/**
- * Creates the sun and makes it appear as the day arrives.
- */
-function makeSun() {
-
-  // Sun moves to the left
-  if (sunX > 200) {
-    sunX -= 0.3;
-  }
-
-  // Sun becomes more visible as the day  (it ends up being fully yellow)
-  let sunBrightness = backgroundBrightness;
-
-  fill(255, 200, 0, sunBrightness);
-  noStroke();
-
-  ellipse(sunX, sunY, 60, 60);
+// Checks whether the mouse is inside the box
+function isMouseOverBox() {
+  // Basically the mouse needs to be strictly inside the box in order to open it
+  return (
+    mouseX > box.x &&
+    mouseX < box.x + box.width &&
+    mouseY > box.y &&
+    mouseY < box.y + box.height
+  );
 }
 
-/**
- * Creates the candle and makes it melt.
- */
-function makeCandle() {
+// Decides what is inside the box
+function openBox() {
+  let chance = random(100);
 
-  let candleX = 200;
-  let candleY = 380;
-
-  // Candle melts over time
-  if (candleHeight > 10) {
-    candleHeight -= meltSpeed;
+  if (chance < 60) {
+    box.result = "You found a coin!";
+  } else if (chance < 90) {
+    box.result = "Nothing... :(";
+  } else {
+    box.result = "A MONSTER?!";
   }
 
-  // Candle
-  fill(240);
-  noStroke();
-
-  rect(candleX - 30, candleY - candleHeight, 60, candleHeight);
-
-  // Wick
-  stroke(0);
-  strokeWeight(3);
-
-  line(candleX, candleY - candleHeight, candleX, candleY - candleHeight - 15);
-
-  // Flame (durign the day it will dissapear)
-  if (backgroundBrightness < 150) {
-
-    noStroke();
-    fill(255, 150, 0);
-
-    ellipse(candleX, candleY - candleHeight - 30, flameSize, flameSize * 1.5);
-  }
+  box.opened = true;
 }
