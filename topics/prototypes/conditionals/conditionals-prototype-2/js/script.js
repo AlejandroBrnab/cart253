@@ -1,177 +1,79 @@
 /**
- * Eye Prototype
- * Name:
- * Alejandro
+ * Red Button Prototype
+ * Name: Alejandro
  *
- * The eyes follow the mouse and blink when clicked. It gets mad after 6 clicks
+ * OHH A RED BUTTON :O
  */
 
-// Pupil variables
-let leftPupilX = 150;
-let leftPupilY = 200;
-
-let rightPupilX = 350;
-let rightPupilY = 200;
-
-let pupilSize = 30;
-
-// Eye variables
-let eyeClosed = false;
-
-// variable to make the eyes angry
-let clickCount = 0;
+// Button object
+let button = {
+  x: 200,
+  y: 200,
+  size: 150,
+  clicks: 0
+};
 
 function setup() {
-  createCanvas(550, 450);
+  createCanvas(400, 400);
 }
 
 function draw() {
   background(220);
 
-  makeLeftEye();
-  makeLeftPupil();
-
-  makeRightEye();
-  makeRightPupil();
-
+  drawButton();
+  drawMessage();
 }
 
-/**
- * Creates the left eye.
- */
-function makeLeftEye() {
+// Draws the red button
+function drawButton() {
+  fill(200, 0, 0);
+  ellipse(button.x, button.y, button.size, button.size);
 
-  if (eyeClosed) {
+  drawButtonText();
+}
 
-    stroke(0);
-    strokeWeight(3);
+// Draws text inside the button
+function drawButtonText() {
+  fill(255);
+  textAlign(CENTER);
+  textSize(20);
+  text("DO NOT PRESS", button.x, button.y + 5);
+}
 
-    line(50, 200, 250, 200);
+// Draws a message depending on the number of clicks
+function drawMessage() {
+  fill(0);
+  textAlign(CENTER);
+  textSize(18);
 
-  } else if (clickCount >= 6) {
-
-    // Angry left eye
-    fill(255);
-    stroke(0);
-    strokeWeight(3);
-
-    ellipse(150, 200, 200, 150);
-
-    // Angry eyebrow
-    line(70, 110, 220, 125);
-
+  if (button.clicks == 0) {
+    text("Whatever you do... don't press it.", 200, 320);
+  } else if (button.clicks == 1) {
+    text("I told you not to.", 200, 320);
+  } else if (button.clicks == 2) {
+    text("Why did you press it again?", 200, 320);
+  } else if (button.clicks == 3) {
+    text("STOP.", 200, 320);
   } else {
-
-    // Normal left eye
-    fill(255);
-    stroke(0);
-    strokeWeight(3);
-
-    ellipse(150, 200, 200, 150);
-
-    // Normal eyebrow
-    line(70, 105, 220, 105);
+    text("You really can't resist, can you?", 200, 320);
   }
 }
 
-/**
- * Makes the left pupil follow the mouse.
- */
-function makeLeftPupil() {
-
-  // Pupil won't appear when the eye is closed
-  if (!eyeClosed) {
-
-    // Pupil follows mouse
-    leftPupilX = mouseX;
-    leftPupilY = mouseY;
-
-    // Keep pupil inside the eye
-    leftPupilX = constrain(leftPupilX, 100, 200);
-    leftPupilY = constrain(leftPupilY, 165, 235);
-
-    // Pupil
-    fill(0);
-    noStroke();
-
-    ellipse(leftPupilX, leftPupilY, pupilSize);
-  }
-}
-
-/**
- * Creates the right eye.
- */
-function makeRightEye() {
-
-  if (eyeClosed) {
-
-    stroke(0);
-    strokeWeight(3);
-
-    line(300, 200, 500, 200);
-
-  } else if (clickCount >= 6) {
-
-    // Angry right eye
-    fill(255);
-    stroke(0);
-    strokeWeight(3);
-
-    ellipse(350, 200, 200, 150);
-
-    // Angry eyebrow
-    line(280, 125, 430, 110);
-
-  } else {
-
-    // Normal right eye
-    fill(255);
-    stroke(0);
-    strokeWeight(3);
-
-    ellipse(350, 200, 200, 150);
-
-    // Normal eyebrow
-    line(280, 105, 430, 105);
-  }
-}
-
-/**
- * Makes the right pupil follow the mouse.
- */
-function makeRightPupil() {
-
-  // Pupil won't appear when the eye is closed
-  if (!eyeClosed) {
-
-    // Pupil follows mouse
-    rightPupilX = mouseX;
-    rightPupilY = mouseY;
-
-    // Keep pupil inside the eye
-    rightPupilX = constrain(rightPupilX, 300, 400);
-    rightPupilY = constrain(rightPupilY, 165, 235);
-
-    // Pupil
-    fill(0);
-    noStroke();
-
-    ellipse(rightPupilX, rightPupilY, pupilSize);
-  }
-}
-
-/**
- * Makes both eyes blink when clicked.
- */
+// Checks whether the button was clicked
 function mousePressed() {
+  if (isMouseOverButton()) {
+    button.clicks++;
+  }
+}
 
-  clickCount++;
+// Checks if the mouse is inside the button
+function isMouseOverButton() {
+  let distance = dist(
+    mouseX,
+    mouseY,
+    button.x,
+    button.y
+  );
 
-  eyeClosed = true;
-
-  setTimeout(function() {
-
-    eyeClosed = false;
-
-  }, 200);
+  return distance < button.size / 2;
 }
