@@ -45,9 +45,17 @@ function drawCounters() {
   textAlign(LEFT);
   textSize(16);
 
-  text("Coins: " + counters.coins, 15, 25);
-  text("Nothing: " + counters.nothing, 15, 45);
-  text("Monsters: " + counters.monsters, 15, 65);
+  if (counters.coins > 0) {
+    text("Coins: " + counters.coins, 15, 25);
+  }
+
+  if (counters.nothing > 0) {
+    text("Nothing: " + counters.nothing, 15, 45);
+  }
+
+  if (counters.monsters > 0) {
+    text("Monsters: " + counters.monsters, 15, 65);
+  }
 }
 
 /**
@@ -61,7 +69,6 @@ function updateBox() {
 
     // Stops the animation after the lid lifts
     if (box.lidY <= 90) {
-
       box.lidY = 90;
       box.opening = false;
       box.opened = true;
@@ -82,12 +89,7 @@ function drawBox() {
 
   // Ribbon on the box
   fill(220, 180, 40);
-  rect(
-    190,
-    box.y,
-    20,
-    box.height
-  );
+  rect(190, box.y, 20, box.height);
 
   // Horizontal ribbon
   rect(box.x, 195, box.width, 20);
