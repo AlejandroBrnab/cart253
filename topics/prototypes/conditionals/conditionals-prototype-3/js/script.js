@@ -1,162 +1,140 @@
 /**
- * Magnet Prototype
+ * Fish Prototype
  * Name:
  * Alejandro
  *
- * The magnets follow the mouse. When they collide, they repel each other. Follow mouse again after that
+ * The fish swims away from the mouse when it gets too close.
  */
 
-// First magnet variables
-let circleX = 100;
-let circleY = 100;
-
-// Second magnet variables
-let circle2X = 300;
-let circle2Y = 300;
-
-let speed = 0.01;
-let circleSize = 40;
-
-// Repulsion variables
-let isRepelling = false;
-let repelSpeed = 10;
-let repelTime = 0;
-let showOuch = false;
+// Fish object
+let fish = {
+  x: 200,
+  y: 200,
+  size: 80, 
+  speed: 3,
+  scared: false
+};
 
 function setup() {
   createCanvas(400, 400);
 }
 
 function draw() {
-  background(220);
+  background(180, 220, 240);
 
-  moveMagnets();
-  checkCollision();
-
-  makeMagnet();
-  makeSecondMagnet();
-
-  makeOuchText();
-  makeMouseTarget();
+  updateFish();
+  drawFish();
+  drawMessage();
 }
 
 /**
- * Makes the magnets move toward the mouse.
+ * Checks how close the mouse is to the fish.
  */
-function moveMagnets() {
+function updateFish() {
 
-  if (!isRepelling) {
+  let distance = dist(mouseX, mouseY, fish.x, fish.y);
 
-    // First magnet follows mouse
-    circleX += (mouseX - circleX) * speed;
-    circleY += (mouseY - circleY) * speed;
+  if (distance < 100) {
 
-    // Second magnet follows mouse
-    circle2X += (mouseX - circle2X) * speed;
-    circle2Y += (mouseY - circle2Y) * speed;
+    fish.scared = true;
+
+    // Moves away from the mouse
+    if (mouseX < fish.x) {
+      fish.x += fish.speed;
+    } else {
+      fish.x -= fish.speed;
+    }
+
+    if (mouseY < fish.y) {
+      fish.y += fish.speed;
+    } else {
+      fish.y -= fish.speed;
+    }
 
   } else {
-
-    // Magnets repel each other
-    if (circleX < circle2X) {
-      circleX -= repelSpeed;
-      circle2X += repelSpeed;
-    } else {
-      circleX += repelSpeed;
-      circle2X -= repelSpeed;
-    }
-
-    if (circleY < circle2Y) {
-      circleY -= repelSpeed;
-      circle2Y += repelSpeed;
-    } else {
-      circleY += repelSpeed;
-      circle2Y -= repelSpeed;
-    }
-
-    // Count how long they have been repelling
-    repelTime++;
-
-    if (repelTime > 60) {
-      isRepelling = false;
-      repelTime = 0;
-      showOuch = false;
-    }
+    fish.scared = false;
   }
 
-  // Keep first magnet inside canvas
-  circleX = constrain(circleX, circleSize / 2, width - circleSize / 2);
-
-  circleY = constrain(circleY, circleSize / 2, height - circleSize / 2);
-
-  // Keep second magnet inside canvas
-  circle2X = constrain(circle2X, circleSize / 2, width - circleSize / 2);
-
-  circle2Y = constrain(circle2Y, circleSize / 2, height - circleSize / 2);
+  // Keeps the fish inside the canvas
+  fish.x = constrain(fish.x, 50, width - 50);
+  fish.y = constrain(fish.y, 40, height - 40);
 }
 
 /**
- * Checks if the two magnets collide.
+ * Draws the fish.
  */
-function checkCollision() {
+function drawFish() {
 
-  //dist calculate distance between two points
-  let distanceBetweenMagnets = dist(circleX, circleY, circle2X, circle2Y);
-
-  if (distanceBetweenMagnets < circleSize && !isRepelling) {
-    isRepelling = true;
-    repelTime = 0;
-
-    // Show "OUCH!"
-    showOuch = true;
-  }
+  drawBody();
+  drawTail();
+  drawEye();
 }
 
 /**
- * Creates the first magnet.
+ * Draws the fish body.
  */
-function makeMagnet() {
+function drawBody() {
 
-  fill(50, 100, 200);
-  noStroke();
+  fill(255, 150, 100);
+  stroke(0);
+  strokeWeight(2);
 
-  ellipse(circleX, circleY, circleSize);
+  ellipse(
+    fish.x,
+    fish.y,
+    fish.size,
+    fish.size / 2
+  );
 }
 
 /**
- * Creates the second magnet.
+ * Draws the fish tail.
  */
-function makeSecondMagnet() {
+function drawTail() {
 
-  fill(200, 50, 50);
-  noStroke();
+  fill(255, 150, 100);
 
-  ellipse(circle2X, circle2Y, circleSize);
+  triangle(
+    fish.x - fish.size / 2,
+    fish.y,
+    fish.x - fish.size / 2 - 30,
+    fish.y - 25,
+    fish.x - fish.size / 2 - 30,
+    fish.y + 25
+  );
 }
 
 /**
- * Creates the mouse target.
+ * Draws the fish eye.
  */
-function makeMouseTarget() {
+function drawEye() {
 
   fill(0);
   noStroke();
 
-  ellipse(mouseX, mouseY, 10);
+  ellipse(
+    fish.x + 25,
+    fish.y - 5,
+    8,
+    8
+  );
 }
 
 /**
- * When they collide they say ouch
+ * Displays a message depending on the fish's feelings.
  */
-function makeOuchText() {
+function drawMessage() {
 
-  if (showOuch) {
+  fill(0);
+  textAlign(CENTER);
+  textSize(18);
 
-    fill(0);
-    noStroke();
-    textSize(24);
-    textAlign(CENTER);
+  if (fish.scared) {
 
-    text("OUCH!", (circleX + circle2X) / 2, (circleY + circle2Y) / 2 - 30);
+    text("Go away!", width / 2, 350);
+
+  } else {
+
+    text("I'm just swimming...", width / 2, 350);
   }
 }
