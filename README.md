@@ -68,3 +68,21 @@ Some other links leading to other stuff.
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/conditionals/conditionals-prototype-3)*
 
 ![screenshot](./public/images/fishy.png)
+
+### Event Prototype 1
+<!-- - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/conditionals/conditionals-prototype-3/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/conditionals/conditionals-prototype-3)* -->
+
+<!-- ![screenshot](./public/images/fishy.png) -->
+
+### Event Prototype 2
+<!-- - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/conditionals/conditionals-prototype-3/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/conditionals/conditionals-prototype-3)* -->
+
+<!-- ![screenshot](./public/images/fishy.png) -->
+
+### Event Prototype 3
+<!-- - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/conditionals/conditionals-prototype-3/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/conditionals/conditionals-prototype-3)* -->
+
+<!-- ![screenshot](./public/images/fishy.png) -->
