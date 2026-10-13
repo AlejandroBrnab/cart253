@@ -1,174 +1,147 @@
 /**
- * Reaction Time Prototype
+ * Red Button Prototype
  * Name: Alejandro
  *
- * Are you secretly an FPS player with insane reaction times?
+ * OHH A RED BUTTON :O
  */
 
-"use strict";
+// Button object
+let button = {
+  x: 200,
+  y: 200,
+  size: 165,
+  clicks: 0,
+  destroyed: false
+};
 
-// Game object
-let game = {
-    state: "ready",
-    startTime: 0,
-    waitTime: 3000,
-    score: 0,
-    message: "Press ENTER to start",
-    reactionStart: 0,
-    reactionTime: 0
+// Explosion object
+let explosion = {
+  active: false,
+  size: 0,
+  maxSize: 350
 };
 
 function setup() {
-    createCanvas(400, 400);
-    textAlign(CENTER, CENTER);
+  createCanvas(400, 400);
 }
 
-// Draw each part of the game
 function draw() {
-    drawBackground();
-    drawTitle();
-    drawScore();
-    drawGameState();
+  drawBackground();
+
+  if (explosion.active) {
+    updateExplosion();
+    drawExplosion();
+
+  } else if (!button.destroyed) {
+    drawButton();
+  }
+
+  drawMessage();
 }
 
-// Draw the background
+/**
+ * Changes the background every time the button is clicked.
+ */
 function drawBackground() {
-    background("#101820");
+  // The background becomes more red by every click
+  let greenBlue = constrain(220 - button.clicks * 25, 0, 220);
+
+  background(220, greenBlue, greenBlue);
 }
 
-// Draw the title
-function drawTitle() {
-    fill("white");
-    textSize(20);
-    text("PRESS AT THE RIGHT TIME", width / 2, 50);
+// Draws the red button
+function drawButton() {
+  fill(200, 0, 0);
+  ellipse(button.x, button.y, button.size, button.size);
+
+  drawButtonText();
 }
 
-// Display the score
-function drawScore() {
-    fill("white");
-    textSize(18);
-    text("Score: " + game.score, width / 2, 90);
+// Draws text inside the button
+function drawButtonText() {
+  fill(255);
+  textAlign(CENTER);
+  textSize(20);
+  text("DO NOT PRESS", button.x, button.y + 5);
 }
 
-// Decide which screen to display
-function drawGameState() {
-    if (game.state === "ready") {
-        drawReadyScreen();
-    } else if (game.state === "waiting") {
-        drawWaitingScreen();
-    } else if (game.state === "target") {
-        drawTargetScreen();
-    } else if (game.state === "over") {
-        drawGameOverScreen();
-    } else if (game.state === "success") {
-        drawSuccessScreen();
+/**
+ * Updates the explosion animation.
+ */
+function updateExplosion() {
+  explosion.size += 12;
+
+  if (explosion.size >= explosion.maxSize) {
+    explosion.size = 0;
+    explosion.active = false;
+
+    // The explosion destroys the button
+    button.destroyed = true;
+  }
+}
+
+/**
+ * Draws the explosion.
+ */
+function drawExplosion() {
+  noStroke();
+
+  // Outer explosion
+  fill(255, 80, 0);
+  ellipse(button.x, button.y, explosion.size, explosion.size);
+
+  // Inner explosion
+  fill(255, 200, 0);
+  ellipse(button.x, button.y, explosion.size * 0.65, explosion.size * 0.65);
+
+  // White center
+  fill(255);
+  ellipse(button.x, button.y, explosion.size * 0.3, explosion.size * 0.3);
+}
+
+// Draws a message depending on the number of clicks
+function drawMessage() {
+  fill(0);
+  textAlign(CENTER);
+  textSize(18);
+
+  if (explosion.active) {
+    text("BOOM!", 200, 350);
+  } else if (button.destroyed) {
+    text("...", 200, 320);
+  } else if (button.clicks == 0) {
+    text("Whatever you do... don't press it.", 200, 320);
+  } else if (button.clicks == 1) {
+    text("I told you not to.", 200, 320);
+  } else if (button.clicks == 2) {
+    text("Why did you press it again?", 200, 320);
+  } else if (button.clicks == 3) {
+    text("STOP.", 200, 320);
+  } else {
+    text("You really can't resist, can you?", 200, 320);
+  }
+}
+
+// Checks whether the button was clicked
+function mousePressed() {
+  if (isMouseOverButton() && !explosion.active && !button.destroyed) {
+    button.clicks++;
+
+    // Explosion happens after the last message
+    if (button.clicks >= 6) {
+      explosion.active = true;
     }
+  }
 }
 
-// Display the starting message
-function drawReadyScreen() {
-    fill("#90A1E0");
-    textSize(20);
-    text(game.message, width / 2, 190);
+// Checks if the mouse is inside the button
+function isMouseOverButton() {
+  let distance = dist(
+    mouseX,
+    mouseY,
+    button.x,
+    button.y
+  );
+
+  return distance < button.size / 2;
 }
-
-// Display the countdown
-function drawWaitingScreen() {
-    let elapsed = millis() - game.startTime;
-    let remaining = game.waitTime - elapsed;
-
-    fill("#90A1E0");
-    textSize(24);
-    text("Get ready...", width / 2, 180);
-
-    textSize(40);
-    text(max(0, (remaining / 1000).toFixed(1)), width / 2, 240);
-
-    // Move to the target state when the countdown ends
-    if (remaining <= 0) {
-        game.state = "target";
-        game.reactionStart = millis();
-    }
-}
-
-// Display the moment when the player should press SPACE
-function drawTargetScreen() {
-    fill("#7CFC98");
-    textSize(26);
-    text("NOW! PRESS SPACE!", width / 2, 200);
-
-    // End the round if the player waits too long
-    if (millis() - game.reactionStart > 1000) {
-        game.state = "over";
-        game.message = "Too late! Press ENTER to retry.";
-    }
-}
-
-// Display the game-over screen
-function drawGameOverScreen() {
-    fill("#FF7070");
-    textSize(22);
-    text("You lose!", width / 2, 180);
-
-    fill("white");
-    textSize(16);
-    text(game.message, width / 2, 225);
-}
-
-// Display the successful reaction time
-function drawSuccessScreen() {
-    fill("#7CFC98");
-    textSize(24);
-    text("Perfect timing!", width / 2, 180);
-
-    fill("white");
-    textSize(16);
-    text("Reaction time: " + game.reactionTime + " ms", width / 2, 215);
-    text("Press ENTER for another round", width / 2, 245);
-}
-
-// Start a new round
-function startRound() {
-    game.startTime = millis();
-    game.waitTime = random(2000, 5000);
-    game.state = "waiting";
-    game.message = "";
-}
-
-// Handle ENTER and SPACE using browser keyboard events (p5 didn't want to work :])
-function handleKeyboard(event) {
-    // Prevent holding a key from triggering repeated actions
-    if (event.repeat) {
-        return;
-    }
-
-    // ENTER starts or restarts the game
-    if (event.key === "Enter") {
-        event.preventDefault();
-
-        if (
-            game.state === "ready" ||
-            game.state === "over" ||
-            game.state === "success"
-        ) {
-            startRound();
-        }
-    }
-
-    // SPACE is used to react
-    if (event.code === "Space") {
-        event.preventDefault();
-
-        if (game.state === "waiting") {
-            game.state = "over";
-            game.message = "Too early! Press ENTER to retry.";
-        } else if (game.state === "target") {
-            game.reactionTime = millis() - game.reactionStart;
-            game.score++;
-            game.state = "success";
-        }
-    }
-}
-
-// Listen for keyboard input
-window.addEventListener("keydown", handleKeyboard);

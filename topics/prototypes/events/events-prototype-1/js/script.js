@@ -1,115 +1,182 @@
 /**
- * Words That Run Away Prototype
+ * Mystery Box Prototype
  * Name: Alejandro
  *
- * Type a word and press ENTER to place it.
+ * Click the box to open it and see what you can get.
  */
 
-"use strict";
+// Box object
+let box = {
+  x: 125,
+  y: 150,
+  width: 150,
+  height: 120,
+  opened: false,
+  opening: false,
+  result: "",
+  lidY: 150
+};
 
-// Store the words placed on the canvas
-let words = [];
-
-// Store the word currently being typed
-let typing = {
-    currentWord: ""
+// Counter object
+let counters = {
+  coins: 0,
+  nothing: 0,
+  monsters: 0
 };
 
 function setup() {
-    createCanvas(400, 400);
-    textSize(20);
+  createCanvas(400, 400);
 }
 
-// Draw each part of the prototype
 function draw() {
-    drawBackground();
-    drawPlacedWords();
-    drawTypingArea();
-    drawInstructions();
+  background(220);
+
+  drawCounters();
+  updateBox();
+  drawBox();
+  drawMessage();
 }
 
-// Draw the background
-function drawBackground() {
-    background("#d7eff2");
+/**
+ * Draws the counters in the top-left.
+ */
+function drawCounters() {
+  fill(0);
+  textAlign(LEFT);
+  textSize(16);
+
+  if (counters.coins > 0) {
+    text("Coins: " + counters.coins, 15, 25);
+  }
+
+  if (counters.nothing > 0) {
+    text("Nothing: " + counters.nothing, 15, 45);
+  }
+
+  if (counters.monsters > 0) {
+    text("Monsters: " + counters.monsters, 15, 65);
+  }
 }
 
-// Draw the words and make them run away from the mouse
-function drawPlacedWords() {
-    fill("#164e63");
-    textAlign(CENTER, CENTER);
+/**
+ * Updates the box opening animation.
+ */
+function updateBox() {
+  if (box.opening) {
 
-    for (let word of words) {
-        moveWordAway(word);
-        text(word.text, word.x, word.y);
+    // Move the lid upward
+    box.lidY -= 2;
+
+    // Stops the animation after the lid lifts
+    if (box.lidY <= 90) {
+      box.lidY = 90;
+      box.opening = false;
+      box.opened = true;
+
+      // Wait 3 seconds before closing the box again
+      setTimeout(closeBox, 3000);
     }
+  }
 }
 
-// Move a word away if the mouse gets close
-function moveWordAway(word) {
-    let distance = dist(mouseX, mouseY, word.x, word.y);
+/**
+ * Draws the box.
+ */
+function drawBox() {
+  // Bottom part of the box
+  fill(150, 90, 40);
+  rect(box.x, box.y, box.width, box.height);
 
-    if (distance < 80) {
-        word.x += (word.x - mouseX) * 0.08;
-        word.y += (word.y - mouseY) * 0.08;
-    }
+  // Ribbon on the box
+  fill(220, 180, 40);
+  rect(190, box.y, 20, box.height);
+
+  // Horizontal ribbon
+  rect(box.x, 195, box.width, 20);
+
+  // Draws the lid separately
+  drawLid();
 }
 
-// Display the word currently being typed
-function drawTypingArea() {
-    fill("#102a43");
-    textSize(20);
-    textAlign(LEFT, CENTER);
-    text("Type: " + typing.currentWord, 20, height - 40);
+/**
+ * Draws the lid of the box.
+ */
+function drawLid() {
+  fill(130, 70, 30);
+
+  rect(box.x, box.lidY, box.width, 20);
+
+  // Ribbon on the lid
+  fill(220, 180, 40);
+
+  rect(190, box.lidY, 20, 20);
 }
 
-// Display the keyboard instructions
-function drawInstructions() {
-    fill("#486581");
-    textSize(12);
-    textAlign(LEFT, CENTER);
-    text("ENTER: place word | BACKSPACE: delete", 20, 20);
+/**
+ * Draws a message below the box.
+ */
+function drawMessage() {
+  fill(0);
+  textAlign(CENTER);
+  textSize(20);
+
+  if (box.opened) {
+    text(box.result, width / 2, 320);
+  } else if (box.opening) {
+    text("Opening...", width / 2, 320);
+  } else {
+    text("Click the box!", width / 2, 320);
+  }
 }
 
-// Add ordinary characters to the current word
-function keyTyped() {
-    if (key.length === 1) {
-        typing.currentWord += key;
-    }
-
-    return false;
+/**
+ * Checks if the box was clicked.
+ */
+function mousePressed() {
+  if (isMouseOverBox() && !box.opened && !box.opening) {
+    openBox();
+  }
 }
 
-// Place the typed word on the canvas
-function placeWord() {
-    if (typing.currentWord.trim() !== "") {
-        let newWord = {
-            text: typing.currentWord,
-            x: random(50, width - 50),
-            y: random(70, height - 70)
-        };
-
-        words.push(newWord);
-        typing.currentWord = "";
-    }
+/**
+ * Checks whether the mouse is inside the box.
+ */
+function isMouseOverBox() {
+  return (
+    mouseX > box.x &&
+    mouseX < box.x + box.width &&
+    mouseY > box.y &&
+    mouseY < box.y + box.height
+  );
 }
 
-// Delete the last character
-function deleteCharacter() {
-    typing.currentWord = typing.currentWord.slice(0, -1);
+/**
+ * Decides what is inside the box.
+ */
+function openBox() {
+  let chance = random(100);
+
+  if (chance < 60) {
+    box.result = "You found a coin!";
+    counters.coins++;
+  } else if (chance < 90) {
+    box.result = "Nothing... :(";
+    counters.nothing++;
+  } else {
+    box.result = "Mike Wazowski!";
+    counters.monsters++;
+  }
+
+  // Starts the opening animation
+  box.opening = true;
 }
 
-// Handle ENTER and BACKSPACE using browser keyboard events
-function handleKeyboard(event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        placeWord();
-    }
-
-    if (event.key === "Backspace") {
-        event.preventDefault();
-        deleteCharacter();
-    }
+/**
+ * Closes the box and resets it.
+ */
+function closeBox() {
+  box.lidY = 150;
+  box.opened = false;
+  box.opening = false;
+  box.result = "";
 }
-
-// Listen for keyboard input
-window.addEventListener("keydown", handleKeyboard);
