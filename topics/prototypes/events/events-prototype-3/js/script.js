@@ -1,145 +1,155 @@
 /**
- * Fish Prototype
- * Name:
- * Alejandro
+ * Tab Switch Counter Prototype
+ * Name: Alejandro
  *
- * The fish swims away from the mouse when it gets too close.
+ * The character changes mood whenever you leave the page and come back.
  */
 
-// Fish object
-let fish = {
-  x: 200,
-  y: 200,
-  size: 80,
-  speed: 3,
-  swimSpeed: 0.8,
-  swimDirection: 1,
-  scared: false,
-  direction: 1
+"use strict";
+
+// Character object
+let character = {
+    mood: "happy",
+    message: "Hey! Stay here with me!",
+    x: 200,
+    y: 190,
+    size: 120
 };
 
+// Store the number of times the user returns to the page
+let switchCount = 0;
+
 function setup() {
-  createCanvas(500, 500);
+    createCanvas(400, 400);
+    textAlign(CENTER, CENTER);
+
+    // Detect when the user changes browser tabs
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 }
 
 function draw() {
-  background(180, 220, 240);
-
-  updateFish();
-  drawThoughts();
-  drawFish();
+    drawBackground();
+    drawTitle();
+    drawCounter();
+    drawCharacter();
+    drawMessage();
+    drawInstructions();
 }
 
-/**
- * Checks how close the mouse is to the fish.
- */
-function updateFish() {
-  let distance = dist(mouseX, mouseY, fish.x, fish.y);
+// Draw the background
+function drawBackground() {
+    background("#101820");
+}
 
-  if (distance < 100) {
-    fish.scared = true;
+// Draw the title
+function drawTitle() {
+    fill("white");
+    textSize(20);
+    text("PLEASE DON'T LEAVE", width / 2, 40);
+}
 
-    // Moves away from the mouse
-    if (mouseX < fish.x) {
-      fish.x += fish.speed;
-      fish.direction = 1;
+// Display how many times the user has returned
+function drawCounter() {
+    fill("#90A1E0");
+    textSize(18);
+    text("Times you left: " + switchCount, width / 2, 80);
+}
+
+// Draw the character's face, eyes, and mouth
+function drawCharacter() {
+    push();
+    translate(character.x, character.y);
+
+    drawFace();
+    drawEyes();
+    drawMouth();
+
+    pop();
+}
+
+// Draw the face and change its color with the mood
+function drawFace() {
+    if (character.mood === "happy") {
+        fill("#7CFC98");
+    } else if (character.mood === "worried") {
+        fill("#FFD166");
     } else {
-      fish.x -= fish.speed;
-      fish.direction = -1;
+        fill("#FF7070");
     }
 
-    if (mouseY < fish.y) {
-      fish.y += fish.speed;
+    noStroke();
+    ellipse(0, 0, character.size, character.size);
+}
+
+// Draw the eyes
+function drawEyes() {
+    fill("#101820");
+
+    if (character.mood === "angry") {
+        // Angry eyebrows
+        stroke("#101820");
+        strokeWeight(4);
+        line(-35, -30, -15, -20);
+        line(15, -20, 35, -30);
+        noStroke();
+
+        ellipse(-25, -10, 10, 14);
+        ellipse(25, -10, 10, 14);
     } else {
-      fish.y -= fish.speed;
+        // Normal eyes
+        noStroke();
+        ellipse(-25, -15, 12, 16);
+        ellipse(25, -15, 12, 16);
+    }
+}
+
+// Draw a different mouth for each mood
+function drawMouth() {
+    noFill();
+    stroke("#101820");
+    strokeWeight(4);
+
+    if (character.mood === "happy") {
+        arc(0, 5, 50, 35, 0, PI);
+    } else if (character.mood === "worried") {
+        arc(0, 35, 40, 25, PI, TWO_PI);
+    } else {
+        line(-20, 30, 20, 30);
+    }
+}
+
+// Display the character's reaction
+function drawMessage() {
+    fill("white");
+    noStroke();
+    textSize(16);
+    text(character.message, width / 2, 320);
+}
+
+// Display instructions
+function drawInstructions() {
+    fill("#90A1E0");
+    textSize(12);
+    text("Switch to another tab, then come back!", width / 2, 370);
+}
+
+// Update the character when the user returns to the tab
+function handleVisibilityChange() {
+    // Only count when the page becomes visible again
+    if (document.hidden) {
+        return;
     }
 
-  } else {
-    fish.scared = false;
+    switchCount++;
 
-    // Normal swimming
-    fish.x += fish.swimSpeed * fish.swimDirection;
-
-    // Fish faces the direction it is swimming
-    fish.direction = fish.swimDirection;
-
-    // Turn around at the edges
-    if (fish.x > width - 50) {
-      fish.swimDirection = -1;
+    if (switchCount < 3) {
+        character.mood = "worried";
+        character.message = "Oh, you're back... I missed you.";
+    } else if (switchCount < 5) {
+        character.mood = "angry";
+        character.message = "Again?! Pay attention to me!";
+    } else {
+        character.mood = "angry";
+        character.message = "STOP LEAVING ME!";
     }
-
-    if (fish.x < 50) {
-      fish.swimDirection = 1;
-    }
-  }
-
-  // Keeps the fish inside the canvas
-  fish.x = constrain(fish.x, 50, width - 50);
-  fish.y = constrain(fish.y, 40, height - 40);
-}
-
-/**
- * Draws the fish.
- */
-function drawFish() {
-  push();
-
-  translate(fish.x, fish.y);
-  scale(fish.direction, 1);
-
-  drawBody();
-  drawTail();
-  drawEye();
-
-  pop();
-}
-
-/**
- * Draws the fish body.
- */
-function drawBody() {
-  fill(255, 150, 100);
-  stroke(0);
-  strokeWeight(2);
-
-  ellipse(0, 0, fish.size, fish.size / 2);
-}
-
-/**
- * Draws the fish tail.
- */
-function drawTail() {
-  fill(255, 150, 100);
-
-  triangle(-fish.size / 2, 0, -fish.size / 2 - 30, -25, -fish.size / 2 - 30, 25 );
-}
-
-/**
- * Draws the fish eye.
- */
-function drawEye() {
-  fill(0);
-  noStroke();
-
-  ellipse(25, -5, 8, 8);
-}
-
-/**
- * Displays fish's thoughts depending on its feelings.
- */
-function drawThoughts() {
-  textAlign(CENTER);
-  textSize(50);
-
-  // Colour for the phrase
-  fill(255, 255, 255, 180);
-
-  // Makes the text gently move like water
-  let wave = sin(frameCount * 0.02) * 10;
-
-  if (fish.scared) {
-    text("GO AWAY PLEASE", width / 2, 150 + wave);
-  } else {
-    text("I'm just swimming...", width / 2, 150 + wave);
-  }
 }
