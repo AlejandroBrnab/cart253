@@ -1,5 +1,5 @@
 /**
- * Tab Switch Counter Prototype
+ * Tab Switch Prototype
  * Name: Alejandro
  *
  * The character changes mood whenever you leave and return to the page
