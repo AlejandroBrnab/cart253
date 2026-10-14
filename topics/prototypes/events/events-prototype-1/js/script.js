@@ -31,6 +31,14 @@ let typing = {
     currentWord: ""
 };
 
+// Stores the timer information
+let timer = {
+    duration: 60,
+    startTime: 0,
+    started: false,
+    finished: false
+};
+
 function setup() {
     createCanvas(700, 600);
     textFont("sans-serif");
@@ -41,9 +49,11 @@ function draw() {
     drawBackground();
     drawTitle();
     drawInstructions();
+    drawTimer();
     drawWords();
     drawTypingArea();
     drawProgress();
+    checkTimer();
 }
 
 // Draws the background
@@ -65,6 +75,27 @@ function drawInstructions() {
     textSize(14);
     textAlign(CENTER, CENTER);
     text("Type an animal's name correctly to reveal it", width / 2, 65);
+}
+
+// Displays the remaining time
+function drawTimer() {
+    fill("#164e63");
+    textSize(16);
+    textAlign(CENTER, CENTER);
+
+    if (!timer.started) {
+        text("Time: 1:00 (starts when you type)", width / 2, 95);
+    } else if (timer.finished) {
+        text("Time's up!", width / 2, 95);
+    } else {
+        let elapsed = (millis() - timer.startTime) / 1000;
+        let remaining = max(0, timer.duration - floor(elapsed));
+        let minutes = floor(remaining / 60);
+        let seconds = remaining % 60;
+        let timeText = minutes + ":" + nf(seconds, 2);
+
+        text("Time: " + timeText, width / 2, 95);
+    }
 }
 
 // Draws each animal name
@@ -93,7 +124,12 @@ function drawTypingArea() {
     fill("#102a43");
     textSize(20);
     textAlign(CENTER, CENTER);
-    text("Type: " + typing.currentWord + "_", width / 2, 550);
+
+    if (timer.finished) {
+        text("Game over!", width / 2, 550);
+    } else {
+        text("Type: " + typing.currentWord + "_", width / 2, 550);
+    }
 }
 
 // Displays the number of animals revealed
@@ -113,11 +149,42 @@ function drawProgress() {
         width / 2,
         580
     );
+
+    if (timer.finished) {
+        fill("#164e63");
+        textSize(16);
+        text(
+            "You revealed " + revealedCount + " animals!",
+            width / 2,
+            520
+        );
+    }
+}
+
+// Checks whether the timer has run out
+function checkTimer() {
+    if (timer.started && !timer.finished) {
+        let elapsed = (millis() - timer.startTime) / 1000;
+
+        if (elapsed >= timer.duration) {
+            timer.finished = true;
+            typing.currentWord = "";
+        }
+    }
 }
 
 // Adds letters as the player types
 function keyTyped() {
+    if (timer.finished) {
+        return false;
+    }
+
     if (key.length === 1 && key.match(/[a-zA-Z]/)) {
+        if (!timer.started) {
+            timer.started = true;
+            timer.startTime = millis();
+        }
+
         typing.currentWord += key.toLowerCase();
         checkWord();
     }
@@ -143,7 +210,10 @@ function checkWord() {
 function handleKeyboard(event) {
     if (event.key === "Backspace") {
         event.preventDefault();
-        typing.currentWord = typing.currentWord.slice(0, -1);
+
+        if (!timer.finished) {
+            typing.currentWord = typing.currentWord.slice(0, -1);
+        }
     }
 }
 
