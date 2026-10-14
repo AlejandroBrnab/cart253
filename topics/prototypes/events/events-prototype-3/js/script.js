@@ -9,18 +9,18 @@
 
 // Character object
 let character = {
-    mood: "happy",
-    message: "Hey! Stay here with me!",
-    x: 200,
-    y: 190,
-    size: 120
+    mood: "happy", //initial mood
+    x: 0,
+    y: 0,
+    size: 120,
+    growth: 15
 };
 
-// Store the number of times the user returns to the page
+// Stores the number of times the user returns to the page
 let switchCount = 0;
 
 function setup() {
-    createCanvas(400, 400);
+    createCanvas(400, 400, WEBGL);
     textAlign(CENTER, CENTER);
 
     // Detect when the user changes browser tabs
@@ -29,36 +29,26 @@ function setup() {
 
 function draw() {
     drawBackground();
-    drawTitle();
-    drawCounter();
     drawCharacter();
-    drawMessage();
-    drawInstructions();
 }
 
-// Draw the background
+// Draws the background
 function drawBackground() {
     background("#101820");
+
+    // Adds lighting to make the character look three-dimensional
+    ambientLight(100);
+    directionalLight(255, 255, 255, -0.5, 0.5, -1);
 }
 
-// Draw the title
-function drawTitle() {
-    fill("white");
-    textSize(20);
-    text("PLEASE DON'T LEAVE", width / 2, 40);
-}
-
-// Display how many times the user has returned
-function drawCounter() {
-    fill("#90A1E0");
-    textSize(18);
-    text("Times you left: " + switchCount, width / 2, 80);
-}
-
-// Draw the character's face, eyes, and mouth
+// Draws the character's face, eyes, and mouth
 function drawCharacter() {
     push();
-    translate(character.x, character.y);
+    translate(character.x, character.y, 0);
+
+    // Scale the entire character as it grows
+    let scaleFactor = character.size / 120;
+    scale(scaleFactor);
 
     drawFace();
     drawEyes();
@@ -67,73 +57,134 @@ function drawCharacter() {
     pop();
 }
 
-// Draw the face and change its color with the mood
+// Draws the face and change its color with the mood
 function drawFace() {
     if (character.mood === "happy") {
         fill("#7CFC98");
     } else if (character.mood === "worried") {
         fill("#FFD166");
+    } else if (character.mood === "despair") {
+        fill("#B8B8C8");
     } else {
         fill("#FF7070");
     }
 
     noStroke();
-    ellipse(0, 0, character.size, character.size);
+    shininess(25);
+    sphere(60, 32, 24);
 }
 
-// Draw the eyes
+// Draws the eyes
 function drawEyes() {
-    fill("#101820");
-
-    if (character.mood === "angry") {
-        // Angry eyebrows
-        stroke("#101820");
-        strokeWeight(4);
-        line(-35, -30, -15, -20);
-        line(15, -20, 35, -30);
+    if (character.mood === "despair") {
+        // Creepy hollow eyes
+        push();
+        translate(-25, -15, 53);
         noStroke();
+        fill("#101820");
+        sphere(11, 16, 12);
+        pop();
 
-        ellipse(-25, -10, 10, 14);
-        ellipse(25, -10, 10, 14);
+        push();
+        translate(25, -15, 53);
+        noStroke();
+        fill("#101820");
+        sphere(11, 16, 12);
+        pop();
+
+        // Tiny white pupils
+        push();
+        translate(-25, -12, 63);
+        fill("white");
+        sphere(2.5, 12, 8);
+        pop();
+
+        push();
+        translate(25, -12, 63);
+        fill("white");
+        sphere(2.5, 12, 8);
+        pop();
     } else {
         // Normal eyes
+        push();
+        translate(-25, -15, 53);
         noStroke();
-        ellipse(-25, -15, 12, 16);
-        ellipse(25, -15, 12, 16);
+        fill("#101820");
+        sphere(6, 16, 12);
+        pop();
+
+        push();
+        translate(25, -15, 53);
+        noStroke();
+        fill("#101820");
+        sphere(6, 16, 12);
+        pop();
+
+        if (character.mood === "angry") {
+            // Angry eyebrows
+            drawTubeLine(-38, -35, -14, -25);
+            drawTubeLine(14, -25, 38, -35);
+        }
     }
 }
 
-// Draw a different mouth for each mood
+// Draws a different mouth for each mood
 function drawMouth() {
-    noFill();
-    stroke("#101820");
-    strokeWeight(4);
-
     if (character.mood === "happy") {
-        arc(0, 5, 50, 35, 0, PI);
+        // Happy curved smile
+        drawSmile(0, 5, 25, 15, false);
     } else if (character.mood === "worried") {
-        arc(0, 35, 40, 25, PI, TWO_PI);
+        // Worried mouth
+        drawSmile(0, 35, 20, 12, true);
+    } else if (character.mood === "despair") {
+        // Creepy smile
+        drawSmile(0, 15, 28, 20, false);
+        drawTubeLine(-27, 15, -20, 25);
+        drawTubeLine(27, 15, 20, 25);
     } else {
-        line(-20, 30, 20, 30);
+        // Straight angry mouth
+        drawTubeLine(-20, 30, 20, 30);
     }
 }
 
-// Display the character's reaction
-function drawMessage() {
-    fill("white");
-    noStroke();
-    textSize(16);
-    text(character.message, width / 2, 320);
+// Draws a curved mouth using small 3D spheres
+function drawSmile(centerX, centerY, radiusX, radiusY, upsideDown) {
+    let startAngle = upsideDown ? PI : 0;
+    let endAngle = upsideDown ? TWO_PI : PI;
+
+    for (let angle = startAngle; angle <= endAngle; angle += 0.15) {
+        let x = centerX + cos(angle) * radiusX;
+        let y = centerY + sin(angle) * radiusY;
+
+        push();
+        translate(x, y, 55);
+        noStroke();
+        fill("#101820");
+        sphere(2.5, 8, 6);
+        pop();
+    }
 }
 
-// Display instructions
-function drawInstructions() {
-    fill("#90A1E0");
-    textSize(12);
-    text("Switch to another tab, then come back!", width / 2, 370);
+// Draws a line using small 3D spheres
+function drawTubeLine(x1, y1, x2, y2) {
+    let distance = dist(x1, y1, x2, y2);
+    let steps = max(2, floor(distance / 3));
+
+    for (let i = 0; i <= steps; i++) {
+        let amount = i / steps;
+        let x = lerp(x1, x2, amount);
+        let y = lerp(y1, y2, amount);
+
+        push();
+        translate(x, y, 55);
+        noStroke();
+        fill("#101820");
+        sphere(2.5, 8, 6);
+        pop();
+    }
 }
 
-// Update the character when the user returns to the tab
+// Updates the character when the user returns to the tab
 function handleVisibilityChange() {
     // Only count when the page becomes visible again
     if (document.hidden) {
@@ -144,12 +195,12 @@ function handleVisibilityChange() {
 
     if (switchCount < 3) {
         character.mood = "worried";
-        character.message = "Oh, you're back... I missed you.";
     } else if (switchCount < 5) {
         character.mood = "angry";
-        character.message = "Again?! Pay attention to me!";
     } else {
-        character.mood = "angry";
-        character.message = "STOP LEAVING ME!";
+        character.mood = "despair";
+
+        // Make the face bigger every time you return
+        character.size += character.growth;
     }
 }
