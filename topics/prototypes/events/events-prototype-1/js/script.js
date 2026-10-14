@@ -10,7 +10,7 @@
 // Animals that will appear on the screen
 let words = [
     { text: "platypus", x: 100, y: 130, revealed: false },
-    { text: "octopus", x: 350, y: 110, revealed: false },
+    { text: "octopus", x: 350, y: 130, revealed: false },
     { text: "raccoon", x: 580, y: 145, revealed: false },
     { text: "hippopotamus", x: 200, y: 210, revealed: false },
     { text: "chicken", x: 480, y: 200, revealed: false },
@@ -33,7 +33,7 @@ let typing = {
 
 // Stores the timer information
 let timer = {
-    duration: 60,
+    duration: 40,
     startTime: 0,
     started: false,
     finished: false
@@ -46,14 +46,18 @@ function setup() {
 
 // Draw the game
 function draw() {
-    drawBackground();
-    drawTitle();
-    drawInstructions();
-    drawTimer();
-    drawWords();
-    drawTypingArea();
-    drawProgress();
-    checkTimer();
+    if (timer.finished) {
+        drawGameOverScreen();
+    } else {
+        drawBackground();
+        drawTitle();
+        drawInstructions();
+        drawTimer();
+        drawWords();
+        drawTypingArea();
+        drawProgress();
+        checkTimer();
+    }
 }
 
 // Draws the background
@@ -84,7 +88,7 @@ function drawTimer() {
     textAlign(CENTER, CENTER);
 
     if (!timer.started) {
-        text("Time: 1:00 (starts when you type)", width / 2, 95);
+        text("Time: 0:40 (starts when you type)", width / 2, 95);
     } else if (timer.finished) {
         text("Time's up!", width / 2, 95);
     } else {
@@ -159,6 +163,40 @@ function drawProgress() {
             520
         );
     }
+}
+
+// Displays the game over screen
+function drawGameOverScreen() {
+    drawBackground();
+
+    let revealedCount = 0;
+
+    for (let word of words) {
+        if (word.revealed) {
+            revealedCount++;
+        }
+    }
+
+    fill("#164e63");
+    textAlign(CENTER, CENTER);
+
+    textSize(36);
+    text("TIME'S UP! :]", width / 2, 150);
+
+    textSize(20);
+    text("Your final score", width / 2, 220);
+
+    textSize(48);
+    text(revealedCount + " / " + words.length, width / 2, 290);
+
+    textSize(18);
+    text("animals revealed", width / 2, 330);
+
+    textSize(16);
+
+    fill("#486581");
+    textSize(14);
+    text("Thanks for playing! :D", width / 2, 470);
 }
 
 // Checks whether the timer has run out
