@@ -2,18 +2,28 @@
  * Word Reveal Game Prototype
  * Name: Alejandro
  *
- * Type the words shown on the screen.
+ * Type the animal names shown on the screen.
  */
 
 "use strict";
 
-// Words that will appear on the screen
+// Animals that will appear on the screen
 let words = [
-    { text: "platypus", x: 90, y: 100, revealed: false },
-    { text: "octopus", x: 290, y: 145, revealed: false },
-    { text: "raccoon", x: 120, y: 200, revealed: false },
-    { text: "hippopotamus", x: 280, y: 255, revealed: false },
-    { text: "chicken", x: 110, y: 300, revealed: false }
+    { text: "platypus", x: 100, y: 130, revealed: false },
+    { text: "octopus", x: 350, y: 110, revealed: false },
+    { text: "raccoon", x: 580, y: 145, revealed: false },
+    { text: "hippopotamus", x: 200, y: 210, revealed: false },
+    { text: "chicken", x: 480, y: 200, revealed: false },
+    { text: "chinchilla", x: 100, y: 290, revealed: false },
+    { text: "axolotl", x: 300, y: 275, revealed: false },
+    { text: "chameleon", x: 540, y: 290, revealed: false },
+    { text: "squirrel", x: 170, y: 365, revealed: false },
+    { text: "porcupine", x: 410, y: 350, revealed: false },
+    { text: "orangutan", x: 600, y: 390, revealed: false },
+    { text: "echidna", x: 100, y: 440, revealed: false },
+    { text: "capybara", x: 300, y: 445, revealed: false },
+    { text: "wolverine", x: 500, y: 455, revealed: false },
+    { text: "narwhal", x: 350, y: 510, revealed: false }
 ];
 
 // Stores the player's current input
@@ -21,20 +31,19 @@ let typing = {
     currentWord: ""
 };
 
-// Set up the canvas
 function setup() {
-    createCanvas(400, 400);
+    createCanvas(700, 600);
     textFont("sans-serif");
 }
 
-// Draws the game
+// Draw the game
 function draw() {
     drawBackground();
     drawTitle();
+    drawInstructions();
     drawWords();
     drawTypingArea();
     drawProgress();
-    drawInstructions();
 }
 
 // Draws the background
@@ -45,22 +54,30 @@ function drawBackground() {
 // Draws the title of the game
 function drawTitle() {
     fill("#164e63");
-    textSize(20);
+    textSize(24);
     textAlign(CENTER, CENTER);
-    text("REVEAL THE WORDS", width / 2, 35);
+    text("REVEAL THE ANIMALS", width / 2, 30);
 }
 
-// Draws each word from the array
+// Displays the instructions
+function drawInstructions() {
+    fill("#486581");
+    textSize(14);
+    textAlign(CENTER, CENTER);
+    text("Type an animal's name correctly to reveal it", width / 2, 65);
+}
+
+// Draws each animal name
 function drawWords() {
     textAlign(CENTER, CENTER);
-    textSize(22);
+    textSize(19);
 
     for (let word of words) {
         drawWord(word);
     }
 }
 
-// Makes unrevealed words faint and completed words clear
+// Faint words become darker when correctly typed
 function drawWord(word) {
     if (word.revealed) {
         fill("#164e63");
@@ -74,12 +91,12 @@ function drawWord(word) {
 // Displays the player's current input
 function drawTypingArea() {
     fill("#102a43");
-    textSize(18);
+    textSize(20);
     textAlign(CENTER, CENTER);
-    text("Type: " + typing.currentWord + "_", width / 2, 345);
+    text("Type: " + typing.currentWord + "_", width / 2, 550);
 }
 
-// Displays how many words have been revealed
+// Displays the number of animals revealed
 function drawProgress() {
     let revealedCount = 0;
 
@@ -90,16 +107,12 @@ function drawProgress() {
     }
 
     fill("#486581");
-    textSize(13);
-    text(revealedCount + " / " + words.length + " words revealed", width / 2, 375);
-}
-
-// Displays the instructions
-function drawInstructions() {
-    fill("#486581");
-    textSize(12);
-    textAlign(CENTER, CENTER);
-    text("Type a word exactly to reveal it", width / 2, 65);
+    textSize(14);
+    text(
+        revealedCount + " / " + words.length + " animals revealed",
+        width / 2,
+        580
+    );
 }
 
 // Adds letters as the player types
@@ -112,7 +125,7 @@ function keyTyped() {
     return false;
 }
 
-// Checks whether the player has typed a complete word
+// Checks whether the typed word matches an animal
 function checkWord() {
     for (let word of words) {
         if (
@@ -134,5 +147,5 @@ function handleKeyboard(event) {
     }
 }
 
-// Listen for keyboard input
+// Listens for keyboard input
 window.addEventListener("keydown", handleKeyboard);
