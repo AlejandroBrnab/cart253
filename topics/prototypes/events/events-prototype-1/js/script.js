@@ -1,113 +1,136 @@
 /**
- * Words That Run Away Prototype
+ * Word Reveal Game Prototype
  * Name: Alejandro
  *
- * Type a word and press ENTER to place it.
+ * Type the words shown on the screen.
  */
 
 "use strict";
 
-// Store the words placed on the canvas
-let words = [];
+// Words that will appear on the screen
+let words = [
+    { text: "platypus", x: 90, y: 100, revealed: false },
+    { text: "octopus", x: 290, y: 145, revealed: false },
+    { text: "raccoon", x: 120, y: 200, revealed: false },
+    { text: "hippopotamus", x: 280, y: 255, revealed: false },
+    { text: "chicken", x: 110, y: 300, revealed: false }
+];
 
-// Store the word currently being typed
+// Stores the player's current input
 let typing = {
     currentWord: ""
 };
 
+// Set up the canvas
 function setup() {
     createCanvas(400, 400);
-    textSize(20);
+    textFont("sans-serif");
 }
 
-// Draw each part of the prototype
+// Draws the game
 function draw() {
     drawBackground();
-    drawPlacedWords();
+    drawTitle();
+    drawWords();
     drawTypingArea();
+    drawProgress();
     drawInstructions();
 }
 
-// Draw the background
+// Draws the background
 function drawBackground() {
     background("#d7eff2");
 }
 
-// Draw the words and make them run away from the mouse
-function drawPlacedWords() {
+// Draws the title of the game
+function drawTitle() {
     fill("#164e63");
+    textSize(20);
     textAlign(CENTER, CENTER);
+    text("REVEAL THE WORDS", width / 2, 35);
+}
+
+// Draws each word from the array
+function drawWords() {
+    textAlign(CENTER, CENTER);
+    textSize(22);
 
     for (let word of words) {
-        moveWordAway(word);
-        text(word.text, word.x, word.y);
+        drawWord(word);
     }
 }
 
-// Move a word away if the mouse gets close
-function moveWordAway(word) {
-    let distance = dist(mouseX, mouseY, word.x, word.y);
-
-    if (distance < 80) {
-        word.x += (word.x - mouseX) * 0.08;
-        word.y += (word.y - mouseY) * 0.08;
+// Makes unrevealed words faint and completed words clear
+function drawWord(word) {
+    if (word.revealed) {
+        fill("#164e63");
+    } else {
+        fill("#9bb9bd");
     }
+
+    text(word.text, word.x, word.y);
 }
 
-// Display the word currently being typed
+// Displays the player's current input
 function drawTypingArea() {
     fill("#102a43");
-    textSize(20);
-    textAlign(LEFT, CENTER);
-    text("Type: " + typing.currentWord, 20, height - 40);
+    textSize(18);
+    textAlign(CENTER, CENTER);
+    text("Type: " + typing.currentWord + "_", width / 2, 345);
 }
 
-// Display the keyboard instructions
+// Displays how many words have been revealed
+function drawProgress() {
+    let revealedCount = 0;
+
+    for (let word of words) {
+        if (word.revealed) {
+            revealedCount++;
+        }
+    }
+
+    fill("#486581");
+    textSize(13);
+    text(revealedCount + " / " + words.length + " words revealed", width / 2, 375);
+}
+
+// Displays the instructions
 function drawInstructions() {
     fill("#486581");
     textSize(12);
-    textAlign(LEFT, CENTER);
-    text("ENTER: place word | BACKSPACE: delete", 20, 20);
+    textAlign(CENTER, CENTER);
+    text("Type a word exactly to reveal it", width / 2, 65);
 }
 
-// Add ordinary characters to the current word
+// Adds letters as the player types
 function keyTyped() {
-    if (key.length === 1) {
-        typing.currentWord += key;
+    if (key.length === 1 && key.match(/[a-zA-Z]/)) {
+        typing.currentWord += key.toLowerCase();
+        checkWord();
     }
 
     return false;
 }
 
-// Place the typed word on the canvas
-function placeWord() {
-    if (typing.currentWord.trim() !== "") {
-        let newWord = {
-            text: typing.currentWord,
-            x: random(50, width - 50),
-            y: random(70, height - 70)
-        };
-
-        words.push(newWord);
-        typing.currentWord = "";
+// Checks whether the player has typed a complete word
+function checkWord() {
+    for (let word of words) {
+        if (
+            typing.currentWord === word.text &&
+            word.revealed === false
+        ) {
+            word.revealed = true;
+            typing.currentWord = "";
+            break;
+        }
     }
 }
 
-// Delete the last character
-function deleteCharacter() {
-    typing.currentWord = typing.currentWord.slice(0, -1);
-}
-
-// Handle ENTER and BACKSPACE using browser keyboard events
+// Handles BACKSPACE using a browser keyboard event
 function handleKeyboard(event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        placeWord();
-    }
-
     if (event.key === "Backspace") {
         event.preventDefault();
-        deleteCharacter();
+        typing.currentWord = typing.currentWord.slice(0, -1);
     }
 }
 
