@@ -13,14 +13,16 @@ let character = {
     x: 0,
     y: 0,
     size: 120,
-    growth: 15
+    growth: 15,
+    rotationX: 0,
+    rotationY: 0
 };
 
 // Stores the number of times the user returns to the page
 let switchCount = 0;
 
 function setup() {
-    createCanvas(400, 400, WEBGL);
+    createCanvas(500, 500, WEBGL);
     textAlign(CENTER, CENTER);
 
     // Detect when the user changes browser tabs
@@ -46,6 +48,10 @@ function drawCharacter() {
     push();
     translate(character.x, character.y, 0);
 
+    // Rotates the character when the user drags the mouse
+    rotateX(character.rotationX);
+    rotateY(character.rotationY);
+
     // Scale the entire character as it grows
     let scaleFactor = character.size / 120;
     scale(scaleFactor);
@@ -57,7 +63,20 @@ function drawCharacter() {
     pop();
 }
 
-// Draws the face and change its color with the mood
+// Rotates the face while the mouse is held and dragged
+function mouseDragged() {
+    // Only rotate when the mouse is inside the canvas
+    if (mouseX >= 0 && mouseX <= width &&
+        mouseY >= 0 && mouseY <= height) {
+
+        character.rotationY += (mouseX - pmouseX) * 0.01;
+        character.rotationX -= (mouseY - pmouseY) * 0.01;
+    }
+
+    return false;
+}
+
+// Draws the face and changes its color with the mood
 function drawFace() {
     if (character.mood === "happy") {
         fill("#7CFC98");
