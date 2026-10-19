@@ -21,6 +21,9 @@ let character = {
 // Stores the number of times the user returns to the page
 let switchCount = 0;
 
+// Tracks whether the user has left the page
+let hasLeftPage = false;
+
 // Sets up the canvas
 function setup() {
     createCanvas(500, 500, WEBGL);
@@ -207,24 +210,28 @@ function drawTubeLine(x1, y1, x2, y2) {
 
 // Updates the character when the user returns to the tab
 function handleVisibilityChange() {
-    // Only count when the page becomes visible again
     if (document.hidden) {
+        hasLeftPage = true;
         return;
     }
 
-    switchCount++;
+    // Only count if the user previously left the page
+    if (hasLeftPage) {
+        hasLeftPage = false;
+        switchCount++;
 
-    // Turn the face away from the screen
-    character.rotationY += PI;
+        // Turn the face away from the screen
+        character.rotationY += PI;
 
-    if (switchCount < 3) {
-        character.mood = "worried";
-    } else if (switchCount < 5) {
-        character.mood = "angry";
-    } else {
-        character.mood = "despair";
+        if (switchCount < 3) {
+            character.mood = "worried";
+        } else if (switchCount < 5) {
+            character.mood = "angry";
+        } else {
+            character.mood = "despair";
 
-        // Make the face bigger every time you return
-        character.size += character.growth;
+            // Make the face bigger every time you return
+            character.size += character.growth;
+        }
     }
 }
