@@ -24,6 +24,9 @@ let switchCount = 0;
 // Tracks whether the user has left the page
 let hasLeftPage = false;
 
+// Tracks whether the page is ready to detect tab changes
+let isPageReady = false;
+
 // Sets up the canvas
 function setup() {
     createCanvas(500, 500, WEBGL);
@@ -31,6 +34,11 @@ function setup() {
 
     // Detect when the user changes browser tabs
     document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // Wait until the page has loaded before detecting tab changes
+    setTimeout(() => {
+        isPageReady = true;
+    }, 1000);
 }
 
 // Draws the character
@@ -210,6 +218,10 @@ function drawTubeLine(x1, y1, x2, y2) {
 
 // Updates the character when the user returns to the tab
 function handleVisibilityChange() {
+    if (!isPageReady) {
+        return;
+    }
+
     if (document.hidden) {
         hasLeftPage = true;
         return;
