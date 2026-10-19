@@ -21,6 +21,7 @@ let character = {
 // Stores the number of times the user returns to the page
 let switchCount = 0;
 
+// Sets up the canvas
 function setup() {
     createCanvas(500, 500, WEBGL);
     textAlign(CENTER, CENTER);
@@ -29,6 +30,7 @@ function setup() {
     document.addEventListener("visibilitychange", handleVisibilityChange);
 }
 
+// Draws the character
 function draw() {
     drawBackground();
     drawCharacter();
@@ -211,6 +213,9 @@ function handleVisibilityChange() {
     }
 
     switchCount++;
+
+    // Turn the face away from the screen
+    character.rotationY += PI;
 
     if (switchCount < 3) {
         character.mood = "worried";
