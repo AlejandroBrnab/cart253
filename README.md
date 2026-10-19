@@ -69,20 +69,20 @@ Some other links leading to other stuff.
 
 ![screenshot](./public/images/fishy.png)
 
-### Event Prototype 1
-<!-- - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/conditionals/conditionals-prototype-3/index.html)*
-- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/conditionals/conditionals-prototype-3)* -->
+### Word Reveal Game Prototype
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/events/events-prototype-1/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/events/events-prototype-1)*
 
-<!-- ![screenshot](./public/images/fishy.png) -->
+![screenshot](./public/images/words.jpg)
 
-### Event Prototype 2
-<!-- - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/conditionals/conditionals-prototype-3/index.html)*
-- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/conditionals/conditionals-prototype-3)* -->
+### Reaction Time Prototype 
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/events/events-prototype-2/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/events/events-prototype-2)*
 
-<!-- ![screenshot](./public/images/fishy.png) -->
+![screenshot](./public/images/press.jpg)
 
-### Event Prototype 3
-<!-- - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/conditionals/conditionals-prototype-3/index.html)*
-- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/conditionals/conditionals-prototype-3)* -->
+### Tab Switch Prototype
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/events/events-prototype-3/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/events/events-prototype-3)*
 
-<!-- ![screenshot](./public/images/fishy.png) -->
+![screenshot](./public/images/happy.jpg)

@@ -39,6 +39,7 @@ let timer = {
     finished: false
 };
 
+// Sets up the canvas
 function setup() {
     createCanvas(700, 600);
     textFont("sans-serif");

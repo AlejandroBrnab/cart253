@@ -18,6 +18,7 @@ let game = {
     reactionTime: 0
 };
 
+// Sets up the canvas
 function setup() {
     createCanvas(400, 400);
     textAlign(CENTER, CENTER);
