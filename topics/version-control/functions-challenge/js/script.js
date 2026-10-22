@@ -1,6 +1,6 @@
 /**
  * Bouncy Ball Ball Bonanza
- * Agustin, CJ, Alejandro
+ * Agustin, Charbel John, Alejandro, Chloe
  * 
  * The starting point for a ball-bouncing experience of
  * epic proportions!
