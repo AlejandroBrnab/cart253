@@ -1,249 +1,164 @@
 /**
- * Tab Switch Prototype
+ * Hunger Games
  * Name: Alejandro
  *
- * The character changes mood whenever you leave and return to the page
+ * Some "creatures" search for food and move around the canvas.
  */
 
 "use strict";
 
-// Character object
-let character = {
-    mood: "happy", //initial mood
-    x: 0,
-    y: 0,
-    size: 120,
-    growth: 15,
-    rotationX: 0,
-    rotationY: 0
-};
+let creatures = [];
+let foods = [];
 
-// Stores the number of times the user returns to the page
-let switchCount = 0;
-
-// Tracks whether the user has left the page
-let hasLeftPage = false;
-
-// Tracks whether the page is ready to detect tab changes
-let isPageReady = false;
-
-// Sets up the canvas
 function setup() {
-    createCanvas(500, 500, WEBGL);
-    textAlign(CENTER, CENTER);
+  createCanvas(500, 400);
 
-    // Detect when the user changes browser tabs
-    document.addEventListener("visibilitychange", handleVisibilityChange);
+  // Creates four creatures
+  for (let i = 0; i < 4; i++) {
+    creatures.push(createCreature());
+  }
 
-    // Wait until the page has loaded before detecting tab changes
-    setTimeout(() => {
-        isPageReady = true;
-    }, 1000);
+  // Creates eight pieces of food
+  for (let i = 0; i < 8; i++) {
+    foods.push(createFood());
+  }
 }
 
-// Draws the character
 function draw() {
-    drawBackground();
-    drawCharacter();
-}
+  background(35, 55, 45);
 
-// Draws the background
-function drawBackground() {
-    background("#101820");
+  // Make sure there is always food available
+  if (foods.length === 0) {
+    foods.push(createFood());
+  }
 
-    // Adds lighting to make the character look three-dimensional
-    ambientLight(100);
-    directionalLight(255, 255, 255, -0.5, 0.5, -1);
-}
+  // Draws each piece of food
+  for (let i = 0; i < foods.length; i++) {
+    drawFood(foods[i]);
+  }
 
-// Draws the character's face, eyes, and mouth
-function drawCharacter() {
-    push();
-    translate(character.x, character.y, 0);
+  // Updates each creature
+  for (let i = 0; i < creatures.length; i++) {
+    let creature = creatures[i];
 
-    // Rotates the character when the user drags the mouse
-    rotateX(character.rotationX);
-    rotateY(character.rotationY);
+    // Finds the closest piece of food
+    let target = findNearestFood(creature, foods);
 
-    // Scale the entire character as it grows
-    let scaleFactor = character.size / 120;
-    scale(scaleFactor);
+    if (target !== null) {
+      moveCreature(creature, target);
 
-    drawFace();
-    drawEyes();
-    drawMouth();
+      // Checks whether the creature has reached its food
+      if (getDistance(creature, target) < creature.size / 2 + target.size / 2) {
+        let foodIndex = foods.indexOf(target);
 
-    pop();
-}
-
-// Rotates the face while the mouse is held and dragged
-function mouseDragged() {
-    // Only rotate when the mouse is inside the canvas
-    if (mouseX >= 0 && mouseX <= width &&
-        mouseY >= 0 && mouseY <= height) {
-
-        character.rotationY += (mouseX - pmouseX) * 0.01;
-        character.rotationX -= (mouseY - pmouseY) * 0.01;
-    }
-
-    return false;
-}
-
-// Draws the face and changes its color with the mood
-function drawFace() {
-    if (character.mood === "happy") {
-        fill("#7CFC98");
-    } else if (character.mood === "worried") {
-        fill("#FFD166");
-    } else if (character.mood === "despair") {
-        fill("#B8B8C8");
-    } else {
-        fill("#FF7070");
-    }
-
-    noStroke();
-    shininess(25);
-    sphere(60, 32, 24);
-}
-
-// Draws the eyes
-function drawEyes() {
-    if (character.mood === "despair") {
-        // Creepy hollow eyes
-        push();
-        translate(-25, -15, 53);
-        noStroke();
-        fill("#101820");
-        sphere(11, 16, 12);
-        pop();
-
-        push();
-        translate(25, -15, 53);
-        noStroke();
-        fill("#101820");
-        sphere(11, 16, 12);
-        pop();
-
-        // Tiny white pupils
-        push();
-        translate(-25, -12, 63);
-        fill("white");
-        sphere(2.5, 12, 8);
-        pop();
-
-        push();
-        translate(25, -12, 63);
-        fill("white");
-        sphere(2.5, 12, 8);
-        pop();
-    } else {
-        // Normal eyes
-        push();
-        translate(-25, -15, 53);
-        noStroke();
-        fill("#101820");
-        sphere(6, 16, 12);
-        pop();
-
-        push();
-        translate(25, -15, 53);
-        noStroke();
-        fill("#101820");
-        sphere(6, 16, 12);
-        pop();
-
-        if (character.mood === "angry") {
-            // Angry eyebrows
-            drawTubeLine(-38, -35, -14, -25);
-            drawTubeLine(14, -25, 38, -35);
+        // Replaces the food after it is eaten
+        if (foodIndex !== -1) {
+          foods.splice(foodIndex, 1);
+          foods.push(createFood());
         }
+      }
     }
+    drawCreature(creature);
+  }
+  drawInstructions();
 }
 
-// Draws a different mouth for each mood
-function drawMouth() {
-    if (character.mood === "happy") {
-        // Happy curved smile
-        drawSmile(0, 5, 25, 15, false);
-    } else if (character.mood === "worried") {
-        // Worried mouth
-        drawSmile(0, 35, 20, 12, true);
-    } else if (character.mood === "despair") {
-        // Creepy smile
-        drawSmile(0, 15, 28, 20, false);
-        drawTubeLine(-27, 15, -20, 25);
-        drawTubeLine(27, 15, 20, 25);
-    } else {
-        // Straight angry mouth
-        drawTubeLine(-20, 30, 20, 30);
-    }
+// Creates and returns a creature object with randomized properties
+function createCreature() {
+  return {
+    x: random(width),
+    y: random(height),
+    speed: random(0.7, 1.4),
+    size: random(16, 24),
+    color: color(
+      random(100, 180),
+      random(180, 240),
+      random(100, 160)
+    )
+  };
 }
 
-// Draws a curved mouth using small 3D spheres
-function drawSmile(centerX, centerY, radiusX, radiusY, upsideDown) {
-    let startAngle = upsideDown ? PI : 0;
-    let endAngle = upsideDown ? TWO_PI : PI;
-
-    for (let angle = startAngle; angle <= endAngle; angle += 0.15) {
-        let x = centerX + cos(angle) * radiusX;
-        let y = centerY + sin(angle) * radiusY;
-
-        push();
-        translate(x, y, 55);
-        noStroke();
-        fill("#101820");
-        sphere(2.5, 8, 6);
-        pop();
-    }
+// Creates and returns a piece of food at a random position
+function createFood() {
+  return {
+    x: random(15, width - 15),
+    y: random(15, height - 15),
+    size: 10
+  };
 }
 
-// Draws a line using small 3D spheres
-function drawTubeLine(x1, y1, x2, y2) {
-    let distance = dist(x1, y1, x2, y2);
-    let steps = max(2, floor(distance / 3));
+// Finds and returns the closest food to a creature
+function findNearestFood(creature, foods) {
+  let nearestFood = null;
+  let shortestDistance = Infinity;
 
-    for (let i = 0; i <= steps; i++) {
-        let amount = i / steps;
-        let x = lerp(x1, x2, amount);
-        let y = lerp(y1, y2, amount);
+  // Compares the distance to every piece of food
+  for (let i = 0; i < foods.length; i++) {
+    let distance = getDistance(creature, foods[i]);
 
-        push();
-        translate(x, y, 55);
-        noStroke();
-        fill("#101820");
-        sphere(2.5, 8, 6);
-        pop();
+    // Keeps track of the closest piece of food
+    if (distance < shortestDistance) {
+      shortestDistance = distance;
+      nearestFood = foods[i];
     }
+  }
+  return nearestFood;
 }
 
-// Updates the character when the user returns to the tab
-function handleVisibilityChange() {
-    if (!isPageReady) {
-        return;
-    }
+// Moves a creature toward its target
+function moveCreature(creature, target) {
+  let dx = target.x - creature.x;
+  let dy = target.y - creature.y;
+  let distance = getDistance(creature, target);
 
-    if (document.hidden) {
-        hasLeftPage = true;
-        return;
-    }
+  // Avoiding dividing by zero when positions overlap
+  if (distance > 0) {
+    // Normalize the direction and move according to the creature's speed
+    creature.x += (dx / distance) * creature.speed;
+    creature.y += (dy / distance) * creature.speed;
+  }
+}
 
-    // Only count if the user previously left the page
-    if (hasLeftPage) {
-        hasLeftPage = false;
-        switchCount++;
+// Returns the distance between two objects
+function getDistance(a, b) {
+  // Calculate the horizontal and vertical differences
+  let dx = a.x - b.x;
+  let dy = a.y - b.y;
 
-        // Turn the face away from the screen
-        character.rotationY += PI;
+  // Uses the distance formula to calculate the distance between them
+  return sqrt(dx * dx + dy * dy);
+}
 
-        if (switchCount < 3) {
-            character.mood = "worried";
-        } else if (switchCount < 5) {
-            character.mood = "angry";
-        } else {
-            character.mood = "despair";
+// Draws a creature using its properties
+function drawCreature(creature) {
+  noStroke();
+  fill(creature.color);
 
-            // Make the face bigger every time you return
-            character.size += character.growth;
-        }
-    }
+  // Draws the creature's body
+  circle(creature.x, creature.y, creature.size);
+
+  // Draws the eyes
+  fill(20, 35, 25);
+  circle(creature.x - 4, creature.y - 2, 3);
+  circle(creature.x + 4, creature.y - 2, 3);
+}
+
+// Draws a piece of food
+function drawFood(food) {
+  noStroke();
+  fill(255, 190, 80);
+
+  // Draws the food at its stored position
+  circle(food.x, food.y, food.size);
+}
+
+// Displays a short instruction
+function drawInstructions() {
+  fill(255);
+  noStroke();
+  textSize(12);
+  textAlign(LEFT, TOP);
+
+  // Shows the instruction in the top-left corner
+  text("Creatures search for food", 10, 10);
 }
