@@ -1,260 +1,75 @@
 /**
- * Word Reveal Game Prototype
+ * Shape Painter
  * Name: Alejandro
  *
- * Type the animal names shown on the screen.
+ * Click to create shapes on the canvas.
  */
 
 "use strict";
 
-// Animals that will appear on the screen
-let words = [
-    { text: "platypus", x: 100, y: 130, revealed: false },
-    { text: "octopus", x: 350, y: 130, revealed: false },
-    { text: "raccoon", x: 580, y: 145, revealed: false },
-    { text: "hippopotamus", x: 200, y: 210, revealed: false },
-    { text: "chicken", x: 480, y: 200, revealed: false },
-    { text: "chinchilla", x: 100, y: 290, revealed: false },
-    { text: "axolotl", x: 300, y: 275, revealed: false },
-    { text: "chameleon", x: 540, y: 290, revealed: false },
-    { text: "squirrel", x: 170, y: 365, revealed: false },
-    { text: "porcupine", x: 410, y: 350, revealed: false },
-    { text: "orangutan", x: 600, y: 390, revealed: false },
-    { text: "echidna", x: 100, y: 440, revealed: false },
-    { text: "capybara", x: 300, y: 445, revealed: false },
-    { text: "wolverine", x: 500, y: 455, revealed: false },
-    { text: "narwhal", x: 350, y: 510, revealed: false }
-];
+// Array to store all the shapes created by the user
+let shapes = [];
 
-// Stores the player's current input
-let typing = {
-    currentWord: ""
-};
 
-// Stores the timer information
-let timer = {
-    duration: 40,
-    startTime: 0,
-    started: false,
-    finished: false
-};
-
-// Sets up the canvas
 function setup() {
-    createCanvas(700, 600);
-    textFont("sans-serif");
+  // Creates the canvas and set its background color
+  createCanvas(500, 400);
+  background(25, 30, 45);
 }
 
-// Draw the game
 function draw() {
-    if (timer.finished) {
-        drawGameOverScreen();
-    } else {
-        drawBackground();
-        drawTitle();
-        drawInstructions();
-        drawTimer();
-        drawWords();
-        drawTypingArea();
-        drawProgress();
-        checkTimer();
-    }
+  // Draws each shape stored in the array
+  for (let i = 0; i < shapes.length; i++) {
+    drawShape(shapes[i]);
+  }
 }
 
-// Draws the background
-function drawBackground() {
-    background("#d7eff2");
+// Creates a shape when the mouse is clicked
+function mousePressed() {
+  // Creates a shape at the mouse position and store it in the array
+  let newShape = createShape(mouseX, mouseY);
+  shapes.push(newShape);
 }
 
-// Draws the title of the game
-function drawTitle() {
-    fill("#164e63");
-    textSize(24);
-    textAlign(CENTER, CENTER);
-    text("REVEAL THE ANIMALS", width / 2, 30);
+// Creates and returns a shape object with randomized data
+function createShape(x, y) {
+  let shape = {
+    x: x,
+    y: y,
+    size: random(20, 70),
+    type: random(["circle", "square", "triangle"]),
+    color: color(random(100, 255), random(100, 255), random(100, 255))
+  };
+
+  // Returns the new object so it can be stored and drawn
+  return shape;
 }
 
-// Displays the instructions
-function drawInstructions() {
-    fill("#486581");
-    textSize(14);
-    textAlign(CENTER, CENTER);
-    text("Type an animal's name correctly to reveal it", width / 2, 65);
-}
+// Draws a shape using its properties
+function drawShape(shape) {
+  push();
 
-// Displays the remaining time
-function drawTimer() {
-    fill("#164e63");
-    textSize(16);
-    textAlign(CENTER, CENTER);
+  // Uses the color stored in the shape object and remove its outline
+  noStroke();
+  fill(shape.color);
 
-    if (!timer.started) {
-        text("Time: 0:40 (starts when you type)", width / 2, 95);
-    } else if (timer.finished) {
-        text("Time's up!", width / 2, 95);
-    } else {
-        let elapsed = (millis() - timer.startTime) / 1000;
-        let remaining = max(0, timer.duration - floor(elapsed));
-        let minutes = floor(remaining / 60);
-        let seconds = remaining % 60;
-        let timeText = minutes + ":" + nf(seconds, 2);
+  // Checks the shape type to determine which drawing function to use
+  if (shape.type === "circle") {
+    ellipse(shape.x, shape.y, shape.size);
+  } else if (shape.type === "square") {
+    // Centers the square on its position
+    rectMode(CENTER);
+    rect(shape.x, shape.y, shape.size, shape.size);
+  } else if (shape.type === "triangle") {
+    // Calculates half the size to position the triangle's vertices
+    let halfSize = shape.size / 2;
 
-        text("Time: " + timeText, width / 2, 95);
-    }
-}
-
-// Draws each animal name
-function drawWords() {
-    textAlign(CENTER, CENTER);
-    textSize(19);
-
-    for (let word of words) {
-        drawWord(word);
-    }
-}
-
-// Faint words become darker when correctly typed
-function drawWord(word) {
-    if (word.revealed) {
-        fill("#164e63");
-    } else {
-        fill("#9bb9bd");
-    }
-
-    text(word.text, word.x, word.y);
-}
-
-// Displays the player's current input
-function drawTypingArea() {
-    fill("#102a43");
-    textSize(20);
-    textAlign(CENTER, CENTER);
-
-    if (timer.finished) {
-        text("Game over!", width / 2, 550);
-    } else {
-        text("Type: " + typing.currentWord + "_", width / 2, 550);
-    }
-}
-
-// Displays the number of animals revealed
-function drawProgress() {
-    let revealedCount = 0;
-
-    for (let word of words) {
-        if (word.revealed) {
-            revealedCount++;
-        }
-    }
-
-    fill("#486581");
-    textSize(14);
-    text(
-        revealedCount + " / " + words.length + " animals revealed",
-        width / 2,
-        580
+    triangle(
+      shape.x, shape.y - halfSize,
+      shape.x - halfSize, shape.y + halfSize,
+      shape.x + halfSize, shape.y + halfSize
     );
+  }
 
-    if (timer.finished) {
-        fill("#164e63");
-        textSize(16);
-        text(
-            "You revealed " + revealedCount + " animals!",
-            width / 2,
-            520
-        );
-    }
+  pop();
 }
-
-// Displays the game over screen
-function drawGameOverScreen() {
-    drawBackground();
-
-    let revealedCount = 0;
-
-    for (let word of words) {
-        if (word.revealed) {
-            revealedCount++;
-        }
-    }
-
-    fill("#164e63");
-    textAlign(CENTER, CENTER);
-
-    textSize(36);
-    text("TIME'S UP! :]", width / 2, 150);
-
-    textSize(20);
-    text("Your final score", width / 2, 220);
-
-    textSize(48);
-    text(revealedCount + " / " + words.length, width / 2, 290);
-
-    textSize(18);
-    text("animals revealed", width / 2, 330);
-
-    textSize(16);
-
-    fill("#486581");
-    textSize(14);
-    text("Thanks for playing! :D", width / 2, 470);
-}
-
-// Checks whether the timer has run out
-function checkTimer() {
-    if (timer.started && !timer.finished) {
-        let elapsed = (millis() - timer.startTime) / 1000;
-
-        if (elapsed >= timer.duration) {
-            timer.finished = true;
-            typing.currentWord = "";
-        }
-    }
-}
-
-// Adds letters as the player types
-function keyTyped() {
-    if (timer.finished) {
-        return false;
-    }
-
-    if (key.length === 1 && key.match(/[a-zA-Z]/)) {
-        if (!timer.started) {
-            timer.started = true;
-            timer.startTime = millis();
-        }
-
-        typing.currentWord += key.toLowerCase();
-        checkWord();
-    }
-
-    return false;
-}
-
-// Checks whether the typed word matches an animal
-function checkWord() {
-    for (let word of words) {
-        if (
-            typing.currentWord === word.text &&
-            word.revealed === false
-        ) {
-            word.revealed = true;
-            typing.currentWord = "";
-            break;
-        }
-    }
-}
-
-// Handles BACKSPACE using a browser keyboard event
-function handleKeyboard(event) {
-    if (event.key === "Backspace") {
-        event.preventDefault();
-
-        if (!timer.finished) {
-            typing.currentWord = typing.currentWord.slice(0, -1);
-        }
-    }
-}
-
-// Listens for keyboard input
-window.addEventListener("keydown", handleKeyboard);
