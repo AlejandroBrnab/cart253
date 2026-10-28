@@ -1,5 +1,5 @@
 /**
- * Catching Stars
+ * Counting Stars
  * Name: Alejandro
  *
  * Move the paddle with the mouse to catch falling stars.
