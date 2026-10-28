@@ -13,8 +13,8 @@ let foods = [];
 function setup() {
   createCanvas(500, 400);
 
-  // Creates four creatures
-  for (let i = 0; i < 4; i++) {
+  // Creates three creatures
+  for (let i = 0; i < 3; i++) {
     creatures.push(createCreature());
   }
 
