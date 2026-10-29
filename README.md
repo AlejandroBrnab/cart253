@@ -15,91 +15,100 @@ Some other links leading to other stuff.
 - *[Link to see the website](https://alejandrobrnab.github.io/cart253/)* *:D*
 
 ## **Prototypes**
-### Penguin Prototype:
+### **Intructions**
+#### Penguin Prototype:
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/instructions/instructions-prototype-1/index.html)*
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/instructions/instructions-prototype-1)*
 
 ![screenshot](./public/images/penguin.png)
 
-### Abstract Prototype:
+#### Abstract Prototype:
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/instructions/instructions-prototype-2/index.html)*
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/instructions/instructions-prototype-2)*
 
 ![screenshot](./public/images/abstract.png)
 
-### weIrD Prototype:
+#### weIrD Prototype:
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/instructions/instructions-prototype-3/index.html)*
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/instructions/instructions-prototype-3)*
 
 ![screenshot](./public/images/proto3.png)
 
-### Candle Prototype:
+### **Variables**
+
+#### Candle Prototype:
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/variables/variables-prototype-1/index.html)*
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/variables/variables-prototype-1)*
 
-![screenshot](./public/images/candle.png)
+![screenshot](./public/images/candle.jpg)
 
-### Eyes Prototype:
+#### Eyes Prototype:
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/variables/variables-prototype-2/index.html)*
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/variables/variables-prototype-2)*
 
-![screenshot](./public/images/eyes.png)
+![screenshot](./public/images/eyes.jpg)
 
-### Magnets Prototype
+#### Magnets Prototype
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/variables/variables-prototype-3/index.html)*
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/variables/variables-prototype-3)*
 
-![screenshot](./public/images/magnets.png)
+![screenshot](./public/images/magnets.jpg)
 
-### Mystery Box Prototype
+### **Conditionals**
+
+#### Mystery Box Prototype
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/conditionals/conditionals-prototype-1/index.html)*
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/conditionals/conditionals-prototype-1)*
 
 ![screenshot](./public/images/box.png)
 
-### Button Prototype
+#### Button Prototype
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/conditionals/conditionals-prototype-2/index.html)*
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/conditionals/conditionals-prototype-2)*
 
 ![screenshot](./public/images/button.png)
 
-### Fish Prototype
+#### Fish Prototype
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/conditionals/conditionals-prototype-3/index.html)*
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/conditionals/conditionals-prototype-3)*
 
 ![screenshot](./public/images/fishy.png)
 
-### Word Reveal Game Prototype
+### **Events**
+
+#### Word Reveal Game Prototype
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/events/events-prototype-1/index.html)*
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/events/events-prototype-1)*
 
 ![screenshot](./public/images/words.jpg)
 
-### Reaction Time Prototype 
+#### Reaction Time Prototype 
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/events/events-prototype-2/index.html)*
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/events/events-prototype-2)*
 
 ![screenshot](./public/images/press.jpg)
 
-### Tab Switch Prototype
+#### Tab Switch Prototype
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/events/events-prototype-3/index.html)*
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/events/events-prototype-3)*
 
 ![screenshot](./public/images/happy.jpg)
 
-### Shape Painter Prototype
+### **Functions**
+
+#### Shape Painter Prototype
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/functions/functions-prototype-1/index.html)*
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/functions/functions-prototype-1)*
 
 ![screenshot](./public/images/shapes.jpg)
 
-### Counting Stars Prototype
+#### Counting Stars Prototype
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/functions/functions-prototype-2/index.html)*
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/functions/functions-prototype-2)*
 
 ![screenshot](./public/images/stars.jpg)
 
-### Hunger Games Prototype
+#### Hunger Games Prototype
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/functions/functions-prototype-2/index.html)*
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/functions/functions-prototype-2)*
 
