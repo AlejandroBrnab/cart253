@@ -109,7 +109,7 @@ Some other links leading to other stuff.
 ![screenshot](./public/images/stars.jpg)
 
 #### Hunger Games Prototype
-- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/functions/functions-prototype-2/index.html)*
-- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/functions/functions-prototype-2)*
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/functions/functions-prototype-3/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/functions/functions-prototype-3)*
 
 ![screenshot](./public/images/creatures.jpg)
