@@ -54,12 +54,18 @@ function draw() {
         // Replaces the food after it is eaten
         if (foodIndex !== -1) {
           foods.splice(foodIndex, 1);
+
+          // Increases this creature's food counter
+          creature.foodEaten++;
+
           foods.push(createFood());
         }
       }
     }
+
     drawCreature(creature);
   }
+
   drawInstructions();
 }
 
@@ -70,6 +76,7 @@ function createCreature() {
     y: random(height),
     speed: random(0.7, 1.4),
     size: random(16, 24),
+    foodEaten: 0,
     color: color(
       random(100, 180),
       random(180, 240),
@@ -102,6 +109,7 @@ function findNearestFood(creature, foods) {
       nearestFood = foods[i];
     }
   }
+
   return nearestFood;
 }
 
@@ -111,9 +119,9 @@ function moveCreature(creature, target) {
   let dy = target.y - creature.y;
   let distance = getDistance(creature, target);
 
-  // Avoiding dividing by zero when positions overlap
+  // Avoids dividing by zero when positions overlap
   if (distance > 0) {
-    // Normalize the direction and move according to the creature's speed
+    // Moves in the target's direction according to the creature's speed
     creature.x += (dx / distance) * creature.speed;
     creature.y += (dy / distance) * creature.speed;
   }
@@ -121,7 +129,7 @@ function moveCreature(creature, target) {
 
 // Returns the distance between two objects
 function getDistance(a, b) {
-  // Calculate the horizontal and vertical differences
+  // Calculates the horizontal and vertical differences
   let dx = a.x - b.x;
   let dy = a.y - b.y;
 
@@ -129,7 +137,7 @@ function getDistance(a, b) {
   return sqrt(dx * dx + dy * dy);
 }
 
-// Draws a creature using its properties
+// Draws a creature and its food counter
 function drawCreature(creature) {
   noStroke();
   fill(creature.color);
@@ -141,6 +149,16 @@ function drawCreature(creature) {
   fill(20, 35, 25);
   circle(creature.x - 4, creature.y - 2, 3);
   circle(creature.x + 4, creature.y - 2, 3);
+
+  // Displays the number of food pieces this creature has eaten
+  fill(255);
+  textSize(10);
+  textAlign(CENTER, TOP);
+  text(
+    "Food: " + creature.foodEaten,
+    creature.x,
+    creature.y + creature.size / 2 + 4
+  );
 }
 
 // Draws a piece of food
