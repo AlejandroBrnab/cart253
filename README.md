@@ -113,3 +113,11 @@ Some other links leading to other stuff.
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/functions/functions-prototype-3)*
 
 ![screenshot](./public/images/creatures.jpg)
+
+<!-- ### **Functions**
+
+#### Shape Painter Prototype
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/functions/functions-prototype-1/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/functions/functions-prototype-1)*
+
+![screenshot](./public/images/shapes.jpg) -->
