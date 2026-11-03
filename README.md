@@ -3,8 +3,7 @@
 ![banner](./public/images/pa.jpg)
 
 ## **Reflective Journal Link**
-- *[Link to reflective journal](https://github.com/AlejandroBrnab/cart253/blob/main/ReflectiveJournal.md)* *:)*
-- *[Link to reflective journal for latest assignment](https://github.com/AlejandroBrnab/cart253/blob/main/ReflectiveJournal.md#2026-10-29)*
+- *[Link to general reflective journal](https://github.com/AlejandroBrnab/cart253/blob/main/ReflectiveJournal.md)* *:)*
 
 # **Description**
 This is a coursework repo. More projects/prototypes will be added to this website (as links leading to those projects) and this website may change even more in the future.
@@ -16,6 +15,9 @@ Some other links leading to other stuff.
 
 ## **Prototypes**
 ### **Intructions**
+
+- *[Link to reflective journal](https://github.com/AlejandroBrnab/cart253/blob/main/ReflectiveJournal.md#2026-09-23)*
+
 #### Penguin Prototype:
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/instructions/instructions-prototype-1/index.html)*
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/instructions/instructions-prototype-1)*
@@ -35,6 +37,8 @@ Some other links leading to other stuff.
 ![screenshot](./public/images/proto3.png)
 
 ### **Variables**
+
+- *[Link to reflective journal](https://github.com/AlejandroBrnab/cart253/blob/main/ReflectiveJournal.md#2026-09-30)*
 
 #### Candle Prototype:
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/variables/variables-prototype-1/index.html)*
@@ -56,6 +60,8 @@ Some other links leading to other stuff.
 
 ### **Conditionals**
 
+- *[Link to reflective journal](https://github.com/AlejandroBrnab/cart253/blob/main/ReflectiveJournal.md#2026-10-07)*
+
 #### Mystery Box Prototype
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/conditionals/conditionals-prototype-1/index.html)*
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/conditionals/conditionals-prototype-1)*
@@ -75,6 +81,8 @@ Some other links leading to other stuff.
 ![screenshot](./public/images/fishy.png)
 
 ### **Events**
+
+- *[Link to reflective journal](https://github.com/AlejandroBrnab/cart253/blob/main/ReflectiveJournal.md#2026-10-19)*
 
 #### Word Reveal Game Prototype
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/events/events-prototype-1/index.html)*
@@ -96,6 +104,8 @@ Some other links leading to other stuff.
 
 ### **Functions**
 
+- *[Link to reflective journal](https://github.com/AlejandroBrnab/cart253/blob/main/ReflectiveJournal.md#2026-10-29)*
+
 #### Shape Painter Prototype
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/functions/functions-prototype-1/index.html)*
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/functions/functions-prototype-1)*
@@ -115,6 +125,8 @@ Some other links leading to other stuff.
 ![screenshot](./public/images/creatures.jpg)
 
 ### **Arrays**
+
+- *[Link to reflective journal](https://github.com/AlejandroBrnab/cart253/blob/main/ReflectiveJournal.md#2026-11-03)*
 
 #### Ball Pit Prototype
 - *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/arrays/arrays-prototype-1/index.html)*
