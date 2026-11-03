@@ -10,16 +10,6 @@
 // Stores all the fish in the aquarium
 let fish = [];
 
-// Available fish colors
-let fishColors = [
-    "#ff9f68",
-    "#f4d35e",
-    "#ee6c9e",
-    "#80cfa9",
-    "#9b8de5",
-    "#65bde0"
-];
-
 // Sets up the canvas and creates the initial fish
 function setup() {
     createCanvas(700, 500);
@@ -168,7 +158,7 @@ function createFish(x = random(80, width - 80), y = random(110, height - 90)) {
 
         // Gives the fish a random size and color
         size: random(20, 40),
-        color: random(fishColors)
+        color: color(random(100, 256), random(100, 256), random(100, 256))
     };
 
     return newFish;
