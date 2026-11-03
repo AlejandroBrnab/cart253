@@ -1,278 +1,191 @@
 /**
- * Hunger Games
+ * Tiny Aquarium Prototype
  * Name: Alejandro
  *
- * Some "creatures" search for food and move around the canvas.
- * The creature that eats the most food in one minute wins.
+ * Click to add new fish or remove existing ones.
  */
 
 "use strict";
 
-let creatures = [];
-let foods = [];
+// Stores all the fish in the aquarium
+let fish = [];
 
-let gameDuration = 60;
-let startTime;
-let timeLeft;
-let gameOver = false;
-let winners = [];
+// Available fish colors
+let fishColors = [
+    "#ff9f68",
+    "#f4d35e",
+    "#ee6c9e",
+    "#80cfa9",
+    "#9b8de5",
+    "#65bde0"
+];
 
+// Sets up the canvas and creates the initial fish
 function setup() {
-  createCanvas(500, 400);
+    createCanvas(700, 500);
 
-  // Records when the game starts
-  startTime = millis();
-
-  // Creates three creatures
-  for (let i = 0; i < 3; i++) {
-    creatures.push(createCreature());
-  }
-
-  // Creates eight pieces of food
-  for (let i = 0; i < 8; i++) {
-    foods.push(createFood());
-  }
+    // Creates five fish at the beginning
+    for (let i = 0; i < 5; i++) {
+        fish.push(createFish());
+    }
 }
 
+// Draws the aquarium
 function draw() {
-  background(35, 55, 45);
-
-  // Calculates how much time remains
-  timeLeft = max(0, gameDuration - floor((millis() - startTime) / 1000));
-
-  // Ends the game when the timer reaches zero
-  if (timeLeft <= 0 && !gameOver) {
-    gameOver = true;
-    findWinners();
-  }
-
-  // Stops the creatures when the game ends
-  if (gameOver) {
-    drawResults();
-    return;
-  }
-
-  // Make sure there is always food available
-  if (foods.length === 0) {
-    foods.push(createFood());
-  }
-
-  // Draws each piece of food
-  for (let i = 0; i < foods.length; i++) {
-    drawFood(foods[i]);
-  }
-
-  // Updates each creature
-  for (let i = 0; i < creatures.length; i++) {
-    let creature = creatures[i];
-
-    // Finds the closest piece of food
-    let target = findNearestFood(creature, foods);
-
-    if (target !== null) {
-      moveCreature(creature, target);
-
-      // Checks whether the creature has reached its food
-      if (getDistance(creature, target) < creature.size / 2 + target.size / 2) {
-        let foodIndex = foods.indexOf(target);
-
-        // Replaces the food after it is eaten
-        if (foodIndex !== -1) {
-          foods.splice(foodIndex, 1);
-
-          // Increases this creature's food counter
-          creature.foodEaten++;
-
-          foods.push(createFood());
-        }
-      }
-    }
-
-    drawCreature(creature);
-  }
-
-  drawInstructions();
-  drawTimer();
+    drawBackground();
+    drawInstructions();
+    drawFish();
+    drawFishCount();
 }
 
-// Creates and returns a creature object with randomized properties
-function createCreature() {
-  return {
-    x: random(width),
-    y: random(height),
-    speed: random(0.7, 1.4),
-    size: random(16, 24),
-    foodEaten: 0,
-    color: color(
-      random(100, 180),
-      random(180, 240),
-      random(100, 160)
-    )
-  };
+// Draws the aquarium background
+function drawBackground() {
+    background("#b8e5eb");
+
+    // Draws the sandy bottom
+    noStroke();
+    fill("#e8d6a3");
+    rect(0, height - 35, width, 35);
+
+    // Draws some seaweed
+    drawSeaweed(80, height - 35);
+    drawSeaweed(620, height - 35);
+    drawSeaweed(660, height - 35);
 }
 
-// Creates and returns a piece of food at a random position
-function createFood() {
-  return {
-    x: random(15, width - 15),
-    y: random(15, height - 15),
-    size: 10
-  };
+// Draws decorative seaweed
+function drawSeaweed(x, y) {
+    stroke("#579b75");
+    strokeWeight(5);
+    noFill();
+
+    // Draws seaweed stems using connected points
+    beginShape();
+    vertex(x, y);
+    vertex(x - 10, y - 25);
+    vertex(x + 10, y - 50);
+    vertex(x - 8, y - 75);
+    vertex(x, y - 110);
+    endShape();
+
+    noStroke();
 }
 
-// Finds and returns the closest food to a creature
-function findNearestFood(creature, foods) {
-  let nearestFood = null;
-  let shortestDistance = Infinity;
-
-  // Compares the distance to every piece of food
-  for (let i = 0; i < foods.length; i++) {
-    let distance = getDistance(creature, foods[i]);
-
-    // Keeps track of the closest piece of food
-    if (distance < shortestDistance) {
-      shortestDistance = distance;
-      nearestFood = foods[i];
-    }
-  }
-
-  return nearestFood;
-}
-
-// Moves a creature toward its target
-function moveCreature(creature, target) {
-  let dx = target.x - creature.x;
-  let dy = target.y - creature.y;
-  let distance = getDistance(creature, target);
-
-  // Avoids dividing by zero when positions overlap
-  if (distance > 0) {
-    // Moves in the target's direction according to the creature's speed
-    creature.x += (dx / distance) * creature.speed;
-    creature.y += (dy / distance) * creature.speed;
-  }
-}
-
-// Returns the distance between two objects
-function getDistance(a, b) {
-  // Calculates the horizontal and vertical differences
-  let dx = a.x - b.x;
-  let dy = a.y - b.y;
-
-  // Uses the distance formula to calculate the distance between them
-  return sqrt(dx * dx + dy * dy);
-}
-
-// Draws a creature and its food counter
-function drawCreature(creature) {
-  noStroke();
-  fill(creature.color);
-
-  // Draws the creature's body
-  circle(creature.x, creature.y, creature.size);
-
-  // Draws the eyes
-  fill(20, 35, 25);
-  circle(creature.x - 4, creature.y - 2, 3);
-  circle(creature.x + 4, creature.y - 2, 3);
-
-  // Displays the number of food pieces this creature has eaten
-  fill(255);
-  textSize(10);
-  textAlign(CENTER, TOP);
-  text(
-    "Food: " + creature.foodEaten,
-    creature.x,
-    creature.y + creature.size / 2 + 4
-  );
-}
-
-// Draws a piece of food
-function drawFood(food) {
-  noStroke();
-  fill(255, 190, 80);
-
-  // Draws the food at its stored position
-  circle(food.x, food.y, food.size);
-}
-
-// Displays a short instruction
+// Displays the instructions
 function drawInstructions() {
-  fill(255);
-  noStroke();
-  textSize(12);
-  textAlign(LEFT, TOP);
+    fill("#164e63");
+    textSize(22);
+    textAlign(CENTER, CENTER);
+    text("TINY AQUARIUM", width / 2, 25);
 
-  // Shows the instruction in the top-left corner
-  text("Creatures search for food", 10, 10);
+    textSize(13);
+    text("Click to add fish or click a fish to remove it", width / 2, 55);
 }
 
-// Displays the remaining time
-function drawTimer() {
-  fill(255);
-  noStroke();
-  textSize(16);
-  textAlign(RIGHT, TOP);
+// Goes through the fish array
+function drawFish() {
 
-  // Shows the countdown in seconds
-  text("Time: " + timeLeft, width - 10, 10);
-}
-
-// Finds the creature or creatures with the highest food count
-function findWinners() {
-  let highestScore = 0;
-
-  // Finds the highest number of food pieces eaten
-  for (let i = 0; i < creatures.length; i++) {
-    if (creatures[i].foodEaten > highestScore) {
-      highestScore = creatures[i].foodEaten;
+    // Updates and displays every fish
+    for (let fishObject of fish) {
+        moveFish(fishObject);
+        displayFish(fishObject);
     }
-  }
-
-  // Stores every creature that reached the highest score
-  for (let i = 0; i < creatures.length; i++) {
-    if (creatures[i].foodEaten === highestScore) {
-      winners.push(i + 1);
-    }
-  }
 }
 
-// Displays the final results when time runs out
-function drawResults() {
-  fill(255);
-  noStroke();
-  textAlign(CENTER, CENTER);
+// Moves an individual fish
+function moveFish(fishObject) {
 
-  // Displays the game-over message
-  textSize(28);
-  text("Time's Up!", width / 2, 45);
+    // Changes the fish position using its velocity
+    fishObject.x += fishObject.vx;
+    fishObject.y += fishObject.vy;
 
-  // Displays the winner or winners
-  textSize(18);
+    // Makes the fish bounce off the left and right edges
+    if (fishObject.x > width - fishObject.size) {
+        fishObject.vx *= -1;
+    }
 
-  if (winners.length === 1) {
-    text("Creature " + winners[0] + " wins!", width / 2, 90);
-  } else {
-    text("It's a tie!", width / 2, 90);
-    text("Creatures: " + winners.join(", "), width / 2, 115);
-  }
+    if (fishObject.x < fishObject.size) {
+        fishObject.vx *= -1;
+    }
 
-  // Displays each creature's final score
-  textSize(16);
+    // Makes the fish bounce off the top and bottom edges
+    if (fishObject.y > height - 65) {
+        fishObject.vy *= -1;
+    }
 
-  for (let i = 0; i < creatures.length; i++) {
-    let creature = creatures[i];
+    if (fishObject.y < 100) {
+        fishObject.vy *= -1;
+    }
+}
 
-    fill(creature.color);
-    text(
-      "Creature " + (i + 1) + ": " + creature.foodEaten + " food",
-      width / 2,
-      175 + i * 35
+// Draws an individual fish
+function displayFish(fishObject) {
+
+    push();
+
+    // Moves the drawing to the fish position
+    translate(fishObject.x, fishObject.y);
+
+    // Flips the fish depending on its horizontal direction
+    if (fishObject.vx < 0) {
+        scale(-1, 1);
+    }
+
+    noStroke();
+
+    // Draws the fish tail
+    fill(fishObject.color);
+    triangle(
+        -fishObject.size * 0.6, 0,
+        -fishObject.size * 1.2, -fishObject.size * 0.5,
+        -fishObject.size * 1.2, fishObject.size * 0.5
     );
-  }
 
-  // Explains why the game has stopped
-  fill(255);
-  textSize(12);
-  text("The game has ended.", width / 2, 300);
+    // Draws the fish body
+    fill(fishObject.color);
+    ellipse(0, 0, fishObject.size * 1.5, fishObject.size);
+
+    // Draws the fish eye
+    fill("#17324d");
+    circle(fishObject.size * 0.4, -fishObject.size * 0.1, 5);
+
+    pop();
+}
+
+// Creates a new fish object
+function createFish(x = random(80, width - 80), y = random(110, height - 90)) {
+
+    // Determines which direction the fish will swim
+    let direction = random() < 0.5 ? -1 : 1;
+
+    let newFish = {
+        x: x,
+        y: y,
+
+        // Gives the fish its own movement speed
+        vx: random(1, 2.5) * direction,
+        vy: random(-0.8, 0.8),
+
+        // Gives the fish a random size and color
+        size: random(20, 40),
+        color: random(fishColors)
+    };
+
+    return newFish;
+}
+
+// Displays the number of fish in the aquarium
+function drawFishCount() {
+    fill("#164e63");
+    textSize(15);
+    textAlign(LEFT, CENTER);
+
+    text("Fish: " + fish.length, 15, height - 15);
+}
+
+// Handles mouse clicks
+function mousePressed() {
+
+    // Adds a new fish at the mouse position
+    fish.push(createFish(mouseX, mouseY));
 }
