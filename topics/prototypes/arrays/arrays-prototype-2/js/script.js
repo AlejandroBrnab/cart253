@@ -287,24 +287,97 @@ function addMistake(text) {
 
     // Only adds the mistake if it doesn't already exist
     if (!alreadyExists) {
-        mistakes.push(createMistake(text));
+        let newMistake = createMistake(text);
+
+        // Adds the mistake only if a free position was found
+        if (newMistake !== null) {
+            mistakes.push(newMistake);
+        }
     }
 }
 
 // Creates a new mistake object
 function createMistake(text) {
-    let mistake = {
-        text: text,
 
-        // Gives the mistake a random position on the canvas
-        x: random(60, width - 60),
-        y: random(120, 500),
+    textSize(17);
 
-        // The mistake starts unrevealed
-        revealed: false
-    };
+    // Calculates the width of the new word
+    let wordWidth = textWidth(text) + 16;
 
-    return mistake;
+    // Checks if the word is too wide for the canvas
+    if (wordWidth > width - 20) {
+        return null;
+    }
+
+    // Tries different random positions until it finds an available one
+    for (let i = 0; i < 500; i++) {
+
+        let x = random(wordWidth / 2 + 10, width - wordWidth / 2 - 10);
+        let y = random(120, 500);
+
+        // Checks whether the position is available
+        if (isPositionAvailable(x, y, text)) {
+
+            let mistake = {
+                text: text,
+                x: x,
+                y: y,
+                revealed: false
+            };
+
+            return mistake;
+        }
+    }
+
+    // Returns nothing if no available position was found
+    return null;
+}
+
+// Checks whether a new word overlaps with existing words
+function isPositionAvailable(x, y, text) {
+
+    textSize(17);
+
+    // Gets the dimensions of the new word
+    let newWidth = textWidth(text) + 16;
+    let newHeight = 25;
+
+    // Checks the original animal names
+    for (let word of words) {
+
+        textSize(19);
+
+        let existingWidth = textWidth(word.text) + 16;
+        let existingHeight = 27;
+
+        // Checks if the two words overlap
+        let overlapX = abs(x - word.x) < (newWidth + existingWidth) / 2;
+        let overlapY = abs(y - word.y) < (newHeight + existingHeight) / 2;
+
+        if (overlapX && overlapY) {
+            return false;
+        }
+    }
+
+    // Checks the mistakes already added
+    for (let mistake of mistakes) {
+
+        textSize(17);
+
+        let existingWidth = textWidth(mistake.text) + 16;
+        let existingHeight = 25;
+
+        // Checks if the two words overlap
+        let overlapX = abs(x - mistake.x) < (newWidth + existingWidth) / 2;
+        let overlapY = abs(y - mistake.y) < (newHeight + existingHeight) / 2;
+
+        if (overlapX && overlapY) {
+            return false;
+        }
+    }
+
+    // The position is available
+    return true;
 }
 
 // Handles letters, ENTER and BACKSPACE
