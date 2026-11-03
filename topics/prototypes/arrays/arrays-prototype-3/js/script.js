@@ -186,6 +186,26 @@ function drawFishCount() {
 // Handles mouse clicks
 function mousePressed() {
 
-    // Adds a new fish at the mouse position
+    // Goes through the fish array backwards
+    for (let i = fish.length - 1; i >= 0; i--) {
+
+        // Gets the current fish
+        let fishObject = fish[i];
+
+        // Calculates the distance between the mouse and the fish
+        let distanceToFish = dist(mouseX, mouseY, fishObject.x, fishObject.y);
+
+        // Checks if the mouse clicked close enough to the fish
+        if (distanceToFish < fishObject.size) {
+
+            // Removes the fish from the array
+            fish.splice(i, 1);
+
+            // Stops checking because a fish was removed
+            return;
+        }
+    }
+
+    // Creates a new fish if no existing fish was clicked
     fish.push(createFish(mouseX, mouseY));
 }
