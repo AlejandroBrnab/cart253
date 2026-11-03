@@ -1,213 +1,260 @@
 /**
- * Counting Stars
+ * Word Reveal Game Prototype
  * Name: Alejandro
  *
- * Move the paddle with the mouse to catch falling stars.
+ * Type an animal's name and press ENTER to reveal it.
  */
 
 "use strict";
 
-let stars = [];
-let paddle;
-let score = 0;
-let misses = 0;
-let gameOver = false;
+// Animals that will appear on the screen
+let words = [
+    { text: "platypus", x: 100, y: 130, revealed: false },
+    { text: "octopus", x: 350, y: 130, revealed: false },
+    { text: "raccoon", x: 580, y: 145, revealed: false },
+    { text: "hippopotamus", x: 200, y: 210, revealed: false },
+    { text: "chicken", x: 480, y: 200, revealed: false },
+    { text: "chinchilla", x: 100, y: 290, revealed: false },
+    { text: "axolotl", x: 300, y: 275, revealed: false },
+    { text: "chameleon", x: 540, y: 290, revealed: false },
+    { text: "squirrel", x: 170, y: 365, revealed: false },
+    { text: "porcupine", x: 410, y: 350, revealed: false },
+    { text: "orangutan", x: 600, y: 390, revealed: false },
+    { text: "echidna", x: 100, y: 440, revealed: false },
+    { text: "capybara", x: 300, y: 445, revealed: false },
+    { text: "wolverine", x: 500, y: 455, revealed: false },
+    { text: "narwhal", x: 350, y: 510, revealed: false }
+];
 
+// Stores the player's current input
+let typing = {
+    currentWord: ""
+};
+
+// Stores the timer information
+let timer = {
+    duration: 40,
+    startTime: 0,
+    started: false,
+    finished: false
+};
+
+// Sets up the canvas
 function setup() {
-  // Creates the canvas and initializes the paddle
-  createCanvas(500, 400);
-
-  paddle = {
-    x: width / 2,
-    y: height - 30,
-    w: 90,
-    h: 20
-  };
+    createCanvas(700, 600);
+    textFont("sans-serif");
 }
 
+// Draws the game
 function draw() {
-  background(15, 20, 45);
-
-  // Stop updating the game when the player loses
-  if (gameOver) {
-    drawGameOver();
-    return;
-  }
-
-  // Updates and draws each star, starting from the end of the array
-  for (let i = stars.length - 1; i >= 0; i--) {
-    moveStar(stars[i]);
-    drawStar(stars[i]);
-
-    // Removes caught stars and increases the score
-    if (checkCatch(stars[i], paddle)) {
-      stars.splice(i, 1);
-      score++;
-    } else if (stars[i].y > height) {
-      // Counts a miss when a star falls off the screen
-      stars.splice(i, 1);
-      misses++;
-
-      // Ends the game after three missed stars
-      if (misses >= 3) {
-        gameOver = true;
-      }
-    }
-  }
-
-  // Creates a new star every 40 frames
-  if (frameCount % 40 === 0) {
-    stars.push(createStar());
-  }
-
-  // Keeps the paddle within the canvas boundaries
-  paddle.x = constrain(mouseX, paddle.w / 2, width - paddle.w / 2);
-
-  drawPaddle(paddle);
-  drawScore(score);
-  drawMisses(misses);
-}
-
-// Restarts the game when the player clicks the Restart button
-function mousePressed() {
-  if (gameOver) {
-    // Check whether the click is inside the Restart button
-    if (
-      mouseX > width / 2 - 60 &&
-      mouseX < width / 2 + 60 &&
-      mouseY > height / 2 + 25 &&
-      mouseY < height / 2 + 65
-    ) {
-      // Reset the game variables
-      stars = [];
-      score = 0;
-      misses = 0;
-      gameOver = false;
-    }
-  }
-}
-
-// Returns a new star with randomized properties
-function createStar() {
-  return {
-    x: random(15, width - 15),
-    y: -10,
-    size: random(12, 24),
-    speed: random(2, 5)
-  };
-}
-
-// Moves one star according to its speed
-function moveStar(star) {
-  star.y += star.speed;
-}
-
-// Draws one star using its position and size
-function drawStar(star) {
-  push();
-
-  fill(255, 220, 70);
-  noStroke();
-  starShape(star.x, star.y, star.size);
-
-  pop();
-}
-
-// Draws a five-point star using its position and size
-function starShape(x, y, size) {
-  let points = 5;
-  let outerRadius = size;
-  let innerRadius = size / 2;
-  let angle = TWO_PI / points;
-
-  // Begins creating a custom shape
-  beginShape();
-
-  // Alternates between outer and inner vertices
-  for (let i = 0; i < points * 2; i++) {
-    let radius;
-
-    if (i % 2 === 0) {
-      radius = outerRadius;
+    if (timer.finished) {
+        drawGameOverScreen();
     } else {
-      radius = innerRadius;
+        drawBackground();
+        drawTitle();
+        drawInstructions();
+        drawTimer();
+        drawWords();
+        drawTypingArea();
+        drawProgress();
+        checkTimer();
+    }
+}
+
+// Draws the background
+function drawBackground() {
+    background("#d7eff2");
+}
+
+// Draws the title of the game
+function drawTitle() {
+    fill("#164e63");
+    textSize(24);
+    textAlign(CENTER, CENTER);
+    text("REVEAL THE ANIMALS", width / 2, 30);
+}
+
+// Displays the instructions
+function drawInstructions() {
+    fill("#486581");
+    textSize(14);
+    textAlign(CENTER, CENTER);
+    text("Type an animal's name and press ENTER to reveal it", width / 2, 65);
+}
+
+// Displays the remaining time
+function drawTimer() {
+    fill("#164e63");
+    textSize(16);
+    textAlign(CENTER, CENTER);
+
+    if (!timer.started) {
+        text("Time: 0:40 (starts when you type)", width / 2, 95);
+    } else if (timer.finished) {
+        text("Time's up!", width / 2, 95);
+    } else {
+        let elapsed = (millis() - timer.startTime) / 1000;
+        let remaining = max(0, timer.duration - floor(elapsed));
+        let minutes = floor(remaining / 60);
+        let seconds = remaining % 60;
+        let timeText = minutes + ":" + nf(seconds, 2);
+
+        text("Time: " + timeText, width / 2, 95);
+    }
+}
+
+// Draws each animal name
+function drawWords() {
+    textAlign(CENTER, CENTER);
+    textSize(19);
+
+    for (let word of words) {
+        drawWord(word);
+    }
+}
+
+// Faint words become darker when correctly typed
+function drawWord(word) {
+    if (word.revealed) {
+        fill("#164e63");
+    } else {
+        fill("#9bb9bd");
     }
 
-    // Calculates the position of each vertex
-    let a = i * angle / 2 - HALF_PI;
-    vertex(x + cos(a) * radius, y + sin(a) * radius);
-  }
-
-  // Finishes and closes the custom shape
-  endShape(CLOSE);
+    text(word.text, word.x, word.y);
 }
 
-// Returns true if the star overlaps the paddle
-function checkCatch(star, paddle) {
-  // Calculates the distance between the star and paddle centers
-  let horizontalDistance = abs(star.x - paddle.x);
-  let verticalDistance = abs(star.y - paddle.y);
+// Displays the player's current input
+function drawTypingArea() {
+    fill("#102a43");
+    textSize(20);
+    textAlign(CENTER, CENTER);
 
-  // Checks whether the star is close enough to the paddle
-  return (
-    horizontalDistance < paddle.w / 2 + star.size / 2 &&
-    verticalDistance < paddle.h / 2 + star.size / 2
-  );
+    if (timer.finished) {
+        text("Game over!", width / 2, 550);
+    } else {
+        text("Type: " + typing.currentWord + "_", width / 2, 550);
+    }
 }
 
-// Draws the paddle
-function drawPaddle(paddle) {
-  push();
+// Displays the number of animals revealed
+function drawProgress() {
+    let revealedCount = 0;
 
-  rectMode(CENTER);
-  noStroke();
-  fill(80, 200, 160);
-  rect(paddle.x, paddle.y, paddle.w, paddle.h, 5);
+    for (let word of words) {
+        if (word.revealed) {
+            revealedCount++;
+        }
+    }
 
-  pop();
+    fill("#486581");
+    textSize(14);
+    text(
+        revealedCount + " / " + words.length + " animals revealed",
+        width / 2,
+        580
+    );
+
+    if (timer.finished) {
+        fill("#164e63");
+        textSize(16);
+        text(
+            "You revealed " + revealedCount + " animals!",
+            width / 2,
+            520
+        );
+    }
 }
 
-// Displays the current score
-function drawScore(score) {
-  fill(255);
-  noStroke();
-  textSize(20);
-  textAlign(LEFT, TOP);
-  text("Score: " + score, 15, 15);
+// Displays the game over screen
+function drawGameOverScreen() {
+    drawBackground();
+
+    let revealedCount = 0;
+
+    for (let word of words) {
+        if (word.revealed) {
+            revealedCount++;
+        }
+    }
+
+    fill("#164e63");
+    textAlign(CENTER, CENTER);
+
+    textSize(36);
+    text("TIME'S UP! :]", width / 2, 150);
+
+    textSize(20);
+    text("Your final score", width / 2, 220);
+
+    textSize(48);
+    text(revealedCount + " / " + words.length, width / 2, 290);
+
+    textSize(18);
+    text("animals revealed", width / 2, 330);
+
+    fill("#486581");
+    textSize(14);
+    text("Thanks for playing! :D", width / 2, 470);
 }
 
-// Displays how many stars the player has missed
-function drawMisses(misses) {
-  fill(255);
-  noStroke();
-  textSize(16);
-  textAlign(RIGHT, TOP);
-  text("Misses: " + misses + " / 3", width - 15, 15);
+// Checks whether the timer has run out
+function checkTimer() {
+    if (timer.started && !timer.finished) {
+        let elapsed = (millis() - timer.startTime) / 1000;
+
+        if (elapsed >= timer.duration) {
+            timer.finished = true;
+            typing.currentWord = "";
+        }
+    }
 }
 
-// Displays the game-over message and Restart button
-function drawGameOver() {
-  // Darken the background behind the message
-  fill(0, 0, 0, 180);
-  noStroke();
-  rectMode(CORNER);
-  rect(0, 0, width, height);
 
-  // Display the game-over message and final score
-  fill(255);
-  textAlign(CENTER, CENTER);
-  textSize(32);
-  text("Game Over!", width / 2, height / 2 - 45);
 
-  textSize(18);
-  text("Final Score: " + score, width / 2, height / 2 - 10);
+// Checks whether the typed word matches an animal
+function checkWord() {
+    for (let word of words) {
+        if (
+            typing.currentWord === word.text &&
+            word.revealed === false
+        ) {
+            word.revealed = true;
+            typing.currentWord = "";
+            break;
+        }
+    }
+}
 
-  // Draw the Restart button
-  rectMode(CENTER);
-  fill(80, 200, 160);
-  rect(width / 2, height / 2 + 45, 120, 40, 8);
+// Handles letters, ENTER and BACKSPACE
+function keyPressed(event) {
+    if (timer.finished) {
+        return false;
+    }
 
-  fill(15, 20, 45);
-  textSize(18);
-  text("Restart", width / 2, height / 2 + 45);
+    // Submits the current word when ENTER is pressed
+    if (keyCode === ENTER || keyCode === 13) {
+        checkWord();
+        return false;
+    }
+
+    // Removes the last letter when BACKSPACE is pressed
+    if (keyCode === BACKSPACE || keyCode === 8) {
+        typing.currentWord = typing.currentWord.slice(0, -1);
+        return false;
+    }
+
+    // Adds letters as the player types
+    if (key.length === 1 && key.match(/[a-zA-Z]/)) {
+
+        // Starts the timer when the player types for the first time
+        if (!timer.started) {
+            timer.started = true;
+            timer.startTime = millis();
+        }
+
+        typing.currentWord += key.toLowerCase();
+    }
+
+    return false;
 }
