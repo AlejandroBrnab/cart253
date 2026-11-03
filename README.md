@@ -114,10 +114,22 @@ Some other links leading to other stuff.
 
 ![screenshot](./public/images/creatures.jpg)
 
-<!-- ### **Functions**
+### **Arrays**
 
-#### Shape Painter Prototype
-- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/functions/functions-prototype-1/index.html)*
-- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/functions/functions-prototype-1)*
+#### Ball Pit Prototype
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/arrays/arrays-prototype-1/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/arrays/arrays-prototype-1)*
 
-![screenshot](./public/images/shapes.jpg) -->
+![screenshot](./public/images/balls.jpg)
+
+#### New World Reveal Game Prototype
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/arrays/arrays-prototype-2/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/arrays/arrays-prototype-2)*
+
+![screenshot](./public/images/palabras.jpg)
+
+#### Tiny Aquarium Prototype
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/arrays/arrays-prototype-3/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/arrays/arrays-prototype-3)*
+
+![screenshot](./public/images/fish.jpg)
