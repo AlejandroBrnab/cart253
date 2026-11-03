@@ -30,7 +30,7 @@ For these prototypes I did not work as much as I wanted to. Mostly because I had
 
 ![screenshot](./public/images/creatures.jpg)
 
-## 2026-10-03
+## 2026-11-03
 For this week's prototypes I was a bit out of ideas in what to do. For the first prototype I took inspiration from the arrays challenge that we did last week in class, and I actually liked what I did in the prototype. I would say that it is simple, but yet entertaining. For the second prototype I decided to use the Word Reveal Game Prototype from a few weeks ago, but this time I added arrays to make it different. Now the game kind of punishes the player when typing a word incorrectly and it adds it to the screen, so the player needs to finish the words that were already in the screen, plus the words they type wrong. I like this prototype because it may give this feeling of frustration to the player if they keep messing up the spelling. I think it adds more to the interaction factor of the game. For the third prototype I also did something really simple, yet entertaining. It is pretty much similar to the first prototype, but still I think it is nice. I know I had some previous prototypes from past weeks that I am sure I could have developed more with arrays, but I am not going to lie, I did not feel the inspiration to develop any other prototype besides the Word Reveal Game. With all that said, I would still re visit this prototype of the Word Reveal Game because I may have some other ideas like making the words disappear from time to time or anything else more random to give more of a challenge to the player (and possibly some frustration in the way).
 
 ![screenshot](./public/images/balls.jpg)
