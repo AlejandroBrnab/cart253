@@ -2,7 +2,7 @@
  * Word Reveal Game Prototype
  * Name: Alejandro
  *
- * Type an animal's name and press ENTER to reveal it.
+ * Type an animal's name and press ENTER to reveal it. Incorrect words are added to the game.
  */
 
 "use strict";
@@ -25,6 +25,9 @@ let words = [
     { text: "wolverine", x: 500, y: 455, revealed: false },
     { text: "narwhal", x: 350, y: 510, revealed: false }
 ];
+
+// Stores the incorrect words typed by the player
+let mistakes = [];
 
 // Stores the player's current input
 let typing = {
@@ -55,6 +58,7 @@ function draw() {
         drawInstructions();
         drawTimer();
         drawWords();
+        drawMistakes();
         drawTypingArea();
         drawProgress();
         checkTimer();
@@ -78,7 +82,6 @@ function drawTitle() {
 function drawInstructions() {
     fill("#486581");
     textSize(14);
-    textAlign(CENTER, CENTER);
     text("Type an animal's name and press ENTER to reveal it", width / 2, 65);
 }
 
@@ -108,17 +111,29 @@ function drawWords() {
     textAlign(CENTER, CENTER);
     textSize(19);
 
+    // Goes through every animal in the array
     for (let word of words) {
-        drawWord(word);
+        drawWord(word, "#9bb9bd");
     }
 }
 
-// Faint words become darker when correctly typed
-function drawWord(word) {
+// Draws the incorrect words added by the player
+function drawMistakes() {
+    textAlign(CENTER, CENTER);
+    textSize(17);
+
+    // Goes through every mistake in the array
+    for (let mistake of mistakes) {
+        drawWord(mistake, "#d97757");
+    }
+}
+
+// Draws an individual word
+function drawWord(word, hiddenColor) {
     if (word.revealed) {
         fill("#164e63");
     } else {
-        fill("#9bb9bd");
+        fill(hiddenColor);
     }
 
     text(word.text, word.x, word.y);
@@ -137,33 +152,36 @@ function drawTypingArea() {
     }
 }
 
-// Displays the number of animals revealed
+// Displays the number of words revealed
 function drawProgress() {
     let revealedCount = 0;
 
+    // Counts the revealed animal names
     for (let word of words) {
         if (word.revealed) {
             revealedCount++;
         }
     }
 
+    // Counts the revealed mistakes
+    for (let mistake of mistakes) {
+        if (mistake.revealed) {
+            revealedCount++;
+        }
+    }
+
+    // Calculates the total number of words
+    let totalWords = words.length + mistakes.length;
+
     fill("#486581");
     textSize(14);
+    textAlign(CENTER, CENTER);
+
     text(
-        revealedCount + " / " + words.length + " animals revealed",
+        revealedCount + " / " + totalWords + " words revealed",
         width / 2,
         580
     );
-
-    if (timer.finished) {
-        fill("#164e63");
-        textSize(16);
-        text(
-            "You revealed " + revealedCount + " animals!",
-            width / 2,
-            520
-        );
-    }
 }
 
 // Displays the game over screen
@@ -172,11 +190,21 @@ function drawGameOverScreen() {
 
     let revealedCount = 0;
 
+    // Counts the revealed animal names
     for (let word of words) {
         if (word.revealed) {
             revealedCount++;
         }
     }
+
+    // Counts the revealed mistakes
+    for (let mistake of mistakes) {
+        if (mistake.revealed) {
+            revealedCount++;
+        }
+    }
+
+    let totalWords = words.length + mistakes.length;
 
     fill("#164e63");
     textAlign(CENTER, CENTER);
@@ -188,10 +216,10 @@ function drawGameOverScreen() {
     text("Your final score", width / 2, 220);
 
     textSize(48);
-    text(revealedCount + " / " + words.length, width / 2, 290);
+    text(revealedCount + " / " + totalWords, width / 2, 290);
 
     textSize(18);
-    text("animals revealed", width / 2, 330);
+    text("words revealed", width / 2, 330);
 
     fill("#486581");
     textSize(14);
@@ -210,20 +238,73 @@ function checkTimer() {
     }
 }
 
-
-
-// Checks whether the typed word matches an animal
+// Checks whether the submitted word matches an animal or a mistake
 function checkWord() {
+    if (typing.currentWord === "") {
+        return;
+    }
+
+    let foundWord = false;
+
+    // Checks the original animal names
     for (let word of words) {
-        if (
-            typing.currentWord === word.text &&
-            word.revealed === false
-        ) {
+        if (typing.currentWord === word.text) {
             word.revealed = true;
-            typing.currentWord = "";
+            foundWord = true;
             break;
         }
     }
+
+    // Checks the mistakes already added
+    for (let mistake of mistakes) {
+        if (typing.currentWord === mistake.text) {
+            mistake.revealed = true;
+            foundWord = true;
+            break;
+        }
+    }
+
+    // Adds the submitted word as a mistake if it wasn't found
+    if (!foundWord) {
+        addMistake(typing.currentWord);
+    }
+
+    // Clears the typing area after submitting
+    typing.currentWord = "";
+}
+
+// Adds a new mistake to the mistakes array
+function addMistake(text) {
+    let alreadyExists = false;
+
+    // Checks whether this mistake already exists
+    for (let mistake of mistakes) {
+        if (mistake.text === text) {
+            alreadyExists = true;
+            break;
+        }
+    }
+
+    // Only adds the mistake if it doesn't already exist
+    if (!alreadyExists) {
+        mistakes.push(createMistake(text));
+    }
+}
+
+// Creates a new mistake object
+function createMistake(text) {
+    let mistake = {
+        text: text,
+
+        // Gives the mistake a random position on the canvas
+        x: random(60, width - 60),
+        y: random(120, 500),
+
+        // The mistake starts unrevealed
+        revealed: false
+    };
+
+    return mistake;
 }
 
 // Handles letters, ENTER and BACKSPACE
