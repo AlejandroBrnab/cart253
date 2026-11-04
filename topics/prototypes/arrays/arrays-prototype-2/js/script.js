@@ -10,18 +10,18 @@
 // Animals that will appear on the screen
 let words = [
     { text: "platypus", x: 100, y: 130, revealed: false },
-    { text: "octopus", x: 350, y: 130, revealed: false },
+    { text: "kookaburra", x: 350, y: 130, revealed: false },
     { text: "raccoon", x: 580, y: 145, revealed: false },
     { text: "hippopotamus", x: 200, y: 210, revealed: false },
-    { text: "chicken", x: 480, y: 200, revealed: false },
+    { text: "cockroach", x: 480, y: 200, revealed: false },
     { text: "chinchilla", x: 100, y: 290, revealed: false },
     { text: "axolotl", x: 300, y: 275, revealed: false },
-    { text: "chameleon", x: 540, y: 290, revealed: false },
+    { text: "hedgehog", x: 540, y: 290, revealed: false },
     { text: "squirrel", x: 170, y: 365, revealed: false },
-    { text: "porcupine", x: 410, y: 350, revealed: false },
-    { text: "orangutan", x: 600, y: 390, revealed: false },
+    { text: "chimpanzee", x: 410, y: 350, revealed: false },
+    { text: "kinkajou", x: 600, y: 390, revealed: false },
     { text: "echidna", x: 100, y: 440, revealed: false },
-    { text: "capybara", x: 300, y: 445, revealed: false },
+    { text: "grasshopper", x: 300, y: 445, revealed: false },
     { text: "wolverine", x: 500, y: 455, revealed: false },
     { text: "narwhal", x: 350, y: 510, revealed: false }
 ];
