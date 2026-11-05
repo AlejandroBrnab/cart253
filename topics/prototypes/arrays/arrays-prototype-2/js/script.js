@@ -36,7 +36,11 @@ let typing = {
 
 // Stores the timer information
 let timer = {
+<<<<<<< HEAD
+    duration: 45,
+=======
     duration: 40,
+>>>>>>> parent of c5166c5 (array proto 2: changed time to 60 seconds)
     startTime: 0,
     started: false,
     finished: false
@@ -92,7 +96,7 @@ function drawTimer() {
     textAlign(CENTER, CENTER);
 
     if (!timer.started) {
-        text("Time: 0:40 (starts when you type)", width / 2, 95);
+        text("Time: 0:45 (starts when you type)", width / 2, 95);
     } else if (timer.finished) {
         text("Time's up!", width / 2, 95);
     } else {
