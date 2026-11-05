@@ -36,7 +36,7 @@ let typing = {
 
 // Stores the timer information
 let timer = {
-    duration: 60,
+    duration: 40,
     startTime: 0,
     started: false,
     finished: false
@@ -92,7 +92,7 @@ function drawTimer() {
     textAlign(CENTER, CENTER);
 
     if (!timer.started) {
-        text("Time: 0:60 (starts when you type)", width / 2, 95);
+        text("Time: 0:40 (starts when you type)", width / 2, 95);
     } else if (timer.finished) {
         text("Time's up!", width / 2, 95);
     } else {
