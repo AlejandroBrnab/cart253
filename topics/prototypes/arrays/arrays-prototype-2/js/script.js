@@ -36,7 +36,7 @@ let typing = {
 
 // Stores the timer information
 let timer = {
-    duration: 40,
+    duration: 60,
     startTime: 0,
     started: false,
     finished: false
