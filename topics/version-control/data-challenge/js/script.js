@@ -18,12 +18,14 @@ let lang = "fr";
 
 // Starts with the instruction
 let carName = "Click to generate a car name.";
+let dinosaurName = undefined;
 
 /**
  * Load the car and dinosaur data
  */
 async function preload() {
-
+    carData = await loadJSON("./assets/data/cars.json");
+    dinosaurData = await loadJSON("./assets/data/dinosaurs.json")
 }
 
 /**
@@ -45,7 +47,7 @@ function draw() {
     fill("pink");
     textAlign(CENTER, CENTER);
     textSize(32);
-    text(carName, width / 2, height / 2);
+    text(carName + " " + dinosaurName, width / 2, height / 2);
     pop();
 }
 
@@ -53,5 +55,6 @@ function draw() {
  * Generate a new car name
  */
 function mousePressed() {
-
+    carName = carData.cars[0];
+    dinosaurName = dinosaurData.dinosaurs[0];
 }
