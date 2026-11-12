@@ -1,0 +1,9 @@
+{
+    "description": "Data about localization",
+    "instructions": 
+        {
+            "en": "Click to generate a car name.",
+            "fr": "Appuyez pour générer une voiture."
+        }
+    
+}

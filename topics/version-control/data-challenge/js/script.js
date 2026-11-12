@@ -14,7 +14,7 @@
 let carData = undefined;
 let dinosaurData = undefined;
 let langData = undefined;
-let lang = "fr";
+let lang = "en";
 
 // Starts with the instruction
 let carName = "Click to generate a car name.";
@@ -25,7 +25,8 @@ let dinosaurName = "";
  */
 async function preload() {
     carData = await loadJSON("./assets/data/cars.json");
-    dinosaurData = await loadJSON("./assets/data/dinosaurs.json")
+    dinosaurData = await loadJSON("./assets/data/dinosaurs.json");
+    langData = await loadJSON("./assets/data/lang.json");
 }
 
 /**
@@ -35,6 +36,14 @@ async function setup() {
     createCanvas(600, 400);
     
     await preload();
+    
+    if (lang === "fr") {
+    carName = langData.instructions.fr;
+    }
+
+    else if (lang === "en") {
+    carName = langData.instructions.en;
+}
 }
 
 /**
