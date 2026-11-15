@@ -7,24 +7,11 @@
 
 "use strict";
 
+// Stores the animal data loaded from the JSON file
+let animalData = undefined;
+
 // Animals that will appear on the screen
-let words = [
-    { text: "platypus", x: 100, y: 130, revealed: false },
-    { text: "kookaburra", x: 350, y: 130, revealed: false },
-    { text: "raccoon", x: 580, y: 145, revealed: false },
-    { text: "hippopotamus", x: 200, y: 210, revealed: false },
-    { text: "cockroach", x: 480, y: 200, revealed: false },
-    { text: "chinchilla", x: 100, y: 290, revealed: false },
-    { text: "axolotl", x: 300, y: 275, revealed: false },
-    { text: "hedgehog", x: 540, y: 290, revealed: false },
-    { text: "squirrel", x: 170, y: 365, revealed: false },
-    { text: "chimpanzee", x: 410, y: 350, revealed: false },
-    { text: "kinkajou", x: 600, y: 390, revealed: false },
-    { text: "echidna", x: 100, y: 440, revealed: false },
-    { text: "grasshopper", x: 300, y: 445, revealed: false },
-    { text: "wolverine", x: 500, y: 455, revealed: false },
-    { text: "narwhal", x: 350, y: 510, revealed: false }
-];
+let words = [];
 
 // Stores the incorrect words typed by the player
 let mistakes = [];
@@ -42,13 +29,37 @@ let timer = {
     finished: false
 };
 
-// Sets up the canvas
-function setup() {
-    createCanvas(700, 600);
-    textFont("sans-serif");
+/**
+ * Loads the animal data from the JSON file
+ */
+async function preload() {
+    animalData = await loadJSON("./data/animals.json");
 }
 
-// Draws the game
+/**
+ * Sets up the canvas and creates the animal words
+ */
+async function setup() {
+    createCanvas(900, 700);
+    textFont("sans-serif");
+
+    // Waits for the JSON data to load
+    await preload();
+
+    // Creates each animal at a random available position
+    for (let animal of animalData.animals) {
+        let newWord = createWord(animal);
+
+        // Adds the word only if an available position was found
+        if (newWord !== null) {
+            words.push(newWord);
+        }
+    }
+}
+
+/**
+ * Draws the game
+ */
 function draw() {
     if (timer.finished) {
         drawGameOverScreen();
@@ -65,12 +76,16 @@ function draw() {
     }
 }
 
-// Draws the background
+/**
+ * Draws the background
+ */
 function drawBackground() {
     background("#d7eff2");
 }
 
-// Draws the title of the game
+/**
+ * Draws the title of the game
+ */
 function drawTitle() {
     fill("#164e63");
     textSize(24);
@@ -78,14 +93,22 @@ function drawTitle() {
     text("REVEAL THE ANIMALS", width / 2, 30);
 }
 
-// Displays the instructions
+/**
+ * Displays the instructions
+ */
 function drawInstructions() {
     fill("#486581");
     textSize(14);
-    text("Type an animal's name and press ENTER to reveal it", width / 2, 65);
+    text(
+        "Type an animal's name and press ENTER to reveal it",
+        width / 2,
+        65
+    );
 }
 
-// Displays the remaining time
+/**
+ * Displays the remaining time
+ */
 function drawTimer() {
     fill("#164e63");
     textSize(16);
@@ -98,15 +121,19 @@ function drawTimer() {
     } else {
         let elapsed = (millis() - timer.startTime) / 1000;
         let remaining = max(0, timer.duration - floor(elapsed));
+
         let minutes = floor(remaining / 60);
         let seconds = remaining % 60;
+
         let timeText = minutes + ":" + nf(seconds, 2);
 
         text("Time: " + timeText, width / 2, 95);
     }
 }
 
-// Draws each animal name
+/**
+ * Draws each animal name
+ */
 function drawWords() {
     textAlign(CENTER, CENTER);
     textSize(19);
@@ -117,7 +144,9 @@ function drawWords() {
     }
 }
 
-// Draws the incorrect words added by the player
+/**
+ * Draws the incorrect words added by the player
+ */
 function drawMistakes() {
     textAlign(CENTER, CENTER);
     textSize(17);
@@ -128,7 +157,9 @@ function drawMistakes() {
     }
 }
 
-// Draws an individual word
+/**
+ * Draws an individual word
+ */
 function drawWord(word, hiddenColor) {
     if (word.revealed) {
         fill("#164e63");
@@ -139,20 +170,24 @@ function drawWord(word, hiddenColor) {
     text(word.text, word.x, word.y);
 }
 
-// Displays the player's current input
+/**
+ * Displays the player's current input
+ */
 function drawTypingArea() {
     fill("#102a43");
     textSize(20);
     textAlign(CENTER, CENTER);
 
     if (timer.finished) {
-        text("Game over!", width / 2, 550);
+        text("Game over!", width / 2, 650);
     } else {
-        text("Type: " + typing.currentWord + "_", width / 2, 550);
+        text("Type: " + typing.currentWord + "_", width / 2, 650);
     }
 }
 
-// Displays the number of words revealed
+/**
+ * Displays the number of words revealed
+ */
 function drawProgress() {
     let revealedCount = 0;
 
@@ -180,11 +215,13 @@ function drawProgress() {
     text(
         revealedCount + " / " + totalWords + " words revealed",
         width / 2,
-        580
+        680
     );
 }
 
-// Displays the game over screen
+/**
+ * Displays the game over screen
+ */
 function drawGameOverScreen() {
     drawBackground();
 
@@ -210,23 +247,25 @@ function drawGameOverScreen() {
     textAlign(CENTER, CENTER);
 
     textSize(36);
-    text("TIME'S UP! :]", width / 2, 150);
+    text("TIME'S UP! :]", width / 2, 180);
 
     textSize(20);
-    text("Your final score", width / 2, 220);
+    text("Your final score", width / 2, 250);
 
     textSize(48);
-    text(revealedCount + " / " + totalWords, width / 2, 290);
+    text(revealedCount + " / " + totalWords, width / 2, 320);
 
     textSize(18);
-    text("words revealed", width / 2, 330);
+    text("words revealed", width / 2, 360);
 
     fill("#486581");
     textSize(14);
-    text("Thanks for playing! :D", width / 2, 470);
+    text("Thanks for playing! :D", width / 2, 500);
 }
 
-// Checks whether the timer has run out
+/**
+ * Checks whether the timer has run out
+ */
 function checkTimer() {
     if (timer.started && !timer.finished) {
         let elapsed = (millis() - timer.startTime) / 1000;
@@ -238,7 +277,9 @@ function checkTimer() {
     }
 }
 
-// Checks whether the submitted word matches an animal or a mistake
+/**
+ * Checks whether the submitted word matches an animal or a mistake
+ */
 function checkWord() {
     if (typing.currentWord === "") {
         return;
@@ -273,7 +314,9 @@ function checkWord() {
     typing.currentWord = "";
 }
 
-// Adds a new mistake to the mistakes array
+/**
+ * Adds a new mistake to the mistakes array
+ */
 function addMistake(text) {
     let alreadyExists = false;
 
@@ -296,7 +339,9 @@ function addMistake(text) {
     }
 }
 
-// Creates a new mistake object
+/**
+ * Creates a new mistake object
+ */
 function createMistake(text) {
 
     textSize(17);
@@ -313,7 +358,7 @@ function createMistake(text) {
     for (let i = 0; i < 500; i++) {
 
         let x = random(wordWidth / 2 + 10, width - wordWidth / 2 - 10);
-        let y = random(120, 500);
+        let y = random(120, 600);
 
         // Checks whether the position is available
         if (isPositionAvailable(x, y, text)) {
@@ -333,7 +378,48 @@ function createMistake(text) {
     return null;
 }
 
-// Checks whether a new word overlaps with existing words
+/**
+ * Creates a new animal word at a random available position
+ */
+function createWord(text) {
+
+    textSize(19);
+
+    // Calculates the width of the new word
+    let wordWidth = textWidth(text) + 16;
+
+    // Checks if the word is too wide for the canvas
+    if (wordWidth > width - 20) {
+        return null;
+    }
+
+    // Tries different random positions until it finds an available one
+    for (let i = 0; i < 500; i++) {
+
+        let x = random(wordWidth / 2 + 10, width - wordWidth / 2 - 10);
+        let y = random(120, 600);
+
+        // Checks whether the position is available
+        if (isPositionAvailable(x, y, text)) {
+
+            let word = {
+                text: text,
+                x: x,
+                y: y,
+                revealed: false
+            };
+
+            return word;
+        }
+    }
+
+    // Returns nothing if no available position was found
+    return null;
+}
+
+/**
+ * Checks whether a new word overlaps with existing words
+ */
 function isPositionAvailable(x, y, text) {
 
     textSize(17);
@@ -350,9 +436,14 @@ function isPositionAvailable(x, y, text) {
         let existingWidth = textWidth(word.text) + 16;
         let existingHeight = 27;
 
-        // Checks if the two words overlap
-        let overlapX = abs(x - word.x) < (newWidth + existingWidth) / 2;
-        let overlapY = abs(y - word.y) < (newHeight + existingHeight) / 2;
+        // Checks whether the two words overlap
+        let overlapX =
+            abs(x - word.x) <
+            (newWidth + existingWidth) / 2;
+
+        let overlapY =
+            abs(y - word.y) <
+            (newHeight + existingHeight) / 2;
 
         if (overlapX && overlapY) {
             return false;
@@ -367,9 +458,14 @@ function isPositionAvailable(x, y, text) {
         let existingWidth = textWidth(mistake.text) + 16;
         let existingHeight = 25;
 
-        // Checks if the two words overlap
-        let overlapX = abs(x - mistake.x) < (newWidth + existingWidth) / 2;
-        let overlapY = abs(y - mistake.y) < (newHeight + existingHeight) / 2;
+        // Checks whether the two words overlap
+        let overlapX =
+            abs(x - mistake.x) <
+            (newWidth + existingWidth) / 2;
+
+        let overlapY =
+            abs(y - mistake.y) <
+            (newHeight + existingHeight) / 2;
 
         if (overlapX && overlapY) {
             return false;
@@ -380,8 +476,11 @@ function isPositionAvailable(x, y, text) {
     return true;
 }
 
-// Handles letters, ENTER and BACKSPACE
+/**
+ * Handles letters, ENTER and BACKSPACE
+ */
 function keyPressed(event) {
+
     if (timer.finished) {
         return false;
     }
