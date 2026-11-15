@@ -40,7 +40,7 @@ async function preload() {
  * Sets up the canvas and creates the animal words
  */
 async function setup() {
-    createCanvas(900, 700);
+    createCanvas(1500, 700);
     textFont("sans-serif");
 
     // Waits for the JSON data to load
@@ -72,7 +72,9 @@ function draw() {
         drawMistakes();
         drawTypingArea();
         drawProgress();
+
         checkTimer();
+        checkWinCondition();
     }
 }
 
@@ -247,7 +249,11 @@ function drawGameOverScreen() {
     textAlign(CENTER, CENTER);
 
     textSize(36);
-    text("TIME'S UP! :]", width / 2, 180);
+    if (revealedCount === totalWords) {
+    text("YOU WON! :D", width / 2, 180);
+    } else {
+        text("TIME'S UP! :]", width / 2, 180);
+    }
 
     textSize(20);
     text("Your final score", width / 2, 250);
@@ -274,6 +280,36 @@ function checkTimer() {
             timer.finished = true;
             typing.currentWord = "";
         }
+    }
+}
+
+/**
+ * Checks whether all words have been revealed
+ */
+function checkWinCondition() {
+
+    let allWordsRevealed = true;
+
+    // Checks the original animal words
+    for (let word of words) {
+        if (!word.revealed) {
+            allWordsRevealed = false;
+            break;
+        }
+    }
+
+    // Checks the mistakes added by the player
+    for (let mistake of mistakes) {
+        if (!mistake.revealed) {
+            allWordsRevealed = false;
+            break;
+        }
+    }
+
+    // Ends the game if everything has been revealed
+    if (allWordsRevealed) {
+        timer.finished = true;
+        typing.currentWord = "";
     }
 }
 
