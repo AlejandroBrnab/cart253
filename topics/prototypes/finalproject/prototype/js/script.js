@@ -33,7 +33,7 @@ let timer = {
  * Loads the animal data from the JSON file
  */
 async function preload() {
-    animalData = await loadJSON("./data/animals.json");
+    animalData = await loadJSON("./data/dinosaurs.json");
 }
 
 /**
@@ -46,11 +46,13 @@ async function setup() {
     // Waits for the JSON data to load
     await preload();
 
-    // Creates each animal at a random available position
-    for (let animal of animalData.animals) {
+    // Select 15 random animals from the JSON file
+    let selectedAnimals = selectRandomAnimals(animalData.dinosaurs, 15);
+
+    // Create the words using the selected animals
+    for (let animal of selectedAnimals) {
         let newWord = createWord(animal);
 
-        // Adds the word only if an available position was found
         if (newWord !== null) {
             words.push(newWord);
         }
@@ -373,6 +375,31 @@ function addMistake(text) {
             mistakes.push(newMistake);
         }
     }
+}
+
+/**
+ * Selects a specific number of random animals from the JSON data
+ */
+function selectRandomAnimals(animalList, amount) {
+    let selectedAnimals = [];
+
+    // Make a copy so the original JSON data is not modified
+    let availableAnimals = [...animalList];
+
+    // Keep selecting until we have the requested amount
+    while (selectedAnimals.length < amount && availableAnimals.length > 0) {
+
+        // Pick a random index
+        let randomIndex = floor(random(availableAnimals.length));
+
+        // Add that animal to the selected list
+        selectedAnimals.push(availableAnimals[randomIndex]);
+
+        // Remove it so it cannot be selected again
+        availableAnimals.splice(randomIndex, 1);
+    }
+
+    return selectedAnimals;
 }
 
 /**
