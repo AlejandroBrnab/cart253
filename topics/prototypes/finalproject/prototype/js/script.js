@@ -569,7 +569,9 @@ function keyPressed(event) {
             timer.startTime = millis();
         }
 
-        typing.currentWord += key.toLowerCase();
+        //Uncomment to make all inputs lower case [currently testing user experience]
+        // typing.currentWord += key.toLowerCase();
+        typing.currentWord += key;
     }
 
     return false;
