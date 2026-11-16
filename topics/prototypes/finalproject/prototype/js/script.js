@@ -323,6 +323,9 @@ function checkWord() {
         return;
     }
 
+    // Removes accidental spaces at the beginning or end
+    typing.currentWord = typing.currentWord.trim();
+
     let foundWord = false;
 
     // Checks the original animal names
@@ -560,8 +563,18 @@ function keyPressed(event) {
         return false;
     }
 
-    // Adds letters as the player types
-    if (key.length === 1 && key.match(/[a-zA-Z]/)) {
+    // Adds letters, spaces and hyphens as the player types
+    if (key.length === 1 && key.match(/[a-zA-Z -]/)) {
+
+        // Prevents spaces or hyphens at the beginning
+        if (typing.currentWord === "" && key.match(/[ -]/)) {
+            return false;
+        }
+
+        // Prevents consecutive spaces
+        if (key === " " && typing.currentWord.endsWith(" ")) {
+            return false;
+        }
 
         // Starts the timer when the player types for the first time
         if (!timer.started) {
