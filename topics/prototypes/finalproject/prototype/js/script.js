@@ -8,6 +8,9 @@
 
 "use strict";
 
+// Stores the current state of the game
+let gameState = "menu";
+
 // Stores the word data loaded from the JSON file
 let wordData = undefined;
 
@@ -34,7 +37,7 @@ let timer = {
  * Loads the word data from the JSON file
  */
 async function preload() {
-    wordData = await loadJSON("./data/words.json");
+    wordData = await loadJSON("./data/animals.json");
 }
 
 /**
@@ -48,7 +51,7 @@ async function setup() {
     await preload();
 
     // Select 15 random words from the JSON file
-    let selectedWords = selectRandomWords(wordData.words, 15);
+    let selectedWords = selectRandomWords(wordData.animals, 15);
 
     // Create the words using the selected words
     for (let word of selectedWords) {
@@ -61,12 +64,23 @@ async function setup() {
 }
 
 /**
- * Draws the game
+ * Draws the current game screen
  */
 function draw() {
-    if (timer.finished) {
+
+    // Displays the menu
+    if (gameState === "menu") {
+        drawMenuScreen();
+    }
+
+    // Displays the game over screen
+    else if (timer.finished) {
         drawGameOverScreen();
-    } else {
+    }
+
+    // Displays the actual game
+    else if (gameState === "playing") {
+
         drawBackground();
         drawTitle();
         drawInstructions();
@@ -400,15 +414,30 @@ function keyPressed(event) {
     return false;
 }
 
+
 /**
- * Reloads the page when the player clicks RESTART
+ * Handles clicks on the menu and game over screens
  */
 function mousePressed() {
 
-    // Only works when the game is finished
+    // Checks whether the player clicked START GAME
+    if (gameState === "menu") {
+
+        if (
+            mouseX > width / 2 - 100 &&
+            mouseX < width / 2 + 100 &&
+            mouseY > 525 &&
+            mouseY < 585
+        ) {
+            gameState = "playing";
+        }
+
+        return false;
+    }
+
+    // Checks whether the player clicked RESTART
     if (timer.finished) {
 
-        // Checks if the player clicked inside the restart button
         if (
             mouseX > width / 2 - 90 &&
             mouseX < width / 2 + 90 &&
@@ -418,4 +447,6 @@ function mousePressed() {
             window.location.reload();
         }
     }
+
+    return false;
 }

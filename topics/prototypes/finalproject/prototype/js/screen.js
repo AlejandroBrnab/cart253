@@ -213,3 +213,55 @@ function drawGameOverScreen() {
 
     pop();
 }
+
+
+/**
+ * Displays the main menu and explains the game rules
+ */
+function drawMenuScreen() {
+
+    // Background
+    background("#d7eff2");
+
+    // Game title
+    fill("#164e63");
+    textSize(48);
+    textAlign(CENTER, CENTER);
+    text("REVEAL THE WORDS", width / 2, 130);
+
+    // Short introduction
+    fill("#486581");
+    textSize(19);
+    text(
+        "How many words can you reveal before time runs out?",
+        width / 2,
+        205
+    );
+
+    // Game instructions
+    fill("#164e63");
+    textSize(23);
+    text("HOW TO PLAY", width / 2, 300);
+
+    fill("#486581");
+    textSize(17);
+
+    text("1. Find the hidden words on the screen.", width / 2, 350);
+    text("2. Type the complete word and press ENTER.", width / 2, 385);
+    text("3. Pay attention to capital letters, spaces and hyphens!", width / 2, 420);
+    text("4. You have 40 seconds to reveal all the words.", width / 2, 455);
+
+    // Start button
+    push();
+
+    rectMode(CENTER);
+    fill(6, 57, 47);
+    noStroke();
+    rect(width / 2, 555, 200, 60, 12);
+
+    fill(255);
+    textSize(22);
+    text("START GAME", width / 2, 555);
+
+    pop();
+}
