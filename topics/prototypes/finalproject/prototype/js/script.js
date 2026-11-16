@@ -2,15 +2,15 @@
  * Word Reveal Game Prototype
  * Name: Alejandro
  *
- * Type an animal's name and press ENTER to reveal it. Incorrect words are added to the game.
+ * Type a word and press ENTER to reveal it. Incorrect words are added to the game.
  */
 
 "use strict";
 
-// Stores the animal data loaded from the JSON file
-let animalData = undefined;
+// Stores the word data loaded from the JSON file
+let wordData = undefined;
 
-// Animals that will appear on the screen
+// Words that will appear on the screen
 let words = [];
 
 // Stores the incorrect words typed by the player
@@ -30,14 +30,14 @@ let timer = {
 };
 
 /**
- * Loads the animal data from the JSON file
+ * Loads the word data from the JSON file
  */
 async function preload() {
-    animalData = await loadJSON("./data/words.json");
+    wordData = await loadJSON("./data/words.json");
 }
 
 /**
- * Sets up the canvas and creates the animal words
+ * Sets up the canvas and creates the words
  */
 async function setup() {
     createCanvas(1500, 700);
@@ -46,12 +46,12 @@ async function setup() {
     // Waits for the JSON data to load
     await preload();
 
-    // Select 15 random animals from the JSON file
-    let selectedAnimals = selectRandomAnimals(animalData.words, 15);
+    // Select 15 random words from the JSON file
+    let selectedWords = selectRandomWords(wordData.words, 15);
 
-    // Create the words using the selected animals
-    for (let animal of selectedAnimals) {
-        let newWord = createWord(animal);
+    // Create the words using the selected words
+    for (let word of selectedWords) {
+        let newWord = createWord(word);
 
         if (newWord !== null) {
             words.push(newWord);
@@ -94,7 +94,7 @@ function drawTitle() {
     fill("#164e63");
     textSize(24);
     textAlign(CENTER, CENTER);
-    text("REVEAL THE ANIMALS", width / 2, 30);
+    text("REVEAL THE WORDS", width / 2, 30);
 }
 
 /**
@@ -104,7 +104,7 @@ function drawInstructions() {
     fill("#486581");
     textSize(14);
     text(
-        "Type an animal's name and press ENTER to reveal it",
+        "Type the word and press ENTER to reveal it",
         width / 2,
         65
     );
@@ -136,13 +136,13 @@ function drawTimer() {
 }
 
 /**
- * Draws each animal name
+ * Draws each word name
  */
 function drawWords() {
     textAlign(CENTER, CENTER);
     textSize(19);
 
-    // Goes through every animal in the array
+    // Goes through every word in the array
     for (let word of words) {
         drawWord(word, "#9bb9bd");
     }
@@ -195,7 +195,7 @@ function drawTypingArea() {
 function drawProgress() {
     let revealedCount = 0;
 
-    // Counts the revealed animal names
+    // Counts the revealed words
     for (let word of words) {
         if (word.revealed) {
             revealedCount++;
@@ -231,7 +231,7 @@ function drawGameOverScreen() {
 
     let revealedCount = 0;
 
-    // Counts the revealed animal names
+    // Counts the revealed words
     for (let word of words) {
         if (word.revealed) {
             revealedCount++;
@@ -269,6 +269,23 @@ function drawGameOverScreen() {
     fill("#486581");
     textSize(14);
     text("Thanks for playing! :D", width / 2, 500);
+
+    // Draws the restart button
+    push();
+
+    rectMode(CENTER);
+    fill(6, 57, 47);
+    stroke(255);
+    rect(width / 2, 450, 180, 50, 10);
+
+    noStroke();
+    fill(255);
+    textSize(20);
+    textAlign(CENTER, CENTER);
+    text("RESTART", width / 2, 450);
+
+    pop();
+    
 }
 
 /**
@@ -292,7 +309,7 @@ function checkWinCondition() {
 
     let allWordsRevealed = true;
 
-    // Checks the original animal words
+    // Checks the original words
     for (let word of words) {
         if (!word.revealed) {
             allWordsRevealed = false;
@@ -316,7 +333,7 @@ function checkWinCondition() {
 }
 
 /**
- * Checks whether the submitted word matches an animal or a mistake
+ * Checks whether the submitted word matches a word from JSON file or a mistake
  */
 function checkWord() {
     if (typing.currentWord === "") {
@@ -328,7 +345,7 @@ function checkWord() {
 
     let foundWord = false;
 
-    // Checks the original animal names
+    // Checks the original words
     for (let word of words) {
         if (typing.currentWord === word.text) {
             word.revealed = true;
@@ -381,28 +398,28 @@ function addMistake(text) {
 }
 
 /**
- * Selects a specific number of random animals from the JSON data
+ * Selects a specific number of random words from the JSON data
  */
-function selectRandomAnimals(animalList, amount) {
-    let selectedAnimals = [];
+function selectRandomWords(wordList, amount) {
+    let selectedWords = [];
 
     // Make a copy so the original JSON data is not modified
-    let availableAnimals = [...animalList];
+    let availableWords = [...wordList];
 
     // Keep selecting until we have the requested amount
-    while (selectedAnimals.length < amount && availableAnimals.length > 0) {
+    while (selectedWords.length < amount && availableWords.length > 0) {
 
         // Pick a random index
-        let randomIndex = floor(random(availableAnimals.length));
+        let randomIndex = floor(random(availableWords.length));
 
-        // Add that animal to the selected list
-        selectedAnimals.push(availableAnimals[randomIndex]);
+        // Add that word to the selected list
+        selectedWords.push(availableWords[randomIndex]);
 
         // Remove it so it cannot be selected again
-        availableAnimals.splice(randomIndex, 1);
+        availableWords.splice(randomIndex, 1);
     }
 
-    return selectedAnimals;
+    return selectedWords;
 }
 
 /**
@@ -445,7 +462,7 @@ function createMistake(text) {
 }
 
 /**
- * Creates a new animal word at a random available position
+ * Creates a new word at a random available position
  */
 function createWord(text) {
 
@@ -494,7 +511,7 @@ function isPositionAvailable(x, y, text) {
     let newWidth = textWidth(text) + 16;
     let newHeight = 25;
 
-    // Checks the original animal names
+    // Checks the original words
     for (let word of words) {
 
         textSize(19);
@@ -588,4 +605,24 @@ function keyPressed(event) {
     }
 
     return false;
+}
+
+/**
+ * Reloads the page when the player clicks RESTART
+ */
+function mousePressed() {
+
+    // Only works when the game is finished
+    if (timer.finished) {
+
+        // Checks if the player clicked inside the restart button
+        if (
+            mouseX > width / 2 - 90 &&
+            mouseX < width / 2 + 90 &&
+            mouseY > 425 &&
+            mouseY < 475
+        ) {
+            window.location.reload();
+        }
+    }
 }
