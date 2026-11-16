@@ -33,7 +33,7 @@ let timer = {
  * Loads the animal data from the JSON file
  */
 async function preload() {
-    animalData = await loadJSON("./data/dinosaurs.json");
+    animalData = await loadJSON("./data/words.json");
 }
 
 /**
@@ -47,7 +47,7 @@ async function setup() {
     await preload();
 
     // Select 15 random animals from the JSON file
-    let selectedAnimals = selectRandomAnimals(animalData.dinosaurs, 15);
+    let selectedAnimals = selectRandomAnimals(animalData.words, 15);
 
     // Create the words using the selected animals
     for (let animal of selectedAnimals) {
