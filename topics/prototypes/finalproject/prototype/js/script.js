@@ -37,7 +37,7 @@ let timer = {
  * Loads the word data from the JSON file
  */
 async function preload() {
-    wordData = await loadJSON("./data/animals.json");
+    wordData = await loadJSON("./data/words.json");
 }
 
 /**
@@ -51,7 +51,7 @@ async function setup() {
     await preload();
 
     // Select 15 random words from the JSON file
-    let selectedWords = selectRandomWords(wordData.animals, 15);
+    let selectedWords = selectRandomWords(wordData.words, 15);
 
     // Create the words using the selected words
     for (let word of selectedWords) {
@@ -388,10 +388,10 @@ function keyPressed(event) {
     }
 
     // Adds letters, spaces and hyphens as the player types
-    if (key.length === 1 && key.match(/[a-zA-Z -]/)) {
+    if (key.length === 1 && key.match(/[a-zA-Z -']/)) {
 
         // Prevents spaces or hyphens at the beginning
-        if (typing.currentWord === "" && key.match(/[ -]/)) {
+        if (typing.currentWord === "" && key.match(/[ -']/)) {
             return false;
         }
 
@@ -413,7 +413,6 @@ function keyPressed(event) {
 
     return false;
 }
-
 
 /**
  * Handles clicks on the menu and game over screens
