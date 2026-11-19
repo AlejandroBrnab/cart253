@@ -145,3 +145,12 @@ Some other links leading to other stuff.
 - *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/arrays/arrays-prototype-3)*
 
 ![screenshot](./public/images/fish.jpg)
+
+### **Final Project**
+
+- *[Link to reflective journal](https://github.com/AlejandroBrnab/cart253/blob/main/ReflectiveJournal.md#2026-11-19)*
+
+#### Final Project Prototype
+
+- *[View online](https://alejandrobrnab.github.io/cart253/topics/prototypes/finalproject/prototype/index.html)*
+- *[View code](https://github.com/AlejandroBrnab/cart253/tree/main/topics/prototypes/finalproject/prototype)*
