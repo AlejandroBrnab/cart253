@@ -50,8 +50,8 @@ async function setup() {
     // Waits for the JSON data to load
     await preload();
 
-    // Select 15 random words from the JSON file
-    let selectedWords = selectRandomWords(wordData.words, 15);
+    // Select25 random words from the JSON file
+    let selectedWords = selectRandomWords(wordData.words, 25);
 
     // Create the words using the selected words
     for (let word of selectedWords) {
