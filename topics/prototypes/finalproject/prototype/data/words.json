@@ -2281,8 +2281,11 @@
         "words",
         "workman",
         "youngster",
-        "floccinaucinihilipilification",
-        "supercalifragilisticexpialidocious",
         "sphygmomanometer"
+      ],
+      "evil_words":
+      [  
+        "floccinaucinihilipilification",
+        "supercalifragilisticexpialidocious"
       ]
 }
