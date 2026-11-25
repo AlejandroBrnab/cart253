@@ -1,4 +1,3 @@
-
 /**
  * Word Reveal Game Prototype
  * Name: Alejandro

@@ -1,4 +1,3 @@
-
 /**
  * Word Reveal Game Prototype
  * Name: Alejandro
@@ -20,6 +19,9 @@ let words = [];
 
 // Stores the words that have not been used yet
 let availableWords = [];
+
+// Stores the evil words that have not been used yet
+let availableEvilWords = [];
 
 // Stores the incorrect words typed by the player
 let mistakes = [];
@@ -62,6 +64,9 @@ async function setup() {
 
     // Makes a copy of all the words from the JSON file
     availableWords = [...wordData.words];
+
+    // Makes a copy of all the evil words from the JSON file
+    availableEvilWords = [...wordData.evil_words];
 
     // Selects the first 25 random words
     let selectedWords = selectRandomWords(availableWords, 25);
@@ -200,6 +205,9 @@ function checkWord() {
                 // Marks the mistake as revealed
                 mistake.revealed = true;
 
+                // Stores the time when the mistake was revealed
+                mistake.revealedTime = millis();
+
                 // Updates the number of revealed words
                 progress.revealed++;
 
@@ -218,12 +226,13 @@ function checkWord() {
     typing.currentWord = "";
 }
 
+
 /**
- * Removes words that have been revealed for 5 seconds
+ * Removes words and mistakes that have been revealed for 5 seconds
  */
 function removeRevealedWords() {
 
-    // Goes backwards through the array to safely remove elements
+    // Goes backwards through the words array to safely remove elements
     for (let i = words.length - 1; i >= 0; i--) {
 
         // Checks whether the word has been revealed
@@ -237,6 +246,21 @@ function removeRevealedWords() {
 
                 // Adds a new word to replace it
                 addNewWord();
+            }
+        }
+    }
+
+    // Goes backwards through the mistakes array
+    for (let i = mistakes.length - 1; i >= 0; i--) {
+
+        // Checks whether the mistake has been revealed
+        if (mistakes[i].revealed) {
+
+            // Checks whether 5 seconds have passed
+            if (millis() - mistakes[i].revealedTime >= 5000) {
+
+                // Removes the revealed mistake from the array
+                mistakes.splice(i, 1);
             }
         }
     }
@@ -285,6 +309,48 @@ function addNewWord() {
 }
 
 /**
+ * Adds a random evil word to the game
+ */
+function addEvilWord() {
+
+    // Stops if there are no unused evil words left
+    if (availableEvilWords.length === 0) {
+        return;
+    }
+
+    // Randomizes the order of the available evil words
+    let shuffledWords = selectRandomWords(
+        availableEvilWords,
+        availableEvilWords.length
+    );
+
+    // Tries to create an evil word using the available words
+    for (let wordText of shuffledWords) {
+
+        // Creates the evil word at a random available position
+        let newWord = createWord(wordText);
+
+        // Adds the evil word if a free position was found
+        if (newWord !== null) {
+
+            words.push(newWord);
+
+            // Updates the total progress count
+            progress.total++;
+
+            // Removes the evil word from the available words
+            let index = availableEvilWords.indexOf(wordText);
+
+            if (index !== -1) {
+                availableEvilWords.splice(index, 1);
+            }
+
+            return;
+        }
+    }
+}
+
+/**
  * Adds a new mistake to the mistakes array
  */
 function addMistake(text) {
@@ -308,6 +374,9 @@ function addMistake(text) {
 
             // Updates the total progress count
             progress.total++;
+
+            // Adds a random evil word when a new mistake happens
+            addEvilWord();
         }
     }
 }
