@@ -1,3 +1,4 @@
+
 /**
  * Word Reveal Game Prototype
  * Name: Alejandro
@@ -17,12 +18,21 @@ let wordData = undefined;
 // Words that will appear on the screen
 let words = [];
 
+// Stores the words that have not been used yet
+let availableWords = [];
+
 // Stores the incorrect words typed by the player
 let mistakes = [];
 
 // Stores the player's current input
 let typing = {
     currentWord: ""
+};
+
+// Stores the player's progress
+let progress = {
+    revealed: 0,
+    total: 0
 };
 
 // Stores the timer information
@@ -50,15 +60,31 @@ async function setup() {
     // Waits for the JSON data to load
     await preload();
 
-    // Select25 random words from the JSON file
-    let selectedWords = selectRandomWords(wordData.words, 25);
+    // Makes a copy of all the words from the JSON file
+    availableWords = [...wordData.words];
 
-    // Create the words using the selected words
+    // Selects the first 25 random words
+    let selectedWords = selectRandomWords(availableWords, 25);
+
+    // Removes the selected words from the available words
+    for (let selectedWord of selectedWords) {
+
+        let index = availableWords.indexOf(selectedWord);
+
+        if (index !== -1) {
+            availableWords.splice(index, 1);
+        }
+    }
+
+    // Creates the 25 selected words
     for (let word of selectedWords) {
         let newWord = createWord(word);
 
         if (newWord !== null) {
             words.push(newWord);
+
+            // Adds the word to the total progress count
+            progress.total++;
         }
     }
 }
@@ -80,6 +106,9 @@ function draw() {
 
     // Displays the actual game
     else if (gameState === "playing") {
+
+        // Removes words that have been revealed for 5 seconds
+        removeRevealedWords();
 
         drawBackground();
         drawTitle();
@@ -110,30 +139,13 @@ function checkTimer() {
 }
 
 /**
- * Checks whether all words have been revealed
+ * Checks whether all available words have been used
  */
 function checkWinCondition() {
 
-    let allWordsRevealed = true;
-
-    // Checks the original words
-    for (let word of words) {
-        if (!word.revealed) {
-            allWordsRevealed = false;
-            break;
-        }
-    }
-
-    // Checks the mistakes added by the player
-    for (let mistake of mistakes) {
-        if (!mistake.revealed) {
-            allWordsRevealed = false;
-            break;
-        }
-    }
-
-    // Ends the game if everything has been revealed
-    if (allWordsRevealed) {
+    // The game ends when there are no words remaining
+    // and no new words are available
+    if (words.length === 0 && availableWords.length === 0) {
         timer.finished = true;
         typing.currentWord = "";
     }
@@ -154,19 +166,46 @@ function checkWord() {
 
     // Checks the original words
     for (let word of words) {
-        if (typing.currentWord === word.text) {
+
+        if (typing.currentWord === word.text && !word.revealed) {
+
+            // Adds extra time depending on the word length.
+            if (word.text.length < 8) {
+                timer.duration += 1;
+            }
+            else if (word.text.length > 8) {
+                timer.duration += 5;
+            }
+
+            // Marks the word as revealed
             word.revealed = true;
+
+            // Stores the time when the word was revealed
+            word.revealedTime = millis();
+
+            // Updates the number of revealed words
+            progress.revealed++;
+
             foundWord = true;
             break;
         }
     }
 
-    // Checks the mistakes already added
-    for (let mistake of mistakes) {
-        if (typing.currentWord === mistake.text) {
-            mistake.revealed = true;
-            foundWord = true;
-            break;
+    // Checks the mistakes already added if no original word was found
+    if (!foundWord) {
+        for (let mistake of mistakes) {
+
+            if (typing.currentWord === mistake.text && !mistake.revealed) {
+
+                // Marks the mistake as revealed
+                mistake.revealed = true;
+
+                // Updates the number of revealed words
+                progress.revealed++;
+
+                foundWord = true;
+                break;
+            }
         }
     }
 
@@ -177,6 +216,72 @@ function checkWord() {
 
     // Clears the typing area after submitting
     typing.currentWord = "";
+}
+
+/**
+ * Removes words that have been revealed for 5 seconds
+ */
+function removeRevealedWords() {
+
+    // Goes backwards through the array to safely remove elements
+    for (let i = words.length - 1; i >= 0; i--) {
+
+        // Checks whether the word has been revealed
+        if (words[i].revealed) {
+
+            // Checks whether 5 seconds have passed
+            if (millis() - words[i].revealedTime >= 5000) {
+
+                // Removes the revealed word from the array
+                words.splice(i, 1);
+
+                // Adds a new word to replace it
+                addNewWord();
+            }
+        }
+    }
+}
+
+/**
+ * Adds a new word to replace a removed word
+ */
+function addNewWord() {
+
+    // Stops if there are no unused words left
+    if (availableWords.length === 0) {
+        return;
+    }
+
+    // Randomizes the order of the available words
+    let shuffledWords = selectRandomWords(
+        availableWords,
+        availableWords.length
+    );
+
+    // Tries to create a new word using the available words
+    for (let wordText of shuffledWords) {
+
+        // Creates the word at a random available position
+        let newWord = createWord(wordText);
+
+        // Adds the word if a free position was found
+        if (newWord !== null) {
+
+            words.push(newWord);
+
+            // Updates the total progress count
+            progress.total++;
+
+            // Removes the word from the available words
+            let index = availableWords.indexOf(wordText);
+
+            if (index !== -1) {
+                availableWords.splice(index, 1);
+            }
+
+            return;
+        }
+    }
 }
 
 /**
@@ -200,6 +305,9 @@ function addMistake(text) {
         // Adds the mistake only if a free position was found
         if (newMistake !== null) {
             mistakes.push(newMistake);
+
+            // Updates the total progress count
+            progress.total++;
         }
     }
 }
@@ -289,14 +397,15 @@ function createWord(text) {
         let x = random(wordWidth / 2 + 10, width - wordWidth / 2 - 10);
         let y = random(120, 600);
 
-        // Checks whether the position is available
+        // Checks if the position is available
         if (isPositionAvailable(x, y, text)) {
 
             let word = {
                 text: text,
                 x: x,
                 y: y,
-                revealed: false
+                revealed: false,
+                revealedTime: 0
             };
 
             return word;
@@ -321,6 +430,7 @@ function isPositionAvailable(x, y, text) {
     // Checks the original words
     for (let word of words) {
 
+        // Revealed words still occupy space during their 5-second display
         textSize(19);
 
         let existingWidth = textWidth(word.text) + 16;
@@ -369,6 +479,10 @@ function isPositionAvailable(x, y, text) {
 /**
  * Handles letters, ENTER and BACKSPACE
  */
+
+/**
+ * Handles letters, ENTER and BACKSPACE
+ */
 function keyPressed(event) {
 
     if (timer.finished) {
@@ -387,16 +501,21 @@ function keyPressed(event) {
         return false;
     }
 
-    // Adds letters, spaces and hyphens as the player types
-    if (key.length === 1 && key.match(/[a-zA-Z -']/)) {
+    // Adds letters, spaces, hyphens and apostrophes
+    if (key.length === 1 && key.match(/[a-zA-Z '-]/)) {
 
-        // Prevents spaces or hyphens at the beginning
-        if (typing.currentWord === "" && key.match(/[ -']/)) {
+        // Prevents spaces, hyphens or apostrophes at the beginning
+        if (typing.currentWord === "" && key.match(/[ '-]/)) {
             return false;
         }
 
         // Prevents consecutive spaces
         if (key === " " && typing.currentWord.endsWith(" ")) {
+            return false;
+        }
+
+        // Prevents consecutive hyphens
+        if (key === "-" && typing.currentWord.endsWith("-")) {
             return false;
         }
 
@@ -406,8 +525,6 @@ function keyPressed(event) {
             timer.startTime = millis();
         }
 
-        //Uncomment to make all inputs lower case [currently testing user experience]
-        // typing.currentWord += key.toLowerCase();
         typing.currentWord += key;
     }
 

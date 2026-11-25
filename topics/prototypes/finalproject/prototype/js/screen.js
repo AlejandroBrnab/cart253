@@ -1,3 +1,4 @@
+
 /**
  * Word Reveal Game Prototype
  * Name: Alejandro
@@ -119,31 +120,13 @@ function drawTypingArea() {
  * Displays the number of words revealed
  */
 function drawProgress() {
-    let revealedCount = 0;
-
-    // Counts the revealed words
-    for (let word of words) {
-        if (word.revealed) {
-            revealedCount++;
-        }
-    }
-
-    // Counts the revealed mistakes
-    for (let mistake of mistakes) {
-        if (mistake.revealed) {
-            revealedCount++;
-        }
-    }
-
-    // Calculates the total number of words
-    let totalWords = words.length + mistakes.length;
-
     fill("#486581");
     textSize(14);
     textAlign(CENTER, CENTER);
 
+    // Uses the persistent progress counters from script.js
     text(
-        revealedCount + " / " + totalWords + " words revealed",
+        progress.revealed + " / " + progress.total + " words revealed",
         width / 2,
         680
     );
@@ -155,23 +138,9 @@ function drawProgress() {
 function drawGameOverScreen() {
     drawBackground();
 
-    let revealedCount = 0;
-
-    // Counts the revealed words
-    for (let word of words) {
-        if (word.revealed) {
-            revealedCount++;
-        }
-    }
-
-    // Counts the revealed mistakes
-    for (let mistake of mistakes) {
-        if (mistake.revealed) {
-            revealedCount++;
-        }
-    }
-
-    let totalWords = words.length + mistakes.length;
+    // Uses the persistent progress counters from script.js
+    let revealedCount = progress.revealed;
+    let totalWords = progress.total;
 
     fill("#164e63");
     textAlign(CENTER, CENTER);
@@ -213,7 +182,6 @@ function drawGameOverScreen() {
 
     pop();
 }
-
 
 /**
  * Displays the main menu and explains the game rules
