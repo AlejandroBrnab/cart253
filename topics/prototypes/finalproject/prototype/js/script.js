@@ -116,8 +116,6 @@ function draw() {
         removeRevealedWords();
 
         drawBackground();
-        drawTitle();
-        drawInstructions();
         drawTimer();
         drawWords();
         drawMistakes();

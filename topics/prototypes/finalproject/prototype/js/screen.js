@@ -10,37 +10,14 @@
  * Draws the background
  */
 function drawBackground() {
-    background("#d7eff2");
-}
-
-/**
- * Draws the title of the game
- */
-function drawTitle() {
-    fill("#164e63");
-    textSize(24);
-    textAlign(CENTER, CENTER);
-    text("REVEAL THE WORDS", width / 2, 30);
-}
-
-/**
- * Displays the instructions
- */
-function drawInstructions() {
-    fill("#486581");
-    textSize(14);
-    text(
-        "Type the word and press ENTER to reveal it",
-        width / 2,
-        65
-    );
+    background("#070808");
 }
 
 /**
  * Displays the remaining time
  */
 function drawTimer() {
-    fill("#164e63");
+    fill("#F7FAFA");
     textSize(16);
     textAlign(CENTER, CENTER);
 
@@ -70,7 +47,7 @@ function drawWords() {
 
     // Goes through every word in the array
     for (let word of words) {
-        drawWord(word, "#9bb9bd");
+        drawWord(word, "#F7FAFA");
     }
 }
 
@@ -83,7 +60,7 @@ function drawMistakes() {
 
     // Goes through every mistake in the array
     for (let mistake of mistakes) {
-        drawWord(mistake, "#d97757");
+        drawWord(mistake, "#FC7805");
     }
 }
 
@@ -92,19 +69,20 @@ function drawMistakes() {
  */
 function drawWord(word, hiddenColor) {
     if (word.revealed) {
-        fill("#164e63");
+        fill("#05FC05");
     } else {
         fill(hiddenColor);
     }
 
     text(word.text, word.x, word.y);
+    // console.log(hiddenColor); 
 }
 
 /**
  * Displays the player's current input
  */
 function drawTypingArea() {
-    fill("#102a43");
+    fill("#F7FAFA");
     textSize(20);
     textAlign(CENTER, CENTER);
 
@@ -119,7 +97,7 @@ function drawTypingArea() {
  * Displays the number of words revealed
  */
 function drawProgress() {
-    fill("#486581");
+    fill("#F7FAFA");
     textSize(14);
     textAlign(CENTER, CENTER);
 
@@ -141,7 +119,7 @@ function drawGameOverScreen() {
     let revealedCount = progress.revealed;
     let totalWords = progress.total;
 
-    fill("#164e63");
+    fill("#F7FAFA");
     textAlign(CENTER, CENTER);
 
     textSize(36);
@@ -161,7 +139,7 @@ function drawGameOverScreen() {
     textSize(18);
     text("words revealed", width / 2, 360);
 
-    fill("#486581");
+    fill("#F7FAFA");
     textSize(14);
     text("Thanks for playing! :D", width / 2, 500);
 
@@ -188,16 +166,16 @@ function drawGameOverScreen() {
 function drawMenuScreen() {
 
     // Background
-    background("#d7eff2");
+    background("#070808");
 
     // Game title
-    fill("#164e63");
+    fill("#F7FAFA");
     textSize(48);
     textAlign(CENTER, CENTER);
     text("REVEAL THE WORDS", width / 2, 130);
 
     // Short introduction
-    fill("#486581");
+    fill("#F7FAFA");
     textSize(19);
     text(
         "How many words can you reveal before time runs out?",
@@ -206,11 +184,11 @@ function drawMenuScreen() {
     );
 
     // Game instructions
-    fill("#164e63");
+    fill("#F7FAFA");
     textSize(23);
     text("HOW TO PLAY", width / 2, 300);
 
-    fill("#486581");
+    fill("#F7FAFA");
     textSize(17);
 
     text("1. Find the hidden words on the screen.", width / 2, 350);
